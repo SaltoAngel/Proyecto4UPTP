@@ -9,5 +9,11 @@ export default defineConfig({
             refresh: true,
         }),
         tailwindcss(),
+            input: [
+                'resources/sass/app.scss',
+                'resources/js/app.js',
+            ],
+            refresh: true,
+        }),
     ],
 });

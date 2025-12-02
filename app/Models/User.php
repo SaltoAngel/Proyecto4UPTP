@@ -45,4 +45,16 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+<<<<<<< HEAD
+=======
+
+    /* Asignación de clases por rol */
+    public function roles(){
+        return $this->belongsToMany(Roles::class); // Se usa belongsToMany al declarar "Muchos a Muchos"
+    }
+    /* Declaración de existencia de roles */
+    public function hasRoles($rolesName) {
+        return $this->roles()->where('nombre_rol', $rolesName)->exists();
+    }
+>>>>>>> features-view/login
 }
