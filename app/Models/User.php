@@ -45,8 +45,6 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-<<<<<<< HEAD
-=======
 
     /* Asignación de clases por rol */
     public function roles(){
@@ -56,5 +54,4 @@ class User extends Authenticatable
     public function hasRoles($rolesName) {
         return $this->roles()->where('nombre_rol', $rolesName)->exists();
     }
->>>>>>> features-view/login
 }
