@@ -67,7 +67,7 @@
                             <div class="col-md-6">
                                 
                                 <select name="roles" id="roles" @error('roles') is-invalid @enderror" required>
-                                    <option value="">__{{'Seleccione un rol'}}</option>
+                                    <option value="">{{'Seleccione un rol'}}</option>
                                     @foreach ($roles as $role)
                                         <option value="{{ $role->id }}">{{ $role->nombre_rol }}</option>
                                     @endforeach

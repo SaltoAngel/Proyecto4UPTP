@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
@@ -36,5 +37,20 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
         $this->middleware('auth')->only('logout');
+    }
+
+    /*Declaración de redireccion mediante credenciales de usuario */
+    protected function authenticated (request $request, $user) {
+        
+        if ($user->hasRoles('ADMINISTRADOR')) {
+            return redirect('admin/dashboard');
+        } elseif($user->hasRoles('NUTRICIONISTA')) {
+            return redirect('nutricionista/dashboard');
+        } elseif($user->hasRoles('SUPERVISOR')) {
+            return redirect('supervisor/dashboard');
+        } elseif($user->hasRoles('COORDINADOR')) {
+            return redirect('coordinador/dashboard');
+        }
+        return redirect('/');
     }
 }
