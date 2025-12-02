@@ -3,15 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\loginController;
 use App\Http\Controllers\Admin\adminController;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
     return view('welcome');
 });
-
-/*Rutas de Inicio de Sesión, mediante controladores*/
-// Route::get('/login', [loginController::class, 'showLoginForm']) -> name('login');
-// Route::post('/login', [loginController::class, 'login']);
-// Route::post('/logout', [loginController::class, 'logout']) -> name('logout');
 
 Auth::routes();
 
@@ -41,3 +37,7 @@ Route::middleware(['auth', 'roles:COORDINADOR'])->prefix('coordinador')->group(f
     Route::get('/dashboard', [App\Http\Controllers\Coordinador\coordinadorController::class, 'dashboard'])->name('coordinador.dashboard');
     // Mas rutas
 });
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

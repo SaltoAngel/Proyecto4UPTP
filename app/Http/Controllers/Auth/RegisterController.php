@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Models\User;
-use App\Models\Roles;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -65,34 +63,10 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $user = User::create([
+        return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
-
-        // Registrar usuario según rol seleccionado
-        if (isset($data['roles'])) {
-            $user->roles()->attach($data['roles']);
-        }
-        
-        return $user;
     }
-
-    // Obtener los roles de la base de datos
-    public function showRegistrationForm()
-    {
-        $roles = Roles::all();
-        return view('auth.register', compact('roles'));
-    }
-
-    protected function registered(Request $request, $user)
-    {
-        // Cerrar sesión después del registro
-        auth()->logout();
-        
-        return redirect('/login')->with('success', 'Registro exitoso. Por favor, inicia sesión.');
-    }
-
-
 }
