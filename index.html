@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lupilca C.A</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Estilos generales */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary-color: #2e7d32;
+            --secondary-color: #4caf50;
+            --accent-color: #ff9800;
+            --light-color: #f5f5f5;
+            --dark-color: #333;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Header y navegación */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 50px;
+            margin-right: 10px;
+        }
+        
+        .logo h1 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 25px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark-color);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #1b5e20;
+        }
+        
+        .btn-secondary {
+            background-color: var(--accent-color);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #e65100;
+        }
+        
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1563308294-6d63bb78d61e?q=80&w=726&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+        }
+        
+        .hero h2 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+        
+        /* Slider automático */
+        .slider-container {
+            position: relative;
+            max-width: 100%;
+            margin: 50px auto;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .slider {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        
+        .slide {
+            min-width: 100%;
+            position: relative;
+        }
+        
+        .slide img {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+        }
+        
+        .slide-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 20px;
+        }
+        
+        .slider-nav {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+        
+        .slider-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+        }
+        
+        .slider-dot.active {
+            background-color: white;
+        }
+        
+        /* Sección de servicios */
+        .services {
+            padding: 80px 0;
+            background-color: white;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .section-title p {
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: justify;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .service-card {
+            background-color: var(--light-color);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .service-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .service-card-content {
+            padding: 20px;
+        }
+        
+        .service-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        
+        /* Sección Nosotros */
+        .about {
+            padding: 80px 0;
+            background-color: #f0f7f0;
+        }
+        
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+        }
+        
+        .about-text {
+            flex: 1;
+            text-align: justify;
+        }
+        
+        .about-image {
+            flex: 1;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        /* Sección Contacto */
+        .contact {
+            padding: 80px 0;
+            background-color: white;
+        }
+        
+        .contact-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+        
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+        
+        .contact-item i {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            margin-top: 5px;
+        }
+        
+        .contact-form {
+            background-color: var(--light-color);
+            padding: 30px;
+            border-radius: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        .form-group textarea {
+            height: 150px;
+            resize: vertical;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 50px 0 20px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: var(--accent-color);
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-column a:hover {
+            color: white;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transition: background-color 0.3s;
+        }
+        
+        .social-icons a:hover {
+            background-color: var(--primary-color);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .about-content {
+                flex-direction: column;
+            }
+            
+            .about-image {
+                order: -1;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 80px);
+                background-color: white;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                padding-top: 50px;
+                transition: left 0.3s;
+            }
+            
+            .nav-links.active {
+                left: 0;
+            }
+            
+            .nav-links li {
+                margin: 15px 0;
+            }
+            
+            .hero h2 {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header y navegación -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <i class="fas fa-tractor" style="font-size: 2rem; color: var(--primary-color); margin-right: 10px;"></i>
+                    <h1>Lupilca C.A</h1>
+                </div>
+                
+                <ul class="nav-links">
+                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#servicios">Servicios</a></li>
+                    <li><a href="#nosotros">Nosotros</a></li>
+                    <li><a href="#contacto">Contacto</a></li>
+                </ul>
+                
+                <div class="nav-buttons">
+                    <button class="btn btn-primary">Agendar Pedidos</button>
+                <a href="login.html"><button class="btn btn-secondary">Iniciar Sesión</button></a>
+                </div>
+                
+                <div class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="inicio">
+        <div class="container">
+            <h2>Alimentos de Calidad para tu Granja</h2>
+            <p>Somos líderes en producción y distribución de alimentos balanceados para gallinas, vacas, cerdos, caballos y más. Calidad garantizada para el crecimiento saludable de tus animales.</p>
+            <button class="btn btn-primary">Conoce Nuestros Productos</button>
+        </div>
+    </section>
+
+    <!-- Slider automático -->
+    <div class="slider-container">
+        <div class="slider">
+            <div class="slide">
+                <img src="https://images.unsplash.com/photo-1617457563976-8c8190235034?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Gallinas en granja">
+                <div class="slide-content">
+                    <h3>Alimentos para Gallinas</h3>
+                    <p>Nutrición especializada para una producción óptima de huevos y carne.</p>
+                </div>
+            </div>
+            <div class="slide">
+                <img src="https://plus.unsplash.com/premium_photo-1667566903049-c48abf0a2414?q=80&w=872&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Vacas en pastizal">
+                <div class="slide-content">
+                    <h3>Nutrición para Ganado</h3>
+                    <p>Alimentos balanceados para el desarrollo saludable de tu ganado.</p>
+                </div>
+            </div>
+            <div class="slide">
+                <img src="https://plus.unsplash.com/premium_photo-1663040364167-b8026d3307dc?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Cerdos en granja">
+                <div class="slide-content">
+                    <h3>Alimentación para Cerdos</h3>
+                    <p>Fórmulas especializadas para cada etapa de crecimiento porcino.</p>
+                </div>
+            </div>
+            <div class="slide">
+                <img src="https://images.unsplash.com/photo-1612225330565-f79af9f92168?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Caballos en establo">
+                <div class="slide-content">
+                    <h3>Nutrición Equina</h3>
+                    <p>Alimentos de alta calidad para el rendimiento y salud de tus caballos.</p>
+                </div>
+            </div>
+        </div>
+        <div class="slider-nav">
+            <div class="slider-dot active"></div>
+            <div class="slider-dot"></div>
+            <div class="slider-dot"></div>
+            <div class="slider-dot"></div>
+        </div>
+    </div>
+
+    <!-- Sección de servicios -->
+    <section class="services" id="servicios">
+        <div class="container">
+            <div class="section-title">
+                <h2>Nuestros Servicios</h2>
+                <p>Ofrecemos soluciones integrales para la alimentación y cuidado de tus animales de granja.</p>
+            </div>
+            
+            <div class="services-grid">
+                <div class="service-card">
+                    <img src="https://images.unsplash.com/photo-1589923188651-268a9765e432?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Producción de alimentos">
+                    <div class="service-card-content">
+                        <h3>Producción de Alimentos</h3>
+                        <p>Fabricamos alimentos balanceados de alta calidad para todas las especies de granja, utilizando ingredientes seleccionados y procesos controlados.</p>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <img src="https://previews.123rf.com/images/nitinut380/nitinut3801410/nitinut380141000110/32296888-chiangmai-thailand-october-3-2014-truck-of-animal-food-grass-photo-at-road-no-121-about-8-km.jpg" alt="Distribución">
+                    <div class="service-card-content">
+                        <h3>Distribución Nacional</h3>
+                        <p>Contamos con una red de distribución que nos permite llegar a todas las regiones del país, garantizando entregas oportunas y en perfecto estado.</p>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <img src="https://www.shutterstock.com/image-photo/smiling-female-financial-advisor-attorney-260nw-2424450137.jpg" alt="Asesoría técnica">
+                    <div class="service-card-content">
+                        <h3>Formulación del Alimento</h3>
+                        <p>Nuestro equipo de especializado brinda una buena formula para el alimento de vuestros animales, adquiriendo una nutrición balanceada.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Nosotros -->
+    <section class="about" id="nosotros">
+        <div class="container">
+            <div class="section-title">
+                <h2>Sobre Nosotros</h2>
+                <p>Más de 30 años dedicados a la nutrición animal</p>
+            </div>
+            
+            <div class="about-content">
+                <div class="about-text">
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex, accusantium, assumenda commodi recusandae odit, error non veritatis atque magnam sed fugiat voluptas unde nostrum cum vitae nam reiciendis aliquid ut.</p>
+                    <br>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus atque ducimus explicabo maxime laboriosam illum dolorum quibusdam reiciendis deleniti consectetur, architecto repellat eveniet accusamus eius id voluptates fuga a nostrum!</p>
+                    <br>
+                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tenetur quo aliquam voluptate quam, rerum nam reiciendis excepturi beatae inventore adipisci dolore, neque consequatur praesentium dolor voluptatum eum perferendis illum dolorem!</p>
+                    <br>
+                </div>
+                
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1552053839-7108e0c809d5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Nuestra granja">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Contacto -->
+    <section class="contact" id="contacto">
+        <div class="container">
+            <div class="section-title">
+                <h2>Contáctanos</h2>
+                <p>Estamos aquí para atender tus consultas y necesidades</p>
+            </div>
+            
+            <div class="contact-container">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h3>Dirección</h3>
+                            <p>Carretera Central Km 45, Valle del Sol</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <h3>Teléfono</h3>
+                            <p>+1 (555) 123-4567</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h3>Email</h3>
+                            <p>info@granjafeliz.com</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <h3>Horario de Atención</h3>
+                            <p>Lunes a Viernes: 8:00 am - 6:00 pm<br>Sábados: 8:00 am - 1:00 pm</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-form">
+                    <form>
+                        <div class="form-group">
+                            <label for="name">Nombre completo</label>
+                            <input type="text" id="name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Correo electrónico</label>
+                            <input type="email" id="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="subject">Asunto</label>
+                            <input type="text" id="subject" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">Mensaje</label>
+                            <textarea id="message" required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">Enviar mensaje</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Lupilca C.A</h3>
+                    <p>Líderes en producción y distribución de alimentos balanceados para animales de granja.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Enlaces Rápidos</h3>
+                    <ul>
+                        <li><a href="#inicio">Inicio</a></li>
+                        <li><a href="#servicios">Servicios</a></li>
+                        <li><a href="#nosotros">Nosotros</a></li>
+                        <li><a href="#contacto">Contacto</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Servicios</h3>
+                    <ul>
+                        <li><a href="#">Producción de alimentos</a></li>
+                        <li><a href="#">Distribución de alimentos</a></li>
+                        <li><a href="#">Asesoría técnica</a></li>
+                        <li><a href="#">Productos especializados</a></li>
+                    </ul>
+                </div>
+                
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 Lupilca C.A. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Slider automático
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.slider-dot');
+        const totalSlides = slides.length;
+        
+        function showSlide(n) {
+            currentSlide = (n + totalSlides) % totalSlides;
+            document.querySelector('.slider').style.transform = `translateX(-${currentSlide * 100}%)`;
+            
+            // Actualizar dots activos
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
+            });
+        }
+        
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+        
+        // Configurar navegación por dots
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                showSlide(index);
+            });
+        });
+        
+        // Cambiar slide automáticamente cada 5 segundos
+        setInterval(nextSlide, 5000);
+        
+        // Menú móvil
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+        
+        // Cerrar menú al hacer clic en un enlace
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>
