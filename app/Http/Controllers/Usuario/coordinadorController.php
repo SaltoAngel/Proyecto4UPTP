@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Coordinador;
+namespace App\Http\Controllers\Usuario;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -12,3 +12,4 @@ class coordinadorController extends Controller
         return view('Coordinador.dashboard');
     }
 }
+
