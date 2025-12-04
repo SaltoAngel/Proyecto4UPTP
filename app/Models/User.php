@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -47,11 +48,13 @@ class User extends Authenticatable
     }
 
     /* Asignación de clases por rol */
-    public function roles(){
-        return $this->belongsToMany(Roles::class); // Se usa belongsToMany al declarar "Muchos a Muchos"
+    public function Roles(): BelongsToMany
+    {
+        return $this->BelongsToMany(Roles::class); // Se usa belongsToMany al declarar "Muchos a Muchos"
     }
     /* Declaración de existencia de roles */
-    public function hasRoles($rolesName) {
+    public function hasRoles($rolesName)
+    {
         return $this->roles()->where('nombre_rol', $rolesName)->exists();
     }
 }

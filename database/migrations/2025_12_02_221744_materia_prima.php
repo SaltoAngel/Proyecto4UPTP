@@ -7,9 +7,9 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('categorias_materia_prima', function (Blueprint $table) {
+        Schema::create('categorias_materias_primas', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre');   // 'Cereales', 'Proteínas', 'Minerales', 'Vitaminas', etc.
+            $table->string('nombre_categoria');   // 'Cereales', 'Proteínas', 'Minerales', 'Vitaminas', etc.
             $table->text('descripcion')->nullable();
             $table->boolean('activo')->default(true);
             $table->timestamps();
@@ -17,8 +17,8 @@ return new class extends Migration
 
         Schema::create('materias_primas', function (Blueprint $table) { // ← PLURAL
             $table->id();
-            $table->foreignId('categoria_id')->constrained('categorias_materia_prima')->onDelete('restrict');
-            $table->string('nombre');
+            $table->foreignId('categoria_id')->constrained('categorias_materias_primas')->onDelete('restrict');
+            $table->string('nombre_materia');
             $table->string('codigo_interno')->unique()->nullable();
             $table->enum('unidad_medida', ['kg', 'ton', 'lb', 'unidad', 'litro'])->default('kg');
             $table->decimal('stock_actual', 10, 2)->default(0);
@@ -28,7 +28,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('proveedor_materia_prima', function (Blueprint $table) {
+        Schema::create('proveedores_materias_primas', function (Blueprint $table) {
             $table->id();
             $table->foreignId('proveedor_id')->constrained('proveedores')->onDelete('cascade');
             $table->foreignId('materia_prima_id')->constrained('materias_primas')->onDelete('cascade'); // ← PLURAL
@@ -42,8 +42,8 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('proveedor_materia_prima');
+        Schema::dropIfExists('proveedores_materias_primas');
         Schema::dropIfExists('materias_primas');
-        Schema::dropIfExists('categorias_materia_prima');
+        Schema::dropIfExists('categorias_materias_primas');
     }
 };
