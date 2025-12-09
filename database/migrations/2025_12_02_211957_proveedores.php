@@ -24,12 +24,12 @@ return new class extends Migration
         // Para consulta 
         Schema::create('tipos_proveedores', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre');   // 'Materia Prima', 'Repuestos', 'Servicios', etc.
+            $table->string('nombre_tipo');   // 'Materia Prima', 'Repuestos', 'Servicios', etc.
             $table->text('descripcion')->nullable();
             $table->timestamps();
         });
 
-        Schema::create('proveedor_tipo', function (Blueprint $table) {
+        Schema::create('proveedores_tipos', function (Blueprint $table) {
             $table->id();
             $table->foreignId('proveedor_id')->constrained('proveedores')->onDelete('cascade');
             $table->foreignId('tipo_proveedor_id')->constrained('tipos_proveedores')->onDelete('cascade'); // ← CORREGIDO: era 'contrained'
@@ -40,7 +40,7 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('proveedor_tipo');
+        Schema::dropIfExists('proveedores_tipos');
         Schema::dropIfExists('tipos_proveedores');
         Schema::dropIfExists('proveedores');
     }

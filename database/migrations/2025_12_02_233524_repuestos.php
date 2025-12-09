@@ -10,7 +10,7 @@ return new class extends Migration
 
         Schema::create('repuestos', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre');
+            $table->string('nombre_repuesto');
             $table->string('codigo_interno')->unique()->nullable();
             $table->text('descripcion')->nullable();
             $table->string('marca')->nullable();
@@ -23,7 +23,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('proveedor_repuesto', function (Blueprint $table) {
+        Schema::create('proveedores_repuestos', function (Blueprint $table) {
             $table->id();
             $table->foreignId('proveedor_id')->constrained('proveedores')->onDelete('cascade');
             $table->foreignId('repuesto_id')->constrained('repuestos')->onDelete('cascade');
@@ -37,7 +37,7 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('proveedor_repuesto');
+        Schema::dropIfExists('proveedores_repuestos');
         Schema::dropIfExists('repuestos');
     }
 };

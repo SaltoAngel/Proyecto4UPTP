@@ -2,10 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Database\Seeders\RolesSeeder;
+use Database\Seeders\Tipo_Proveedores;
+use Database\Seeders\Categorias_Materias;
 
 class DatabaseSeeder extends Seeder
 {
@@ -16,14 +17,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        /*Inserción de datos de prueba login */
-        User::factory()->create([
-            'name' => 'Admin',
-            'email' => 'admin@admin.com',
+        $this->call([
+            RolesSeeder::class,
+            Tipo_Proveedores::class,
+            Categorias_Materias::class,
         ]);
-
-        $this->call(RolesSeeder::class);
     }
 }
