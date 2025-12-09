@@ -9,6 +9,14 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+// Autenticación
+// ===== AUTENTICACIÓN DE DOBLE PASO DESHABILITADA =====
+// use App\Http\Controllers\Auth\{
+//     TwoFactorController,
+//     LoginController
+// };
+// ===== FIN AUTENTICACIÓN DE DOBLE PASO =====
+
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
