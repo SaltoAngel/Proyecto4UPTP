@@ -18,7 +18,7 @@ Auth::routes();
 // ===== FIN AUTENTICACIÓN DE DOBLE PASO =====
 
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 /*Rutas por rol */
 /*ADMINISTRADOR */
