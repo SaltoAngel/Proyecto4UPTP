@@ -18,7 +18,9 @@ Auth::routes();
 // ===== FIN AUTENTICACIÓN DE DOBLE PASO =====
 
 
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/', function () {
+    return Auth::check() ? redirect('/dashboard') : view('welcome');
+});
 
 /*Rutas por rol */
 /*ADMINISTRADOR */
@@ -48,3 +50,8 @@ Route::middleware(['auth', 'roles:COORDINADOR'])->prefix('coordinador')->group(f
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+// Dashboard simple
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware('auth')->name('dashboard');
