@@ -63,6 +63,22 @@
                 </div>
             </div>
         </div>
+        
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">
+                            <i class="fas fa-history me-2"></i>Bitácora de Cambios
+                        </h5>
+                        <p class="card-text">Registro de todas las acciones realizadas en el sistema</p>
+                        <a href="{{ route('bitacora.index') }}" class="btn btn-warning">
+                            <i class="fas fa-list me-1"></i>Ver Bitácora
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="row mt-4">
             <div class="col-12">

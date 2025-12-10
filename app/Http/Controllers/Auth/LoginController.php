@@ -74,6 +74,15 @@ public function login(Request $request)
     // }
     // ===== FIN AUTENTICACIÓN DE DOBLE PASO =====
 
+    // Registrar en bitácora
+    \App\Models\Bitacora::registrar(
+        'Autenticación',
+        'LOGIN',
+        'Usuario inició sesión correctamente',
+        null,
+        ['email' => $user->email, 'ip' => $request->ip()]
+    );
+    
     // Iniciar sesión directamente
     \Log::info('Login directo para usuario', [
         'user_id' => $user->id,
