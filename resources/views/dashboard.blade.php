@@ -19,7 +19,7 @@
             <div class="row align-items-center">
                 <div class="col">
                     <h1 class="mb-0">Dashboard</h1>
-                    <p class="mb-0">Bienvenido, {{ Auth::user()->name }}</p>
+                    <p class="mb-0">Bienvenido, {{ optional(Auth::user())->full_name ?? optional(Auth::user())->email ?? 'Usuario' }}</p>
                 </div>
                 <div class="col-auto">
                     <form method="POST" action="{{ route('logout') }}" class="d-inline">
@@ -89,11 +89,11 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
-                                <p><strong>Nombre:</strong> {{ Auth::user()->name }}</p>
-                                <p><strong>Email:</strong> {{ Auth::user()->email }}</p>
+                                <p><strong>Nombre:</strong> {{ optional(Auth::user())->full_name ?? optional(Auth::user())->email ?? 'Usuario' }}</p>
+                                <p><strong>Email:</strong> {{ optional(Auth::user())->email ?? '—' }}</p>
                             </div>
                             <div class="col-md-6">
-                                <p><strong>Rol:</strong> {{ Auth::user()->role ?? 'Usuario' }}</p>
+                                <p><strong>Rol:</strong> {{ Auth::user() ? (Auth::user()->getRoleNames()->first() ?? 'Usuario') : 'Usuario' }}</p>
                                 <p><strong>Estado:</strong> <span class="badge bg-success">Activo</span></p>
                             </div>
                         </div>

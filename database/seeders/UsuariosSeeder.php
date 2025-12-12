@@ -33,11 +33,11 @@ class UsuariosSeeder extends Seeder
             $apellidos = $parts[1] ?? '';
 
             // Crear persona mínima requerida (si no existe)
-            $existingPersona = DB::table('persona')->where('email', $u['email'])->first();
+            $existingPersona = DB::table('personas')->where('email', $u['email'])->first();
             if ($existingPersona) {
                 $personaId = $existingPersona->id;
             } else {
-                $personaId = DB::table('persona')->insertGetId([
+                $personaId = DB::table('personas')->insertGetId([
                     'codigo' => $codigoBase + $i,
                     'nombres' => $nombres,
                     'apellidos' => $apellidos,

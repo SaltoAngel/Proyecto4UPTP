@@ -18,9 +18,10 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
         'email',
         'password',
+        'role_id',
+        'persona_id',
         'status',
         'last_login_at',
         'verification_code',
@@ -47,7 +48,7 @@ class User extends Authenticatable
     ];
 
     protected $attributes = [
-        'status' => 'active',
+        'status' => 'activo',
         'login_count' => 0,
         'first_login_completed' => false,
         'is_verified' => false
@@ -190,7 +191,7 @@ class User extends Authenticatable
      */
     public function scopeActive($query)
     {
-        return $query->where('status', 'active');
+        return $query->where('status', 'activo');
     }
 
     /**
@@ -206,8 +207,30 @@ class User extends Authenticatable
      */
     public function isActive()
     {
-        return $this->status === 'active';
+        return $this->status === 'activo';
     }
+
+    /**
+     * Relación: el usuario pertenece a una persona (opcionalmente).
+     */
+    public function persona()
+    {
+        return $this->belongsTo(Personas::class, 'persona_id');
+    }
+
+    /**
+     * Accesor: nombre completo desde la persona relacionada.
+     */
+        // Mejorado (con seguridad):
+        public function getFullNameAttribute()
+        {
+            // Verificar que la relación esté cargada y exista
+            if (!$this->relationLoaded('persona')) {
+                $this->load('persona');
+            }
+            
+            return optional($this->persona)->full_name;
+        }
 
     /**
      * Verificar si el usuario está verificado

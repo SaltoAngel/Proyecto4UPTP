@@ -17,7 +17,7 @@ return new class extends Migration
             $table->timestamp('last_login_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
-            $table->foreignId('persona_id')->constrained('persona')->onDelete('cascade');
+            $table->foreignId('persona_id')->constrained('personas')->onDelete('cascade');
             $table->softDeletes();
         });
     }
