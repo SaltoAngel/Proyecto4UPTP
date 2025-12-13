@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servicios - Nupilca</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="webp" href="../img/logo.jpg">
+    <style>
+      /* Estilos generales */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary-color: #2e7d32;
+            --secondary-color: #4caf50;
+            --accent-color: #ff9800;
+            --light-color: #f5f5f5;
+            --dark-color: #333;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Header y navegación */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 50px;
+            margin-right: 10px;
+        }
+        
+        .logo h1 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 25px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark-color);
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary-color);
+            background-color: rgba(46, 125, 50, 0.1);
+        }
+        
+        .nav-links a.active {
+            color: var(--primary-color);
+            font-weight: 600;
+            border-bottom: 3px solid var(--primary-color);
+        }
+        
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #1b5e20;
+        }
+        
+        .btn-secondary {
+            background-color: var(--accent-color);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #e65100;
+        }
+        
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Hero Section para servicios */
+        .services-hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1701959665726-f989d7f3754b?q=80&w=1032&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+        }
+        
+        .services-hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .services-hero p {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto 30px;
+        }
+        
+        /* Sección de servicios completos */
+        .services-section {
+            padding: 80px 0;
+            background-color: white;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .section-title p {
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        /* Servicio principal */
+        .main-service {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            margin-bottom: 80px;
+            padding: 40px;
+            background-color: #f0f7f0;
+            border-radius: 15px;
+        }
+        
+        .main-service:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+        
+        .service-image {
+            flex: 1;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .service-image img {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .service-image:hover img {
+            transform: scale(1.05);
+        }
+        
+        .service-content {
+            flex: 1;
+        }
+        
+        .service-content h3 {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        
+        .service-content p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            text-align: justify;
+        }
+        
+        .service-features {
+            list-style: none;
+            margin: 25px 0;
+        }
+        
+        .service-features li {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            text-align: justify;
+        }
+        
+        .service-features i {
+            color: var(--primary-color);
+            margin-right: 10px;
+        }
+        
+        /* Grid de servicios adicionales */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .service-card {
+            background-color: var(--light-color);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+            height: 100%;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .service-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .service-card-content {
+            padding: 25px;
+        }
+        
+        .service-card h4 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 1.4rem;
+        }
+        
+        /* Tabla de comparación */
+        .comparison-table {
+            margin: 80px 0;
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        }
+        
+        .comparison-table h3 {
+            text-align: center;
+            padding: 30px;
+            background-color: var(--primary-color);
+            color: white;
+            margin: 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 20px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        th {
+            background-color: #f9f9f9;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .check {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+        
+        /* CTA Section */
+        .cta {
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: white;
+            text-align: center;
+            padding: 80px 0;
+            margin-top: 50px;
+        }
+        
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .cta p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 50px 0 20px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: var(--accent-color);
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-column a:hover {
+            color: white;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transition: background-color 0.3s;
+        }
+        
+        .social-icons a:hover {
+            background-color: var(--primary-color);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .main-service {
+                flex-direction: column;
+            }
+            
+            .main-service:nth-child(even) {
+                flex-direction: column;
+            }
+            
+            .service-image, .service-content {
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 80px);
+                background-color: white;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                padding-top: 50px;
+                transition: left 0.3s;
+            }
+            
+            .nav-links.active {
+                left: 0;
+            }
+            
+            .nav-links li {
+                margin: 15px 0;
+            }
+            
+            .services-hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header y navegación -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <img src="../img/logo.jpg" alt="Logo de la marca">
+                    <h1>Nupilca C.A</h1>
+                </div>
+                
+                <ul class="nav-links">
+                    <li><a href="index2.html">Inicio</a></li>
+                    <li><a href="servicios.html" class="active">Servicios</a></li>
+                    <li><a href="nosotros.html">Nosotros</a></li>
+                    <li><a href="contacto.html">Contacto</a></li>
+                </ul>
+                
+                <div class="nav-buttons">
+                    <a href="#" class="btn btn-primary">Agendar Pedidos</a>
+                    <a href="login2.html" class="btn btn-secondary">Iniciar Sesión</a>
+                </div>
+                
+                <div class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section para servicios -->
+    <section class="services-hero">
+        <div class="container">
+            <h1>Nuestros Servicios Agropecuarios</h1>
+            <p>Soluciones integrales para la producción, nutrición y cuidado de tus animales de granja. Calidad garantizada para el crecimiento saludable de tu negocio agropecuario.</p>
+        </div>
+    </section>
+
+    <!-- Sección de servicios completos -->
+    <section class="services-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Servicios Especializados</h2>
+                <p>Ofrecemos una amplia gama de servicios diseñados para optimizar la producción y salud de tus animales</p>
+            </div>
+            
+            <!-- Producción de alimentos -->
+            <div class="main-service" id="produccion">
+                <div class="service-image">
+                    <img src="https://4368135.fs1.hubspotusercontent-na1.net/hubfs/4368135/carros-de-alimentacion-1.jpg" alt="Producción de alimentos">
+                </div>
+                <div class="service-content">
+                    <h3>Producción de Alimentos Balanceados</h3>
+                    <p>Fabricamos alimentos de alta calidad nutricional para todas las especies de granja, utilizando ingredientes seleccionados y procesos controlados que garantizan la máxima eficiencia alimenticia.</p>
+                    
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> Fórmulas especializadas por especie y etapa de desarrollo</li>
+                        <li><i class="fas fa-check"></i> Control de calidad en cada etapa de producción</li>
+                        <li><i class="fas fa-check"></i> Ingredientes 100% nutritivos</li>
+                        <li><i class="fas fa-check"></i> Procesos certificados y estandarizados</li>
+                    </ul>
+
+                </div>
+            </div>
+            
+            <!-- Distribución -->
+            <div class="main-service" id="distribucion">
+                <div class="service-content">
+                    <h3>Distribución Nacional</h3>
+                    <p>Contamos con una red logística especializada que nos permite entregar nuestros productos en todo el territorio nacional, garantizando frescura y calidad en cada entrega.</p>
+                    
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> Cobertura en todo el estado</li>
+                        <li><i class="fas fa-check"></i> Entregas programadas y urgentes</li>
+                        <li><i class="fas fa-check"></i> Flota especializada para productos agropecuarios</li>
+                        <li><i class="fas fa-check"></i> Seguimiento en tiempo real de pedidos</li>
+                    </ul>
+                    
+                    <a href="contacto.html" class="btn btn-primary">Programar Entrega</a>
+                </div>
+                <div class="service-image">
+                    <img src="https://img.freepik.com/fotos-premium/camion-cargado-sacos-que-contienen-cacahuetes-transporte-india_729664-198.jpg" alt="Distribución">
+                </div>
+            </div>
+            
+            <!-- Asesoría técnica -->
+            <div class="main-service" id="asesoria">
+                <div class="service-image">
+                    <img src="https://images.unsplash.com/photo-1578321272177-56c51e7c8c0a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80" alt="Asesoría técnica">
+                </div>
+                <div class="service-content">
+                    <h3>Asesoría Técnica Especializada</h3>
+                    <p>Nuestro equipo de veterinarios y nutricionistas brinda asesoramiento personalizado para optimizar la alimentación, manejo y salud de tus animales, maximizando la productividad de tu granja.</p>
+                    
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> Diagnóstico nutricional gratuito</li>
+                        <li><i class="fas fa-check"></i> Planes de alimentación personalizados</li>
+                        <li><i class="fas fa-check"></i> Capacitación en manejo animal</li>
+                        <li><i class="fas fa-check"></i> Visitas técnicas a granjas</li>
+                    </ul>
+                    
+
+                </div>
+            </div>
+            
+            <!-- Servicios adicionales en grid -->
+            <div class="section-title" style="margin-top: 80px;">
+                <h2>Servicios Complementarios</h2>
+                <p>Soluciones adicionales para el manejo integral de tu operación agropecuaria</p>
+            </div>
+            
+            <div class="services-grid">
+                <div class="service-card">
+                    <img src="https://images.unsplash.com/photo-1546975490-a79abdd545eb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1467&q=80" alt="Nutrición especializada">
+                    <div class="service-card-content">
+                        <h4>Nutrición Especializada</h4>
+                        <p>Formulaciones específicas para animales con necesidades nutricionales particulares o en etapas críticas de desarrollo.</p>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <img src="https://images.unsplash.com/photo-1596733430284-f7437764b1a9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Análisis de suelo">
+                    <div class="service-card-content">
+                        <h4>Análisis de Suelo y Forrajes</h4>
+                        <p>Evaluación de la calidad nutricional de pastos y suelos para optimizar la alimentación del ganado en pastoreo.</p>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <img src="https://images.unsplash.com/photo-1592394675778-4239b838fb2c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80" alt="Consultoría en granjas">
+                    <div class="service-card-content">
+                        <h4>Consultoría en Manejo de Granjas</h4>
+                        <p>Asesoría integral para la planificación, organización y mejora continua de las operaciones en granjas productivas.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tabla de comparación 
+            <div class="comparison-table">
+                <h3>Comparativa de Nuestros Planes de Servicio</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Característica</th>
+                            <th>Plan Básico</th>
+                            <th>Plan Profesional</th>
+                            <th>Plan Empresarial</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Asesoría Técnica</td>
+                            <td><i class="fas fa-check check"></i></td>
+                            <td><i class="fas fa-check check"></i></td>
+                            <td><i class="fas fa-check check"></i></td>
+                        </tr>
+                        <tr>
+                            <td>Envíos Programados</td>
+                            <td><i class="fas fa-check check"></i></td>
+                            <td><i class="fas fa-check check"></i></td>
+                            <td><i class="fas fa-check check"></i></td>
+                        </tr>
+                        <tr>
+                            <td>Descuentos por Volumen</td>
+                            <td>Hasta 5%</td>
+                            <td>Hasta 10%</td>
+                            <td>Hasta 15%</td>
+                        </tr>
+                        <tr>
+                            <td>Visitas Técnicas</td>
+                            <td>1 al año</td>
+                            <td>4 al año</td>
+                            <td>12 al año</td>
+                        </tr>
+                        <tr>
+                            <td>Análisis Nutricional</td>
+                            <td>-</td>
+                            <td><i class="fas fa-check check"></i></td>
+                            <td><i class="fas fa-check check"></i></td>
+                        </tr>
+                        <tr>
+                            <td>Soporte 24/7</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td><i class="fas fa-check check"></i></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>-->
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta" id="contacto">
+        <div class="container">
+            <h2>¿Necesitas un servicio personalizado?</h2>
+            <p>Contáctanos para diseñar un plan de servicios adaptado a las necesidades específicas de tu granja.</p>
+            <a href="contacto.html" class="btn btn-secondary" style="background-color: white; color: var(--primary-color);">Solicitar Presupuesto</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Agropecuaria Granja Feliz</h3>
+                    <p>Líderes en producción y distribución de alimentos balanceados para animales de granja.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Enlaces Rápidos</h3>
+                    <ul>
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="servicios.html">Servicios</a></li>
+                        <li><a href="nosotros.html">Nosotros</a></li>
+                        <li><a href="contacto.html">Contacto</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Servicios</h3>
+                    <ul>
+                        <li><a href="servicios.html#produccion">Producción de Alimentos</a></li>
+                        <li><a href="servicios.html#distribucion">Distribución Nacional</a></li>
+                        <li><a href="servicios.html#asesoria">Asesoría Técnica</a></li>
+                        <li><a href="servicios.html">Todos los Servicios</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Contacto</h3>
+                    <p>Carretera Central Km 45, Valle del Sol</p>
+                    <p>Tel: +1 (555) 123-4567</p>
+                    <p>Email: info@granjafeliz.com</p>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 Agropecuaria Granja Feliz. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Menú móvil
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+        
+        // Cerrar menú al hacer clic en un enlace
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+        
+        // Marcar enlace activo
+        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            const linkPage = link.getAttribute('href');
+            if (linkPage === currentPage) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+        
+        // Scroll suave para anclas
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nosotros - Nupilca</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="webp" href="../img/logo.jpg">
+    <style>
+        /* Estilos generales (compartidos con index.html) */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary-color: #2e7d32;
+            --secondary-color: #4caf50;
+            --accent-color: #ff9800;
+            --light-color: #f5f5f5;
+            --dark-color: #333;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Header y navegación */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+    .logo {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.logo img {
+    height: 70px; /* Misma altura que en index.php */
+    width: auto;
+    margin-right: 10px;
+    transition: all 0.3s;
+}
+
+.logo img:hover {
+    transform: scale(1.1);
+}
+
+.logo h1 {
+    font-size: 1.8rem;
+    color: var(--primary-color);
+    margin: 0;
+    white-space: nowrap;
+}
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 25px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark-color);
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary-color);
+            background-color: rgba(46, 125, 50, 0.1);
+        }
+        
+        .nav-links a.active {
+            color: var(--primary-color);
+            font-weight: 600;
+            border-bottom: 3px solid var(--primary-color);
+        }
+        
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #1b5e20;
+        }
+        
+        .btn-secondary {
+            background-color: var(--accent-color);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #e65100;
+        }
+        
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Hero Section para nosotros */
+        .about-hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1701959665726-f989d7f3754b?q=80&w=1032&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 120px 0;
+            text-align: center;
+        }
+        
+        .about-hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .about-hero p {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto 30px;
+        }
+        
+        /* Sección de historia */
+        .history-section {
+            padding: 80px 0;
+            background-color: white;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .section-title p {
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .history-timeline {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .history-timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: var(--primary-color);
+            transform: translateX(-50%);
+        }
+        
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+        
+        .timeline-item:nth-child(odd) {
+            flex-direction: row-reverse;
+        }
+        
+        .timeline-content {
+            flex: 1;
+            padding: 30px;
+            background-color: #f0f7f0;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .timeline-year {
+            width: 100px;
+            height: 100px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0 30px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Valores */
+        .values-section {
+            padding: 80px 0;
+            background-color: #f0f7f0;
+        }
+        
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .value-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+        }
+        
+        .value-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .value-icon {
+            width: 80px;
+            height: 80px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 25px;
+        }
+        
+        .value-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        /* Equipo */
+        .team-section {
+            padding: 80px 0;
+            background-color: white;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .team-member {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+        }
+        
+        .team-member:hover {
+            transform: translateY(-10px);
+        }
+        
+        .member-image {
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+        }
+        
+        .member-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .team-member:hover .member-image img {
+            transform: scale(1.05);
+        }
+        
+        .member-info {
+            padding: 25px;
+            text-align: center;
+        }
+        
+        .member-info h3 {
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+        
+        .member-position {
+            color: var(--accent-color);
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+        
+        .member-social {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .member-social a {
+            width: 35px;
+            height: 35px;
+            background-color: #eee;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            transition: all 0.3s;
+        }
+        
+        .member-social a:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        /* Estadísticas */
+        .stats-section {
+            padding: 80px 0;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: white;
+            text-align: center;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+        
+        .stat-item h3 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+        
+        .stat-item p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        /* Certificaciones */
+        .certifications {
+            padding: 80px 0;
+            background-color: #f0f7f0;
+        }
+        
+        .cert-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .cert-item {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .cert-item img {
+            max-width: 100%;
+            height: auto;
+            filter: grayscale(100%);
+            transition: filter 0.3s;
+        }
+        
+        .cert-item:hover img {
+            filter: grayscale(0%);
+        }
+        
+        /* CTA Section */
+        .cta {
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: white;
+            text-align: center;
+            padding: 80px 0;
+        }
+        
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .cta p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 50px 0 20px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: var(--accent-color);
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-column a:hover {
+            color: white;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transition: background-color 0.3s;
+        }
+        
+        .social-icons a:hover {
+            background-color: var(--primary-color);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .history-timeline::before {
+                left: 30px;
+            }
+            
+            .timeline-item {
+                flex-direction: row !important;
+                align-items: flex-start;
+            }
+            
+            .timeline-year {
+                margin-right: 30px;
+                margin-left: 0;
+                width: 80px;
+                height: 80px;
+            }
+            
+            .timeline-content {
+                margin-left: 0;
+                margin-right: 0;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 80px);
+                background-color: white;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                padding-top: 50px;
+                transition: left 0.3s;
+            }
+            
+            .nav-links.active {
+                left: 0;
+            }
+            
+            .nav-links li {
+                margin: 15px 0;
+            }
+            
+            .about-hero h1 {
+                font-size: 2.5rem;
+            }
+        }
+        .header .logo{
+    cursor: pointer;
+}
+
+.header .logo img{
+    height: 70px;
+    width: auto;
+    transition: all 0.3s;
+}
+
+.header .logo img:hover{
+    transform: scale(1.2);
+}
+    </style>
+</head>
+<body>
+    <!-- Header y navegación -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <img src="../img/logo.jpg" alt="Logo de la marca" style="height: 50px;">
+                    <h1>Nupilca C.A</h1>
+                </div>
+                
+                <ul class="nav-links">
+                    <li><a href="index2.html" >Inicio</a></li>
+                    <li><a href="servicios.html">Servicios</a></li>
+                    <li><a href="nosotros.html"class="active">Nosotros</a></li>
+                    <li><a href="contacto.html">Contacto</a></li>
+                </ul>
+                
+                <div class="nav-buttons">
+                    <a href="#" class="btn btn-primary">Agendar Pedidos</a>
+                    <a href="login2.html" class="btn btn-secondary">Iniciar Sesión</a>
+                </div>
+                
+                <div class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section para nosotros -->
+    <section class="about-hero">
+        <div class="container">
+            <h1>Nuestra Historia</h1>
+            <p>Más de 30 años dedicados a la nutrición animal, cultivando confianza y crecimiento en el sector agropecuario nacional.</p>
+
+        </div>
+    </section>
+
+    <!-- Sección de historia -->
+    <section class="history-section" id="historia">
+        <div class="container">
+            <div class="section-title">
+                <h2>Nuestra Trayectoria</h2>
+                <p>Desde nuestros humildes comienzos hasta convertirnos en líderes del sector</p>
+            </div>
+            
+            <div class="history-timeline">
+                <div class="timeline-item">
+                    <div class="timeline-year">1990</div>
+                    <div class="timeline-content">
+                        <h3>Fundación</h3>
+                        <p>Nacimos como una pequeña empresa familiar en el Valle del Sol, con la visión de proveer alimentos de calidad para animales de granja en nuestra región.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-year">1998</div>
+                    <div class="timeline-content">
+                        <h3>Primera Expansión</h3>
+                        <p>Ampliamos nuestras instalaciones y comenzamos a distribuir a nivel regional, incorporando nuevas líneas de productos para diferentes especies animales.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-year">2005</div>
+                    <div class="timeline-content">
+                        <h3>Certificación de Calidad</h3>
+                        <p>Obtuvimos nuestra primera certificación internacional de calidad, lo que nos permitió expandirnos a mercados más exigentes y mejorar nuestros procesos.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-year">2012</div>
+                    <div class="timeline-content">
+                        <h3>Tecnología e Innovación</h3>
+                        <p>Invertimos en tecnología de punta para nuestros procesos de producción y desarrollamos nuestro departamento de investigación y desarrollo.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-year">2020</div>
+                    <div class="timeline-content">
+                        <h3>Cobertura Nacional</h3>
+                        <p>Completamos nuestra red de distribución a nivel nacional, llegando a todas las regiones del país con productos de máxima calidad.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-year">2023</div>
+                    <div class="timeline-content">
+                        <h3>Compromiso Sostenible</h3>
+                        <p>Implementamos nuestro programa de sostenibilidad, reduciendo nuestra huella ambiental y mejorando las prácticas de bienestar animal.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de valores -->
+    <section class="values-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Nuestros Valores</h2>
+                <p>Principios que guían cada decisión y acción en nuestra empresa</p>
+            </div>
+            
+            <div class="values-grid">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-medal"></i>
+                    </div>
+                    <h3>Calidad</h3>
+                    <p>Nos comprometemos con la excelencia en cada producto que elaboramos, utilizando los mejores ingredientes y procesos controlados.</p>
+                </div>
+                
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3>Confianza</h3>
+                    <p>Construimos relaciones duraderas basadas en la transparencia, honestidad y cumplimiento de nuestras promesas.</p>
+                </div>
+                
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h3>Innovación</h3>
+                    <p>Buscamos constantemente mejoras en nuestros productos y procesos para ofrecer soluciones avanzadas a nuestros clientes.</p>
+                </div>
+                
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h3>Sostenibilidad</h3>
+                    <p>Nos responsabilizamos con el medio ambiente y las futuras generaciones mediante prácticas responsables y eficientes.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Estadísticas -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="section-title" style="color: white;">
+                <h2>En Números</h2>
+                <p>Resultados que respaldan nuestra experiencia y compromiso</p>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <h3>30+</h3>
+                    <p>Años de Experiencia</p>
+                </div>
+                
+                <div class="stat-item">
+                    <h3>500+</h3>
+                    <p>Clientes Satisfechos</p>
+                </div>
+                
+                <div class="stat-item">
+                    <h3>50+</h3>
+                    <p>Productos Especializados</p>
+                </div>
+                
+                <div class="stat-item">
+                    <h3>24/7</h3>
+                    <p>Soporte al Cliente</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Equipo -->
+    <section class="team-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Nuestro Equipo</h2>
+                <p>Profesionales apasionados por la nutrición animal y el desarrollo agropecuario</p>
+            </div>
+            
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="member-image">
+                        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80" alt="Director General">
+                    </div>
+                    <div class="member-info">
+                        <h3>Carlos Rodríguez</h3>
+                        <p class="member-position">Director General</p>
+                        <p>Ingeniero Agrónomo con más de 25 años de experiencia en nutrición animal.</p>
+                        <div class="member-social">
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="team-member">
+                    <div class="member-image">
+                        <img src="https://images.unsplash.com/photo-1582750433449-648ed127bb54?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80" alt="Jefa de Producción">
+                    </div>
+                    <div class="member-info">
+                        <h3>María González</h3>
+                        <p class="member-position">Jefa de Producción</p>
+                        <p>Especialista en procesos de fabricación de alimentos balanceados con 15 años en la industria.</p>
+                        <div class="member-social">
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="team-member">
+                    <div class="member-image">
+                        <img src="https://images.unsplash.com/photo-1568967739548-a3bca40d2d8a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80" alt="Veterinario Jefe">
+                    </div>
+                    <div class="member-info">
+                        <h3>Roberto Sánchez</h3>
+                        <p class="member-position">Veterinario Jefe</p>
+                        <p>Doctor en Ciencias Veterinarias especializado en nutrición animal y salud de rumiantes.</p>
+                        <div class="member-social">
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fab fa-researchgate"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="team-member">
+                    <div class="member-image">
+                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1376&q=80" alt="Jefa de Calidad">
+                    </div>
+                    <div class="member-info">
+                        <h3>Ana Martínez</h3>
+                        <p class="member-position">Jefa de Control de Calidad</p>
+                        <p>Ingeniera en Alimentos con maestría en sistemas de gestión de calidad agroindustrial.</p>
+                        <div class="member-social">
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Certificaciones 
+    <section class="certifications">
+        <div class="container">
+            <div class="section-title">
+                <h2>Certificaciones y Reconocimientos</h2>
+                <p>Avales que respaldan nuestra calidad y compromiso con la excelencia</p>
+            </div>
+            
+            <div class="cert-grid">
+                <div class="cert-item">
+                    <i class="fas fa-award" style="font-size: 4rem; color: var(--primary-color);"></i>
+                </div>
+                <div class="cert-item">
+                    <i class="fas fa-certificate" style="font-size: 4rem; color: var(--primary-color);"></i>
+                </div>
+                <div class="cert-item">
+                    <i class="fas fa-shield-alt" style="font-size: 4rem; color: var(--primary-color);"></i>
+                </div>
+                <div class="cert-item">
+                    <i class="fas fa-leaf" style="font-size: 4rem; color: var(--primary-color);"></i>
+                </div>
+                <div class="cert-item">
+                    <i class="fas fa-globe-americas" style="font-size: 4rem; color: var(--primary-color);"></i>
+                </div>
+                <div class="cert-item">
+                    <i class="fas fa-star" style="font-size: 4rem; color: var(--primary-color);"></i>
+                </div>
+            </div>
+        </div>
+    </section>-->
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <h2>¿Quieres unirte a nuestra familia de clientes satisfechos?</h2>
+            <p>Contáctanos y descubre cómo podemos ayudarte a optimizar la nutrición de tus animales.</p>
+            <a href="contacto.html" class="btn btn-secondary" style="background-color: white; color: var(--primary-color);">Contactar Ahora</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Agropecuaria Granja Feliz</h3>
+                    <p>Líderes en producción y distribución de alimentos balanceados para animales de granja.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Enlaces Rápidos</h3>
+                    <ul>
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="servicios.html">Servicios</a></li>
+                        <li><a href="nosotros.html">Nosotros</a></li>
+                        <li><a href="contacto.html">Contacto</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Nuestra Historia</h3>
+                    <ul>
+                        <li><a href="#historia">Nuestra Trayectoria</a></li>
+                        <li><a href="#valores">Nuestros Valores</a></li>
+                        <li><a href="#equipo">Nuestro Equipo</a></li>
+                        <li><a href="#certificaciones">Certificaciones</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Contacto</h3>
+                    <p>Carretera Central Km 45, Valle del Sol</p>
+                    <p>Tel: +1 (555) 123-4567</p>
+                    <p>Email: info@granjafeliz.com</p>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 Agropecuaria Granja Feliz. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Menú móvil
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+        
+        // Cerrar menú al hacer clic en un enlace
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+        
+        // Marcar enlace activo
+        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            const linkPage = link.getAttribute('href');
+            if (linkPage === currentPage) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+        
+        // Scroll suave para anclas
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Animación de contadores
+        const statItems = document.querySelectorAll('.stat-item h3');
+        const statsSection = document.querySelector('.stats-section');
+        
+        function animateCounters() {
+            statItems.forEach(item => {
+                const target = parseInt(item.textContent);
+                let current = 0;
+                const increment = target / 100;
+                const timer = setInterval(() => {
+                    current += increment;
+                    if(current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    item.textContent = Math.floor(current) + (item.textContent.includes('+') ? '+' : '');
+                }, 20);
+            });
+        }
+        
+        // Observador para animar contadores cuando sean visibles
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    animateCounters();
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+        
+        if(statsSection) {
+            observer.observe(statsSection);
+        }
+    </script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Agropecuaria Granja Feliz</title>
+    <title>Login - Nupilca</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* Estilos generales */
@@ -124,6 +124,22 @@
             font-size: 2.2rem;
         }
         
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 100px;
+            margin-right: 10px;
+            border-radius: 30px;
+        }
+        
+        .logo h1 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+        }
+        
         .image-overlay .logo i {
             margin-right: 15px;
             font-size: 2.8rem;
@@ -215,18 +231,42 @@
             position: relative;
         }
         
-        .input-with-icon i {
+        .input-with-icon i.fas {
             position: absolute;
             left: 15px;
             top: 50%;
             transform: translateY(-50%);
             color: var(--primary-color);
             font-size: 1.2rem;
+            z-index: 2;
+        }
+        
+        /* ESTILOS PARA EL OJITO DENTRO DEL INPUT */
+        .toggle-password {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #666;
+            z-index: 2;
+            background: transparent;
+            border: none;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .toggle-password:hover {
+            color: var(--primary-color);
         }
         
         .form-control {
             width: 100%;
-            padding: 15px 15px 15px 50px;
+            padding: 15px 50px 15px 50px;
             border: 2px solid #e0e0e0;
             border-radius: 10px;
             font-size: 1rem;
@@ -304,92 +344,6 @@
             transform: translateY(-3px);
         }
         
-        .btn-secondary {
-            background-color: white;
-            color: var(--primary-color);
-            border: 2px solid var(--primary-color);
-        }
-        
-        .btn-secondary:hover {
-            background-color: #f0f7f0;
-            transform: translateY(-3px);
-        }
-        
-        /* Separador */
-        .separator {
-            display: flex;
-            align-items: center;
-            margin: 25px 0;
-            color: #777;
-        }
-        
-        .separator::before,
-        .separator::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background-color: #ddd;
-        }
-        
-        .separator span {
-            padding: 0 15px;
-            font-size: 0.9rem;
-        }
-        
-        /* Redes sociales */
-        .social-login {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        .social-btn {
-            flex: 1;
-            padding: 12px;
-            border-radius: 10px;
-            border: 1px solid #ddd;
-            background-color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        
-        .social-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        .social-btn.google {
-            color: #DB4437;
-        }
-        
-        .social-btn.facebook {
-            color: #4267B2;
-        }
-        
-        /* Enlace de registro */
-        .register-link {
-            text-align: center;
-            margin-top: 30px;
-            color: #666;
-        }
-        
-        .register-link a {
-            color: var(--primary-color);
-            text-decoration: none;
-            font-weight: 600;
-            transition: var(--transition);
-        }
-        
-        .register-link a:hover {
-            color: var(--accent-color);
-            text-decoration: underline;
-        }
-        
         /* Animación de carga */
         .spinner {
             display: inline-block;
@@ -458,10 +412,6 @@
                 gap: 15px;
             }
             
-            .social-login {
-                flex-direction: column;
-            }
-            
             .image-overlay h1 {
                 font-size: 1.8rem;
             }
@@ -482,7 +432,7 @@
         }
         
         /* Animación de entrada para elementos del formulario */
-        .form-group, .form-options, .btn-primary, .separator, .social-login, .register-link {
+        .form-group, .form-options, .btn-primary {
             animation: slideUp 0.5s ease-out forwards;
             opacity: 0;
         }
@@ -491,9 +441,6 @@
         .form-group:nth-child(2) { animation-delay: 0.3s; }
         .form-options { animation-delay: 0.4s; }
         .btn-primary { animation-delay: 0.5s; }
-        .separator { animation-delay: 0.6s; }
-        .social-login { animation-delay: 0.7s; }
-        .register-link { animation-delay: 0.8s; }
         
         @keyframes slideUp {
             from { 
@@ -523,11 +470,10 @@
             
             <div class="image-overlay">
                 <div class="logo">
-                    <i class="fas fa-tractor"></i>
-                    <span>Lupilca C.A</span>
+                    <img src="../img/logo.jpg" alt="Nupilca C.A" style="height: 110px;">
                 </div>
                 <h1>Bienvenido de nuevo</h1>
-                <p>Accede a tu cuenta para gestionar su producción.</p>
+                <p>Accede a tu cuenta para gestionar tu producción.</p>
                 <div class="farm-icons">
                     <i class="fas fa-egg" title="Gallinas"></i>
                     <i class="fas fa-cow" title="Vacas"></i>
@@ -559,7 +505,7 @@
                         <div class="input-with-icon">
                             <i class="fas fa-lock" id="lockIcon"></i>
                             <input type="password" id="password" class="form-control" placeholder="Ingresa tu contraseña" required>
-                            <span class="toggle-password" id="togglePassword" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #777;">
+                            <span class="toggle-password" id="togglePassword">
                                 <i class="fas fa-eye"></i>
                             </span>
                         </div>
@@ -577,11 +523,6 @@
                         <span id="buttonText">Iniciar Sesión</span>
                         <div class="spinner" id="spinner" style="display: none;"></div>
                     </button>
-                    
-                    
-                    
-                    
-                    
                 </form>
             </div>
         </section>
@@ -593,8 +534,7 @@
             showMessage('Redirigiendo al homepage...', 'info');
             // Simular redirección al homepage
             setTimeout(() => {
-                // En un caso real, redirigiría a: window.location.href = 'index.html';
-                console.log('Redirigiendo al homepage...');
+                window.location.href = 'index.php';
             }, 1000);
         });
         
@@ -639,7 +579,7 @@
                     spinner.style.display = 'none';
                     
                     // Redirigir al dashboard (simulado)
-                    window.location.href = "#";
+                    window.location.href = "index.php";
                 }, 2000);
             }, 1500);
         });
@@ -653,7 +593,6 @@
         // Mostrar/ocultar contraseña
         const togglePassword = document.getElementById('togglePassword');
         const passwordInput = document.getElementById('password');
-        const lockIcon = document.getElementById('lockIcon');
         
         togglePassword.addEventListener('click', function() {
             const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
@@ -668,9 +607,6 @@
                 eyeIcon.classList.remove('fa-eye-slash');
                 eyeIcon.classList.add('fa-eye');
             }
-            
-            // Cambiar icono del candado
-            lockIcon.style.display = type === 'text' ? 'none' : 'block';
         });
         
         // Función para mostrar mensajes
@@ -736,13 +672,10 @@
         }
         
         // Manejo de enlaces
-        
         document.querySelector('.forgot-password').addEventListener('click', function(e) {
             e.preventDefault();
             showMessage('Redirigiendo a recuperación de contraseña...', 'info');
-            // Aquí normalmente redirigiría a la página de recuperación
         });
-        
         
         // Cargar imagen alternativa si la principal falla
         const farmImage = document.querySelector('.farm-background');
