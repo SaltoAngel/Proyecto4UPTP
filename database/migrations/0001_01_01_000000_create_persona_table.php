@@ -1,4 +1,5 @@
 <?php
+// database/migrations/xxxx_create_personas_table.php
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -6,34 +7,55 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('personas', function (Blueprint $table) {
             $table->id();
-            $table->integer('codigo')->unique();
-            $table->string('nombres');
-            $table->string('apellidos');
-            $table->string('razon_social');
-            $table->boolean('es_juridico')->default(false);
+            
+            // Código
+            $table->string('codigo')->unique()->nullable()->comment('Código interno: CLI-001, PROV-001, etc');
+            
+            // Tipo de persona: natural o jurídica
+            $table->enum('tipo', ['natural', 'juridica'])->default('natural');
+            
+            // Campos para persona NATURAL
+            $table->string('nombres')->nullable();
+            $table->string('apellidos')->nullable();
+            
+            // Campos para persona JURÍDICA
+            $table->string('razon_social')->nullable();
             $table->string('nombre_comercial')->nullable();
+            
+            // Documento e identificación
             $table->string('tipo_documento', 10);
             $table->string('documento', 20)->unique();
-            $table->string('direccion');
-            $table->string('estado');
-            $table->string('telefono');
-            $table->string('email')->unique();
+            
+            // Información de contacto
+            $table->string('direccion')->nullable();
+            $table->string('estado')->nullable()->comment('Estado/Provincia');
+            $table->string('ciudad')->nullable();
+            $table->string('telefono')->nullable();
+            $table->string('telefono_alternativo')->nullable();
+            $table->string('email')->unique()->nullable();
+            
+            // Estado del registro
+            $table->boolean('activo')->default(true);
+            
+            // Auditoría
             $table->timestamps();
+            $table->softDeletes();
+            
+            // Índices
+            $table->index('tipo');
+            $table->index('tipo_documento');
+            $table->index('documento');
+            $table->index('email');
+            $table->index('activo');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('persona');
+        Schema::dropIfExists('personas');
     }
 };

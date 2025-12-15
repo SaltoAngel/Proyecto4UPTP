@@ -16,9 +16,11 @@ class PersonasRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nombre' => 'required|string|max:255',
-            'apellido' => 'required|string|max:255',
-            'email' => 'required|email|unique:personas,email,' . $this->persona,
+            'nombres' => 'required|string|max:255',
+            'apellidos' => 'required|string|max:255',
+            'tipo_documento' => 'required|string|max:2',
+            'documento' => 'required|string|max:20|unique:personas,documento',
+            'email' => 'required|email|unique:personas,email',
             'telefono' => 'nullable|string|max:20',
             'direccion' => 'nullable|string|max:500',
         ];
