@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recuperar Contraseña - {{ config('app.name', 'Laravel') }}</title>
+    <title>Recuperar contraseña - {{ config('app.name', 'Laravel') }}</title>
     <link rel="shortcut icon" href="{{ asset('img/favicon.ico') }}" type="image/x-icon" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -301,7 +301,7 @@
             <div class="reset-icon">
                 <i class="fas fa-key"></i>
             </div>
-            <h1 class="reset-title">Recuperar Contraseña</h1>
+            <h1 class="reset-title">Recuperar contraseña</h1>
             <p class="reset-subtitle">
                 Ingresa tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña.
             </p>
@@ -327,7 +327,7 @@
             @csrf
 
             <div class="form-group">
-                <label for="email" class="form-label">Correo Electrónico</label>
+                <label for="email" class="form-label">Correo electrónico</label>
                 <input 
                     type="email" 
                     id="email" 
@@ -342,7 +342,7 @@
             </div>
 
             <button type="submit" class="reset-btn">
-                Enviar Enlace de Recuperación
+                Enviar enlace de recuperación
             </button>
         </form>
 

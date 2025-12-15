@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar Sesión - {{ config('app.name', 'Laravel') }}</title>
+    <title>Iniciar sesión - {{ config('app.name', 'Laravel') }}</title>
     <link rel="shortcut icon" href="{{ asset('img/favicon.ico') }}" type="image/x-icon" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -536,7 +536,7 @@
         <section class="form-section">
             <div class="login-form-container">
                 <div class="form-header">
-                    <h2>Iniciar Sesión</h2>
+                    <h2>Iniciar sesión</h2>
                     <p>Ingresa tus credenciales para acceder a tu cuenta</p>
                 </div>
 
@@ -605,7 +605,7 @@
                     </div>
                     
                     <button type="submit" class="btn btn-primary" id="loginButton">
-                        <span id="buttonText">Iniciar Sesión</span>
+                        <span id="buttonText">Iniciar sesión</span>
                         <div class="spinner" id="spinner" style="display: none;"></div>
                     </button>
                 </form>

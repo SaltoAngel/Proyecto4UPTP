@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Restablecer Contraseña - {{ config('app.name', 'Laravel') }}</title>
+    <title>Restablecer contraseña - {{ config('app.name', 'Laravel') }}</title>
     <link rel="shortcut icon" href="{{ asset('img/favicon.ico') }}" type="image/x-icon" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -289,7 +289,7 @@
             <div class="reset-icon">
                 <i class="fas fa-lock"></i>
             </div>
-            <h1 class="reset-title">Nueva Contraseña</h1>
+            <h1 class="reset-title">Nueva contraseña</h1>
             <p class="reset-subtitle">
                 Ingresa tu nueva contraseña para restablecer el acceso a tu cuenta.
             </p>
@@ -310,7 +310,7 @@
             <input type="hidden" name="token" value="{{ $token }}">
 
             <div class="form-group">
-                <label for="email" class="form-label">Correo Electrónico</label>
+                <label for="email" class="form-label">Correo electrónico</label>
                 <input 
                     type="email" 
                     id="email" 
@@ -325,7 +325,7 @@
             </div>
 
             <div class="form-group">
-                <label for="password" class="form-label">Nueva Contraseña</label>
+                <label for="password" class="form-label">Nueva contraseña</label>
                 <input 
                     type="password" 
                     id="password" 
@@ -338,7 +338,7 @@
             </div>
 
             <div class="form-group">
-                <label for="password_confirmation" class="form-label">Confirmar Contraseña</label>
+                <label for="password_confirmation" class="form-label">Confirmar contraseña</label>
                 <input 
                     type="password" 
                     id="password_confirmation" 
@@ -351,7 +351,7 @@
             </div>
 
             <button type="submit" class="reset-btn">
-                Restablecer Contraseña
+                Restablecer contraseña
             </button>
         </form>
     </div>
