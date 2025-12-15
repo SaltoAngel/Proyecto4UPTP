@@ -95,7 +95,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(to right, rgba(46, 125, 50, 0.8), rgba(76, 175, 80, 0.6));
+            background: linear-gradient(to right, rgba(45, 109, 48, 0.8), rgba(63, 145, 64, 0.6));
             z-index: 2;
             display: flex;
             flex-direction: column;
@@ -139,7 +139,7 @@
         
         .logo h1 {
             font-size: 1.8rem;
-            color: var(--primary-color);
+            color: #ffff;
         }
         
         .image-overlay .logo i {
@@ -513,7 +513,7 @@
     <div class="login-container">
         <!-- Sección de la imagen -->
         <section class="image-section">
-            <img src="https://images.unsplash.com/photo-1542736667-069246bdbc6d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80" alt="Animales de granja" class="farm-background">
+            <img src="https://i.pinimg.com/736x/47/2c/e7/472ce702a42826c727cf3cb88ae47f10.jpg" alt="Animales de granja" class="farm-background">
             
             <div class="image-overlay">
                 <div class="logo">
