@@ -44,7 +44,7 @@ class UsuariosSeeder extends Seeder
                     'razon_social' => $u['name'],
                     'es_juridico' => false,
                     'nombre_comercial' => null,
-                    'tipo_documento' => 'CI',
+                    'tipo_documento' => 'V',
                     'documento' => (string) (20000000 + $i),
                     'direccion' => 'N/A',
                     'estado' => 'activo',
