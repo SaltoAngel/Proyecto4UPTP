@@ -294,11 +294,6 @@
     </style>
 </head>
 <body>
-    <!-- Botón para volver al login -->
-    <button class="back-btn" onclick="window.history.back()">
-        <i class="fas fa-arrow-left"></i>
-        <span>Volver</span>
-    </button>
     
     <div class="reset-container">
         <div class="reset-header">
