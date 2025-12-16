@@ -1,5 +1,5 @@
 <!-- resources/views/dashboard/personas/index.blade.php -->
-@extends('layouts.dashboard')
+@extends('layouts.material')
 
 @section('title', 'Personas - ' . config('app.name'))
 
@@ -9,13 +9,13 @@
         <div class="d-flex justify-content-between align-items-center">
             <div>
                 <h2 class="mb-0">
-                    <i class="fas fa-users me-2 text-success"></i>Módulo de Personas
+                    <i class="material-icons me-2 text-success">groups</i>Módulo de Personas
                 </h2>
                 <p class="text-muted mb-0">Gestión de personas registradas en el sistema</p>
             </div>
             <div>
                 <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#crearPersonaModal">
-                    <i class="fas fa-user-plus me-2"></i>Nueva Persona
+                    <i class="material-icons me-2">person_add</i>Nueva Persona
                 </button>
             </div>
         </div>
@@ -82,18 +82,18 @@
                                 <button class="btn btn-info" data-bs-toggle="modal" 
                                         data-bs-target="#verPersonaModal" 
                                         data-persona='@json($persona)'>
-                                    <i class="fas fa-eye"></i>
+                                    <i class="material-icons">visibility</i>
                                 </button>
                                 
                                 <button class="btn btn-warning" data-bs-toggle="modal" 
                                         data-bs-target="#editarPersonaModal" 
                                         data-persona='@json($persona)'>
-                                    <i class="fas fa-edit"></i>
+                                    <i class="material-icons">edit</i>
                                 </button>
                                 
                                 @if($estaDeshabilitada)
                                     <button type="button" class="btn btn-success btn-restaurar-persona" data-id="{{ $persona->id }}" data-url="{{ route('dashboard.personas.restore', $persona->id) }}">
-                                        <i class="fas fa-undo"></i>
+                                        <i class="material-icons">restore</i>
                                     </button>
                                 @else
                                     <form action="{{ route('dashboard.personas.destroy', $persona) }}" 
@@ -101,7 +101,7 @@
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger">
-                                            <i class="fas fa-user-slash"></i>
+                                            <i class="material-icons">person_off</i>
                                         </button>
                                     </form>
                                 @endif
@@ -111,7 +111,7 @@
                     @empty
                     <tr>
                         <td colspan="7" class="text-center text-muted py-4">
-                            <i class="fas fa-users fa-2x mb-3"></i>
+                            <i class="material-icons" style="font-size:2rem;">groups</i>
                             <p>No se encontraron personas registradas</p>
                         </td>
                     </tr>

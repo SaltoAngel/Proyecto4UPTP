@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+@extends('layouts.material')
 
 @section('title', 'Proveedores - ' . config('app.name'))
 
@@ -49,10 +49,10 @@
                                 @php $categorias = $proveedor->tiposProveedores->pluck('nombre_tipo')->all(); @endphp
                                 @if(!empty($categorias))
                                     @foreach($categorias as $cat)
-                                        <span class="badge bg-info text-dark me-1">{{ $cat }}</span>
+                                        <span class="badge text-bg-info me-1">{{ $cat }}</span>
                                     @endforeach
                                 @else
-                                    <span class="badge bg-light text-dark">Sin categoría</span>
+                                    <span class="badge text-bg-light">Sin categoría</span>
                                 @endif
                             </td>
                             <td>
@@ -67,7 +67,7 @@
                                 @endif
                             </td>
                             <td>
-                                <span class="badge {{ $estaDeshabilitado ? 'bg-secondary' : 'bg-success' }} estado-badge">
+                                <span class="badge {{ $estaDeshabilitado ? 'text-bg-secondary' : 'text-bg-success' }} estado-badge">
                                     {{ $estaDeshabilitado ? 'Deshabilitado' : ucfirst($proveedor->estado) }}
                                 </span>
                             </td>
@@ -203,9 +203,9 @@ $(document).ready(function() {
         })).filter(t => t.id && t.nombre_tipo);
 
         if (!normalizados.length) {
-            return '<span class="badge bg-light text-dark">Sin categoría</span>';
+            return '<span class="badge text-bg-light">Sin categoría</span>';
         }
-        return normalizados.map(t => `<span class="badge bg-info text-dark me-1">${t.nombre_tipo}</span>`).join('');
+        return normalizados.map(t => `<span class=\"badge text-bg-info me-1\">${t.nombre_tipo}</span>`).join('');
     }
 
     function renderContacto(proveedor) {
@@ -218,7 +218,7 @@ $(document).ready(function() {
 
     function renderEstado(proveedor) {
         const estaDeshabilitado = proveedor.deleted_at !== null || proveedor.estado !== 'activo';
-        const clase = estaDeshabilitado ? 'bg-secondary' : 'bg-success';
+        const clase = estaDeshabilitado ? 'text-bg-secondary' : 'text-bg-success';
         const texto = estaDeshabilitado ? 'Deshabilitado' : (proveedor.estado ? proveedor.estado.charAt(0).toUpperCase() + proveedor.estado.slice(1) : '');
         return `<span class="badge ${clase} estado-badge">${texto}</span>`;
     }

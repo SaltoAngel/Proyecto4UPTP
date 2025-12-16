@@ -8,20 +8,6 @@ use App\Http\Controllers\dashboard\ReportesController;
 use App\Http\Controllers\dashboard\ProveedoresController;
 
 Route::get('/', function () {
-    return view('welcome');
-});
-
-Auth::routes();
-// Autenticación
-// ===== AUTENTICACIÓN DE DOBLE PASO DESHABILITADA =====
-// use App\Http\Controllers\Auth\{
-//     TwoFactorController,
-//     LoginController
-// };
-// ===== FIN AUTENTICACIÓN DE DOBLE PASO =====
-
-
-Route::get('/', function () {
     return Auth::check() ? redirect('/dashboard') : view('welcome');
 });
 
@@ -29,15 +15,15 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-// Dashboard simple
+// Dashboard principal (Material)
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return view('material.dashboard');
 })->middleware([\App\Http\Middleware\Authenticate::class])->name('dashboard');
+
+
 
 // Panel Administrativo
 Route::middleware([\App\Http\Middleware\Authenticate::class])->prefix('dashboard')->name('dashboard.')->group(function () {
-        //Dashboard
-        Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard.index');
         // //Usuarios
         // Route::get('/usuarios', [App\Http\Controllers\dashboard\UsuariosController::class, 'index'])->name('usuarios.index');
         // Route::get('/usuarios/{usuario}', [App\Http\Controllers\dashboard\UsuariosController::class, 'show'])->name('usuarios.show');
