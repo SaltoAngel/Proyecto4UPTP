@@ -33,7 +33,7 @@ class BitacoraController extends Controller
         
         $bitacora = $query->paginate(20);
         
-        return view('bitacora.index', compact('bitacora'));
+        return view('dashboard.bitacora.index', compact('bitacora'));
     }
     
     public function show(Bitacora $bitacora)
