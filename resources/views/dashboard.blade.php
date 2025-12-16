@@ -48,7 +48,7 @@
                     <div class="card-body text-center">
                         <h5 class="card-title">Proveedores</h5>
                         <p class="card-text">Administrar proveedores</p>
-                        <a href="#" class="btn btn-success">Ver Proveedores</a>
+                        <a href="{{ route('dashboard.proveedores.index') }}" class="btn btn-success">Ver Proveedores</a>
                     </div>
                 </div>
             </div>

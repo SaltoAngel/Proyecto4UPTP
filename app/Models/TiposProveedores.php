@@ -3,12 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class TiposProveedores extends Model
 {
-    public function Proveedor(): BelongsTo // de un proveedor hay muchos tipos.
+    public function proveedores(): BelongsToMany
     {
-        return $this->belongsTo(Proveedor::class);
-    }  
+        return $this->belongsToMany(Proveedor::class, 'proveedores_tipos', 'tipo_proveedor_id', 'proveedor_id');
+    }
 }
