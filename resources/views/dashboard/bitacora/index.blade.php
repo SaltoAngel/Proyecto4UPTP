@@ -115,7 +115,7 @@
                                             </small>
                                         </td>
                                         <td>
-                                            <a href="{{ route('bitacora.show', $registro) }}" 
+                                            <a href="{{ route('dashboard.bitacora.show', $registro) }}" 
                                                class="btn btn-sm btn-outline-primary">
                                                 <i class="fas fa-eye"></i>
                                             </a>

@@ -24,26 +24,6 @@
 
 <div class="card">
     <div class="card-body">
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <form method="GET" action="{{ route('dashboard.personas.index') }}">
-                    <div class="input-group">
-                        <input type="text" class="form-control" name="search" 
-                               placeholder="Buscar por nombre, documento o email..."
-                               value="{{ request('search') }}">
-                        <button class="btn btn-outline-success" type="submit">
-                            <i class="fas fa-search"></i>
-                        </button>
-                        @if(request('search'))
-                            <a href="{{ route('dashboard.personas.index') }}" class="btn btn-outline-secondary">
-                                <i class="fas fa-times"></i>
-                            </a>
-                        @endif
-                    </div>
-                </form>
-            </div>
-        </div>
-        
         <div class="table-responsive">
             <table class="table table-hover" id="tablaPersonas">
                 <thead class="table-light">
@@ -60,7 +40,7 @@
                 </thead>
                 <tbody>
                     @forelse($personas as $persona)
-                    <tr>
+                    <tr data-persona-id="{{ $persona->id }}">
                         <td>{{ $loop->iteration + ($personas->currentPage() - 1) * $personas->perPage() }}</td>
                         <td>{{ $persona->codigo }}</td>
                         <td>
@@ -92,33 +72,39 @@
                             </span>
                         </td>
                         <td>
-                            <span class="badge badge-{{ $persona->activo ? 'activo' : 'inactivo' }}">
-                                {{ $persona->activo ? 'Activo' : 'Inactivo' }}
+                            @php $estaDeshabilitada = $persona->trashed() || !$persona->activo; @endphp
+                            <span class="badge {{ $estaDeshabilitada ? 'bg-secondary' : 'bg-success' }} estado-badge">
+                                {{ $estaDeshabilitada ? 'Deshabilitado' : 'Activo' }}
                             </span>
                         </td>
                         <td>
-                            <div class="btn-group btn-group-sm">
+                            <div class="btn-group btn-group-sm acciones-persona" data-persona-id="{{ $persona->id }}" data-restore-url="{{ route('dashboard.personas.restore', $persona->id) }}">
                                 <button class="btn btn-info" data-bs-toggle="modal" 
                                         data-bs-target="#verPersonaModal" 
-                                        data-persona="{{ json_encode($persona) }}">
+                                        data-persona='@json($persona)'>
                                     <i class="fas fa-eye"></i>
                                 </button>
                                 
                                 <button class="btn btn-warning" data-bs-toggle="modal" 
                                         data-bs-target="#editarPersonaModal" 
-                                        data-persona="{{ json_encode($persona) }}">
+                                        data-persona='@json($persona)'>
                                     <i class="fas fa-edit"></i>
                                 </button>
                                 
-                                <form action="{{ route('dashboard.personas.destroy', $persona) }}" 
-                                      method="POST" class="d-inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger"
-                                            onclick="return confirm('¿Está seguro de eliminar esta persona?')">
-                                        <i class="fas fa-trash"></i>
+                                @if($estaDeshabilitada)
+                                    <button type="button" class="btn btn-success btn-restaurar-persona" data-id="{{ $persona->id }}" data-url="{{ route('dashboard.personas.restore', $persona->id) }}">
+                                        <i class="fas fa-undo"></i>
                                     </button>
-                                </form>
+                                @else
+                                    <form action="{{ route('dashboard.personas.destroy', $persona) }}" 
+                                          method="POST" class="d-inline form-deshabilitar-persona">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">
+                                            <i class="fas fa-user-slash"></i>
+                                        </button>
+                                    </form>
+                                @endif
                             </div>
                         </td>
                     </tr>
@@ -143,23 +129,42 @@
     </div>
 </div>
 
+{{-- <div class="d-flex justify-content-end gap-2 mb-3">
+    <a class="btn btn-outline-secondary" href="{{ route('dashboard.reportes.personas', ['formato' => 'pdf']) }}" target="_blank">
+        <i class="fas fa-file-pdf me-1"></i> PDF
+    </a>
+    <a class="btn btn-outline-success" href="{{ route('dashboard.reportes.personas', ['formato' => 'xlsx']) }}" target="_blank">
+        <i class="fas fa-file-excel me-1"></i> Excel
+    </a>
+</div> --}}
+
 <!-- Modales -->
 @include('dashboard.personas.modals.crear')
 @include('dashboard.personas.modals.ver')
+@include('dashboard.personas.modals.editar')
 @endsection
 
 @push('scripts')
 <script>
 $(document).ready(function() {
+    console.log('Personas JS inicializado');
 
-    $('#tablaPersonas').DataTable({
+    // Asegurar token CSRF en todas las peticiones AJAX
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    const tabla = $('#tablaPersonas').DataTable({
         responsive: true,
         "language": {
-            "url": "https://cdn.datatables.net/plug-ins/2.0.8/i18n/es-ES.json"
+            "url": "{{ asset('datatables-i18n-es.json') }}"
         },
-        order: [[1, 'asc']], // Ordenar por nombre ascendente
+        order: [[6, 'asc'], [1, 'asc']], // Prioriza estado (habilitado primero), luego código
         columnDefs: [              
-            { orderable: false, targets: 6 } // Deshabilitar ordenación en la columna de acciones
+            { orderable: false, targets: 0 }, // La numeración se recalcula
+            { orderable: false, targets: 7 } // Deshabilitar ordenación en la columna de acciones
         ],
         dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>' +
         '<"row"<"col-sm-12"tr>>' +
@@ -223,6 +228,12 @@ $('#verPersonaModal').on('show.bs.modal', function(event) {
         
         // 3. Documento e Identificación
         modal.find('#modalTipoDocumento').text(persona.tipo_documento || 'No especificado');
+        const leyenda = persona.tipo_documento === 'V' ? 'Venezolano' :
+                persona.tipo_documento === 'E' ? 'Extranjero' :
+                persona.tipo_documento === 'J' ? 'RIF' :
+                persona.tipo_documento === 'G' ? 'Gubernamental' :
+                persona.tipo_documento === 'P' ? 'Pasaporte' : '-';
+        modal.find('#modalTipoDocLeyenda').text(leyenda);
         modal.find('#modalDocumento').text(persona.documento || 'No especificado');
         
         // 4. Información de Contacto
@@ -287,35 +298,71 @@ $('#verPersonaModal').on('show.bs.modal', function(event) {
     // Modal para editar persona
     $('#editarPersonaModal').on('show.bs.modal', function(event) {
         const button = $(event.relatedTarget);
-        const persona = JSON.parse(button.data('persona'));
+        const personaData = button.data('persona');
+        const persona = typeof personaData === 'string' ? JSON.parse(personaData) : personaData;
         const modal = $(this);
         
         // Llenar formulario
         modal.find('form').attr('action', '/dashboard/personas/' + persona.id);
         modal.find('input[name="_method"]').val('PUT');
-        modal.find('#editTipo').val(persona.tipo);
+        modal.find('input[name="tipo"][value="' + persona.tipo + '"]').prop('checked', true);
         modal.find('#editNombres').val(persona.nombres);
         modal.find('#editApellidos').val(persona.apellidos);
         modal.find('#editRazonSocial').val(persona.razon_social);
         modal.find('#editNombreComercial').val(persona.nombre_comercial);
         modal.find('#editTipoDocumento').val(persona.tipo_documento);
+        updateTipoDocLeyenda('#editTipoDocumento', '#editTipoDocLeyenda');
+        ajustarTipoDocumento(persona.tipo, '#editTipoDocumento', '#editTipoDocLeyenda');
         modal.find('#editDocumento').val(persona.documento);
         modal.find('#editDireccion').val(persona.direccion);
-        modal.find('#editEstadoGeografico').val(persona.estado_geografico);
+        modal.find('#editEstado').val(persona.estado);
         modal.find('#editCiudad').val(persona.ciudad);
         modal.find('#editTelefono').val(persona.telefono);
         modal.find('#editTelefonoAlternativo').val(persona.telefono_alternativo);
         modal.find('#editEmail').val(persona.email);
-        modal.find('#editActivo').prop('checked', persona.activo);
         
-        // Mostrar/ocultar campos según tipo
-        toggleCamposPorTipo(persona.tipo);
+        toggleCamposPorTipoEdit(persona.tipo);
     });
     
     // Cambiar campos según tipo de persona
-    $('input[name="tipo"]').change(function() {
-        toggleCamposPorTipo($(this).val());
+    $('#crearPersonaModal input[name="tipo"]').change(function() {
+        const tipo = $(this).val();
+        toggleCamposPorTipo(tipo);
+        aplicarOpcionesDocumento(tipo, '#tipo_documento');
+        ajustarTipoDocumento(tipo, '#tipo_documento', '#tipoDocLeyenda', true);
     });
+
+    $('#editarPersonaModal input[name="tipo"]').change(function() {
+        const tipo = $(this).val();
+        toggleCamposPorTipoEdit(tipo);
+        aplicarOpcionesDocumento(tipo, '#editTipoDocumento');
+        ajustarTipoDocumento(tipo, '#editTipoDocumento', '#editTipoDocLeyenda', true);
+    });
+
+    $('#tipo_documento').on('change', function() {
+        const tipo = $('#crearPersonaModal input[name="tipo"]:checked').val();
+        ajustarTipoDocumento(tipo, '#tipo_documento', '#tipoDocLeyenda');
+        if ($(this).val() === 'G' && tipo === 'juridica') {
+            advertirGubernamental();
+        }
+    });
+
+    $('#editTipoDocumento').on('change', function() {
+        const tipo = $('#editarPersonaModal input[name="tipo"]:checked').val();
+        ajustarTipoDocumento(tipo, '#editTipoDocumento', '#editTipoDocLeyenda');
+        if ($(this).val() === 'G' && tipo === 'juridica') {
+            advertirGubernamental();
+        }
+    });
+
+    // Inicializar leyendas y tipo doc según tipo seleccionado al cargar
+    const tipoCrear = $('#crearPersonaModal input[name="tipo"]:checked').val();
+    aplicarOpcionesDocumento(tipoCrear, '#tipo_documento');
+    ajustarTipoDocumento(tipoCrear, '#tipo_documento', '#tipoDocLeyenda', false);
+
+    const tipoEditar = $('#editarPersonaModal input[name="tipo"]:checked').val();
+    aplicarOpcionesDocumento(tipoEditar, '#editTipoDocumento');
+    ajustarTipoDocumento(tipoEditar, '#editTipoDocumento', '#editTipoDocLeyenda', false);
     
     function toggleCamposPorTipo(tipo) {
         if (tipo === 'natural') {
@@ -328,6 +375,20 @@ $('#verPersonaModal').on('show.bs.modal', function(event) {
             $('.campo-juridica').show();
             $('#nombres, #apellidos').prop('required', false);
             $('#razon_social').prop('required', true);
+        }
+    }
+
+    function toggleCamposPorTipoEdit(tipo) {
+        if (tipo === 'natural') {
+            $('.campo-natural-edit').show();
+            $('.campo-juridica-edit').hide();
+            $('#editNombres, #editApellidos').prop('required', true);
+            $('#editRazonSocial').prop('required', false);
+        } else {
+            $('.campo-natural-edit').hide();
+            $('.campo-juridica-edit').show();
+            $('#editNombres, #editApellidos').prop('required', false);
+            $('#editRazonSocial').prop('required', true);
         }
     }
     
@@ -354,12 +415,48 @@ $('#verPersonaModal').on('show.bs.modal', function(event) {
                         icon: 'success',
                         title: '¡Éxito!',
                         text: response.message,
-                        timer: 2000,
+                        timer: 1800,
                         showConfirmButton: false
-                    }).then(() => {
-                        $('#crearPersonaModal').modal('hide');
-                        location.reload();
                     });
+
+                    // Agregar fila a DataTable sin recargar
+                    const p = response.data;
+                    const nuevoIndice = tabla.rows().count() + 1;
+                    const estadoBadge = '<span class="badge bg-success estado-badge">Activo</span>';
+                    const tipoBadge = '<span class="badge ' + (p.tipo === 'natural' ? 'bg-primary' : 'bg-warning') + '">' + (p.tipo === 'natural' ? 'Natural' : 'Jurídica') + '</span>';
+                    const contacto = (p.telefono ? '<div>' + p.telefono + '</div>' : '') + (p.direccion ? '<div>' + p.direccion + '</div>' : '');
+                    const nombre = (p.tipo === 'juridica') ? (p.razon_social || p.nombre_comercial || '') : ((p.nombres || '') + ' ' + (p.apellidos || ''));
+                    const email = p.email ? '<br><small class="text-muted">' + p.email + '</small>' : '';
+                    const acciones = `
+                        <div class="btn-group btn-group-sm acciones-persona" data-persona-id="${p.id}" data-restore-url="/dashboard/personas/${p.id}/restore">
+                            <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#verPersonaModal" data-persona='${JSON.stringify(p)}'>
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editarPersonaModal" data-persona='${JSON.stringify(p)}'>
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <form action="/dashboard/personas/${p.id}" method="POST" class="d-inline form-deshabilitar-persona">
+                                <input type="hidden" name="_token" value="${$('meta[name="csrf-token"]').attr('content')}">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="btn btn-danger">
+                                    <i class="fas fa-user-slash"></i>
+                                </button>
+                            </form>
+                        </div>`;
+
+                    const nuevaFila = tabla.row.add([
+                        nuevoIndice,
+                        p.codigo || '',
+                        '<strong>' + nombre + '</strong>' + email,
+                        (p.tipo_documento || '') + '-' + (p.documento || ''),
+                        contacto,
+                        tipoBadge,
+                        estadoBadge,
+                        acciones
+                    ]).draw(false).node();
+
+                    $(nuevaFila).attr('data-persona-id', p.id);
+                    $('#crearPersonaModal').modal('hide');
                 }
             },
             error: function(xhr) {
@@ -388,6 +485,236 @@ $('#verPersonaModal').on('show.bs.modal', function(event) {
                         text: 'Error al procesar la solicitud'
                     });
                 }
+            }
+        });
+    });
+
+    // Editar persona con AJAX y SweetAlert
+    $('#formEditarPersona').submit(function(e) {
+        e.preventDefault();
+
+        const form = $(this);
+        const formData = form.serialize();
+        const submitBtn = form.find('button[type="submit"]');
+
+        $.ajax({
+            url: form.attr('action'),
+            method: 'POST', // _method en el form maneja PUT
+            data: formData,
+            beforeSend: function() {
+                submitBtn.prop('disabled', true)
+                    .html('<i class="fas fa-spinner fa-spin me-2"></i>Actualizando...');
+            },
+            success: function(response) {
+                submitBtn.prop('disabled', false)
+                    .html('<i class="fas fa-save me-2"></i>Actualizar');
+
+                if (response.success) {
+                    const p = response.data;
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: '¡Actualizado!',
+                        text: response.message || 'Persona actualizada correctamente',
+                        timer: 1800,
+                        showConfirmButton: false
+                    });
+
+                    // Actualizar fila en la tabla
+                    const fila = $('tr[data-persona-id="' + p.id + '"]');
+                    if (fila.length) {
+                        const contacto = (p.telefono ? '<div>' + p.telefono + '</div>' : '') + (p.direccion ? '<div>' + p.direccion + '</div>' : '');
+                        const nombre = (p.tipo === 'juridica') ? (p.razon_social || p.nombre_comercial || '') : ((p.nombres || '') + ' ' + (p.apellidos || ''));
+                        const email = p.email ? '<br><small class="text-muted">' + p.email + '</small>' : '';
+                        const tipoBadge = '<span class="badge ' + (p.tipo === 'natural' ? 'bg-primary' : 'bg-warning') + '">' + (p.tipo === 'natural' ? 'Natural' : 'Jurídica') + '</span>';
+                        const estadoBadge = '<span class="badge ' + (p.activo ? 'bg-success' : 'bg-secondary') + ' estado-badge">' + (p.activo ? 'Activo' : 'Deshabilitado') + '</span>';
+                        const acciones = `
+                            <div class="btn-group btn-group-sm acciones-persona" data-persona-id="${p.id}" data-restore-url="/dashboard/personas/${p.id}/restore">
+                                <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#verPersonaModal" data-persona='${JSON.stringify(p)}'>
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editarPersonaModal" data-persona='${JSON.stringify(p)}'>
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <form action="/dashboard/personas/${p.id}" method="POST" class="d-inline form-deshabilitar-persona">
+                                    <input type="hidden" name="_token" value="${$('meta[name="csrf-token"]').attr('content')}">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button type="submit" class="btn btn-danger">
+                                        <i class="fas fa-user-slash"></i>
+                                    </button>
+                                </form>
+                            </div>`;
+
+                        const rowData = tabla.row(fila).data();
+                        rowData[1] = p.codigo || '';
+                        rowData[2] = '<strong>' + nombre + '</strong>' + email;
+                        rowData[3] = (p.tipo_documento || '') + '-' + (p.documento || '');
+                        rowData[4] = contacto;
+                        rowData[5] = tipoBadge;
+                        rowData[6] = estadoBadge;
+                        rowData[7] = acciones;
+                        tabla.row(fila).data(rowData).invalidate().draw(false);
+                    }
+
+                    $('#editarPersonaModal').modal('hide');
+                }
+            },
+            error: function(xhr) {
+                submitBtn.prop('disabled', false)
+                    .html('<i class="fas fa-save me-2"></i>Actualizar');
+
+                if (xhr.status === 422) {
+                    const errors = xhr.responseJSON.errors;
+                    let errorHtml = '<ul>';
+                    $.each(errors, function(key, value) {
+                        errorHtml += '<li>' + value[0] + '</li>';
+                    });
+                    errorHtml += '</ul>';
+                    Swal.fire({ icon: 'error', title: 'Error de validación', html: errorHtml });
+                } else {
+                    Swal.fire({ icon: 'error', title: 'Error', text: 'No se pudo actualizar la persona' });
+                }
+            }
+        });
+    });
+
+    // Recalcular numeración cuando cambie el orden o la búsqueda
+    tabla.on('order.dt search.dt draw.dt', function() {
+        let i = 1;
+        tabla.cells(null, 0, { search: 'applied', order: 'applied' }).every(function() {
+            this.data(i++);
+        });
+    });
+
+    function updateTipoDocLeyenda(selectId, spanId) {
+        const val = $(selectId).val();
+        let texto = '-';
+        if (val === 'V') texto = 'Venezolano';
+        if (val === 'E') texto = 'Extranjero';
+        if (val === 'J') texto = 'RIF';
+        if (val === 'G') texto = 'Gubernamental';
+        if (val === 'P') texto = 'Pasaporte';
+        $(spanId).text(texto);
+    }
+
+    function aplicarOpcionesDocumento(tipo, selectId) {
+        const select = $(selectId);
+        const permitir = tipo === 'juridica' ? ['J', 'G'] : ['V', 'E', 'P'];
+        select.find('option').each(function() {
+            const val = $(this).val();
+            const visible = permitir.includes(val) || val === '';
+            $(this).prop('disabled', !visible).toggle(visible);
+        });
+    }
+
+    function ajustarTipoDocumento(tipo, selectId, spanId, showAlert = true) {
+        const select = $(selectId);
+        const valor = select.val();
+        const esJuridica = tipo === 'juridica';
+        const permitir = esJuridica ? ['J', 'G'] : ['V', 'E', 'P'];
+
+        if (!permitir.includes(valor)) {
+            if (esJuridica) {
+                select.val('J');
+            } else {
+                if (showAlert && valor) {
+                    advertirTipoDocumentoNatural();
+                }
+                select.val('V');
+            }
+        }
+        updateTipoDocLeyenda(selectId, spanId);
+    }
+
+    // Deshabilitar (soft delete) con SweetAlert
+    $(document).on('submit', '.form-deshabilitar-persona', function(e) {
+        e.preventDefault();
+        const form = $(this);
+        Swal.fire({
+            title: 'Deshabilitar persona',
+            text: 'Podrás restaurarla luego.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, deshabilitar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: form.attr('action'),
+                    method: 'POST',
+                    data: form.serialize(),
+                    success: function(response) {
+                        if (response.success) {
+                            Swal.fire({ icon: 'success', title: 'Deshabilitada', text: response.message, timer: 1500, showConfirmButton: false });
+                            const fila = form.closest('tr');
+                            fila.find('.estado-badge').removeClass('bg-success').addClass('bg-secondary').text('Deshabilitado');
+                            // Reemplazar acción por botón restaurar
+                            const personaId = fila.data('persona-id');
+                            const acciones = fila.find('.acciones-persona');
+                            acciones.find('form').remove();
+                            const restoreUrl = acciones.data('restore-url') || `/dashboard/personas/${personaId}/restore`;
+                            acciones.append(`<button type="button" class="btn btn-success btn-restaurar-persona" data-id="${personaId}" data-url="${restoreUrl}"><i class="fas fa-undo"></i></button>`);
+                            acciones.data('restore-url', restoreUrl);
+                            tabla.row(fila).invalidate().draw(false);
+                        }
+                    },
+                    error: function() {
+                        Swal.fire({ icon: 'error', title: 'Error', text: 'No se pudo deshabilitar la persona' });
+                    }
+                });
+            }
+        });
+    });
+
+    // Restaurar persona
+    $(document).on('click', '.btn-restaurar-persona', function() {
+        const id = $(this).data('id');
+        const boton = $(this);
+        const url = boton.data('url') || `/dashboard/personas/${id}/restore`;
+        console.log('Restaurar click', { id, url });
+        Swal.fire({
+            title: 'Restaurar persona',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Restaurar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                console.log('Restaurar confirm', { id, url });
+                $.ajax({
+                    url: url,
+                    method: 'POST',
+                    data: {},
+                    success: function(response) {
+                        console.log('Restaurar success', response);
+                        if (!response || response.success === false) {
+                            Swal.fire({ icon: 'error', title: 'Error', text: response.message || 'No se pudo restaurar la persona' });
+                            return;
+                        }
+                        Swal.fire({ icon: 'success', title: 'Restaurada', text: response.message ?? 'Persona restaurada', timer: 1500, showConfirmButton: false });
+                        const fila = boton.closest('tr');
+                        fila.find('.estado-badge').removeClass('bg-secondary').addClass('bg-success').text('Activo');
+                        const acciones = fila.find('.acciones-persona');
+                        const restoreUrl = acciones.data('restore-url') || `/dashboard/personas/${id}/restore`;
+                        acciones.find('.btn-restaurar-persona').remove();
+                        acciones.append(`
+                            <form action="/dashboard/personas/${id}" method="POST" class="d-inline form-deshabilitar-persona" data-restore-url="${restoreUrl}">
+                                <input type="hidden" name="_token" value="${$('meta[name="csrf-token"]').attr('content')}">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="btn btn-danger">
+                                    <i class="fas fa-user-slash"></i>
+                                </button>
+                            </form>
+                        `);
+                        acciones.data('restore-url', restoreUrl);
+                        tabla.row(fila).invalidate().draw(false);
+                    },
+                    error: function(xhr) {
+                        console.log('Restaurar error', xhr);
+                        const msg = xhr?.responseJSON?.message || 'No se pudo restaurar la persona';
+                        Swal.fire({ icon: 'error', title: 'Error', text: msg });
+                    }
+                });
             }
         });
     });

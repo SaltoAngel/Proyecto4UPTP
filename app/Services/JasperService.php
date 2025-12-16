@@ -11,18 +11,26 @@ class JasperService
     public function __construct()
     {
         $this->jasper = new PHPJasper();
-        $this->tempPath = storage_path('app/temp');
+        $this->tempPath = storage_path('app/reports/temp');
         
         if (!file_exists($this->tempPath)) {
             mkdir($this->tempPath, 0777, true);
         }
     }
 
-    public function generarReporte($jrxml, $formato = 'pdf', $parametros = [], $conexion = null)
+    /**
+     * Genera un reporte a partir de un archivo .jasper (ya compilado) o .jrxml.
+     * @param string $reporte Nombre del archivo (con o sin extensión).
+     * @param string $formato pdf|xlsx
+     * @param array $parametros Parámetros para el reporte
+     * @param array|null $conexion Configuración DB opcional
+     */
+    public function generarReporte($reporte, $formato = 'pdf', $parametros = [], $conexion = null)
     {
         try {
-            $input = base_path("app/Reports/templates/{$jrxml}");
-            $output = $this->tempPath . '/' . pathinfo($jrxml, PATHINFO_FILENAME);
+            $reporte = $this->normalizarNombre($reporte);
+            $input = base_path("app/Reports/templates/{$reporte}");
+            $output = $this->tempPath . '/' . pathinfo($reporte, PATHINFO_FILENAME);
             
             $options = [
                 'format' => [$formato],
@@ -84,5 +92,16 @@ class JasperService
         }
         
         return $this->jasper->compile($input, $output)->execute();
+    }
+
+    /**
+     * Asegura extensión .jasper si no se proporcionó.
+     */
+    private function normalizarNombre(string $nombre): string
+    {
+        if (!str_ends_with(strtolower($nombre), '.jasper') && !str_ends_with(strtolower($nombre), '.jrxml')) {
+            return $nombre . '.jasper';
+        }
+        return $nombre;
     }
 }

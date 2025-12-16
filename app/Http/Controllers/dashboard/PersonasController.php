@@ -6,6 +6,7 @@ namespace App\Http\Controllers\dashboard;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PersonasRequest;
 use App\Models\Personas as Persona;
+use App\Models\Bitacora;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -19,7 +20,8 @@ class PersonasController extends Controller
         try {
             $search = $request->get('search');
             
-            $personas = Persona::when($search, function ($query, $search) {
+            $personas = Persona::withTrashed()
+            ->when($search, function ($query, $search) {
                 return $query->buscar($search);
             })
             ->orderBy('created_at', 'desc')
@@ -42,7 +44,18 @@ class PersonasController extends Controller
         try {
             Log::info('Creando nueva persona', ['data' => $request->except('_token')]);
             
-            $persona = Persona::create($request->validated());
+            $data = $request->validated();
+            $data['activo'] = $data['activo'] ?? true;
+            $data['codigo'] = $data['codigo'] ?? Persona::generarCodigo($data['tipo_documento']);
+            
+            $persona = Persona::create($data);
+            Bitacora::registrar(
+                'personas',
+                'crear',
+                'Creó persona ID ' . $persona->id,
+                null,
+                $persona->toArray()
+            );
             
             Log::info('Persona creada exitosamente', ['id' => $persona->id]);
             
@@ -94,8 +107,16 @@ class PersonasController extends Controller
     {
         try {
             Log::info('Actualizando persona', ['id' => $persona->id, 'data' => $request->except('_token', '_method')]);
+            $datosAnteriores = $persona->toArray();
             
             $persona->update($request->validated());
+            Bitacora::registrar(
+                'personas',
+                'actualizar',
+                'Actualizó persona ID ' . $persona->id,
+                $datosAnteriores,
+                $persona->toArray()
+            );
             
             Log::info('Persona actualizada exitosamente', ['id' => $persona->id]);
             
@@ -126,26 +147,35 @@ class PersonasController extends Controller
     }
     
     /**
-     * Eliminar persona (soft delete)
+     * Deshabilitar persona (soft delete + flag)
      */
     public function destroy(Request $request, Persona $persona)
     {
         try {
-            Log::warning('Eliminando persona', ['id' => $persona->id]);
-            
+            Log::warning('Deshabilitando persona', ['id' => $persona->id]);
+            $datosAnteriores = $persona->toArray();
+            $persona->activo = false;
+            $persona->save();
             $persona->delete();
+            Bitacora::registrar(
+                'personas',
+                'deshabilitar',
+                'Deshabilitó persona ID ' . $persona->id,
+                $datosAnteriores,
+                $persona->toArray()
+            );
             
-            Log::warning('Persona eliminada exitosamente', ['id' => $persona->id]);
+            Log::warning('Persona deshabilitada exitosamente', ['id' => $persona->id]);
             
             if ($request->ajax() || $request->wantsJson()) {
                 return response()->json([
                     'success' => true,
-                    'message' => 'Persona eliminada exitosamente'
+                    'message' => 'Persona deshabilitada exitosamente'
                 ]);
             }
             
             return redirect()->route('dashboard.personas.index')
-                ->with('success', 'Persona eliminada exitosamente');
+                ->with('success', 'Persona deshabilitada exitosamente');
                 
         } catch (\Exception $e) {
             Log::error('Error al eliminar persona: ' . $e->getMessage());
@@ -162,14 +192,32 @@ class PersonasController extends Controller
     }
     
     /**
-     * Restaurar persona eliminada
+     * Restaurar persona deshabilitada
      */
-    public function restore($id)
+    public function restore(Request $request, $id)
     {
         try {
             $persona = Persona::withTrashed()->findOrFail($id);
+            $datosAnteriores = $persona->toArray();
             $persona->restore();
+            $persona->activo = true;
+            $persona->save();
+            Bitacora::registrar(
+                'personas',
+                'restaurar',
+                'Restauró persona ID ' . $persona->id,
+                $datosAnteriores,
+                $persona->toArray()
+            );
             
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Persona restaurada exitosamente',
+                    'data' => $persona
+                ]);
+            }
+
             return redirect()->route('dashboard.personas.index')
                 ->with('success', 'Persona restaurada exitosamente');
                 

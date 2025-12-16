@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\loginController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\dashboard\PersonasController;
+use App\Http\Controllers\dashboard\ReportesController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -49,6 +50,11 @@ Route::middleware(['auth'])->prefix('dashboard')->name('dashboard.')->group(func
         Route::post('personas/{id}/restore', [PersonasController::class, 'restore'])->name('personas.restore');
         Route::get('/personas', [App\Http\Controllers\dashboard\PersonasController::class, 'index'])->name('personas.index');
         Route::post('/personas', [PersonasController::class, 'store'])->name('personas.store');
+
+        // Reportes
+        Route::get('/reportes/personas/{formato?}', [ReportesController::class, 'personas'])
+            ->whereIn('formato', ['pdf', 'xlsx'])
+            ->name('reportes.personas');
         //Logout
         route::get('/logout', [loginController::class, 'logout'])->name('logout');
 });

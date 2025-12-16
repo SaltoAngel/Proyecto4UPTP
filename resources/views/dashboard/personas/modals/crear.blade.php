@@ -76,13 +76,16 @@
                             <label for="tipo_documento" class="form-label">
                                 <i class="fas fa-id-card me-1"></i>Tipo Documento *
                             </label>
-                            <select class="form-select" id="tipo_documento" name="tipo_documento" required>
-                                <option value="">Seleccionar...</option>
-                                <option value="V">Cédula Venezolana (V)</option>
-                                <option value="E">Cédula Extranjera (E)</option>
-                                <option value="J">RIF (J)</option>
-                                <option value="P">Pasaporte (P)</option>
-                            </select>
+                            <div class="input-group">
+                                <select class="form-select" id="tipo_documento" name="tipo_documento" required>
+                                    <option value="">Seleccionar...</option>
+                                    <option value="V">V - Venezolano</option>
+                                    <option value="E">E - Extranjero</option>
+                                    <option value="J">J - RIF</option>
+                                    <option value="G">G - Gubernamental</option>
+                                    <option value="P">P - Pasaporte</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="col-md-8">
                             <label for="documento" class="form-label">
@@ -108,25 +111,21 @@
                         </div>
                     </div>
                     
-                    <!-- Email -->
+                    <!-- Email y ubicación -->
                     <div class="row mb-3">
-                        <div class="col-12">
+                        <div class="col-md-6">
                             <label for="email" class="form-label">
                                 <i class="fas fa-envelope me-1"></i>Correo Electrónico
                             </label>
                             <input type="email" class="form-control" id="email" name="email">
                         </div>
-                    </div>
-                    
-                    <!-- Dirección -->
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="estado_geografico" class="form-label">
+                        <div class="col-md-3">
+                            <label for="estado" class="form-label">
                                 <i class="fas fa-map me-1"></i>Estado/Provincia
                             </label>
-                            <input type="text" class="form-control" id="estado_geografico" name="estado_geografico">
+                            <input type="text" class="form-control" id="estado" name="estado">
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <label for="ciudad" class="form-label">
                                 <i class="fas fa-city me-1"></i>Ciudad
                             </label>
