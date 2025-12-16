@@ -45,14 +45,22 @@ class Personas extends Model
         return $this->hasOne(User::class, 'persona_id');
     }
 
-    /**
-     * Conveniencia: nombre completo.
-     */
-    public function getFullNameAttribute()
+        public function getNombreCompletoAttribute()
     {
-        if ($this->es_juridico) {
-            return $this->razon_social;
+        if ($this->tipo === 'juridica') {
+            // Para persona jurídica
+            if (!empty($this->razon_social)) {
+                return $this->razon_social;
+            }
+            if (!empty($this->nombre_comercial)) {
+                return $this->nombre_comercial;
+            }
+            return 'Empresa sin nombre';
         }
-        return trim("{$this->nombres} {$this->apellidos}");
+        
+        // Para persona natural
+        $nombreCompleto = trim($this->nombres . ' ' . $this->apellidos);
+        
+        return !empty($nombreCompleto) ? $nombreCompleto : 'Persona sin nombre';
     }
 }

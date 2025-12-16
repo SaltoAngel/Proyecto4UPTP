@@ -83,11 +83,6 @@ public function login(Request $request)
         ['email' => $user->email, 'ip' => $request->ip()]
     );
     
-    // Iniciar sesión directamente
-    \Log::info('Login directo para usuario', [
-        'user_id' => $user->id,
-        'email' => $user->email,
-    ]);
 
     return redirect()->intended('/dashboard');
 }

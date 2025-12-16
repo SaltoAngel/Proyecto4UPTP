@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\loginController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\dashboard\PersonasController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -31,8 +32,26 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware('auth')->name('dashboard');
 
-// Bitácora
-Route::middleware('auth')->group(function () {
-    Route::get('/bitacora', [App\Http\Controllers\BitacoraController::class, 'index'])->name('bitacora.index');
-    Route::get('/bitacora/{bitacora}', [App\Http\Controllers\BitacoraController::class, 'show'])->name('bitacora.show');
+// Panel Administrativo
+Route::middleware(['auth'])->prefix('dashboard')->name('dashboard.')->group(function () {
+        //Dashboard
+        Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard.index');
+        //Usuarios
+        Route::get('/usuarios', [App\Http\Controllers\dashboard\UsuariosController::class, 'index'])->name('usuarios.index');
+        Route::get('/usuarios/{usuario}', [App\Http\Controllers\dashboard\UsuariosController::class, 'show'])->name('usuarios.show');
+        //Bitacora
+        Route::get('/bitacora', [App\Http\Controllers\BitacoraController::class, 'index'])->name('bitacora.index');
+        Route::get('/bitacora/{bitacora}', [App\Http\Controllers\BitacoraController::class, 'show'])->name('bitacora.show');
+        //Personas
+        Route::resource('personas', PersonasController::class);
+
+        Route::post('personas/buscar', [PersonasController::class, 'buscar'])->name('personas.buscar');
+        Route::post('personas/{id}/restore', [PersonasController::class, 'restore'])->name('personas.restore');
+        Route::get('/personas', [App\Http\Controllers\dashboard\PersonasController::class, 'index'])->name('personas.index');
+        Route::post('/personas', [PersonasController::class, 'store'])->name('personas.store');
+        //Logout
+        route::get('/logout', [loginController::class, 'logout'])->name('logout');
 });
+
+
+
