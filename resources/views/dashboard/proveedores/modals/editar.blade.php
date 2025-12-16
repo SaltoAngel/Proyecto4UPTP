@@ -10,18 +10,14 @@
                 @method('PUT')
                 <div class="modal-body">
                     <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label class="form-label fw-bold">Persona *</label>
-                            <select name="persona_id" id="editPersona" class="form-select select2" required>
+                        <div class="col-md-12">
+                            <label class="form-label fw-bold">Persona <span class="text-danger">*</span></label>
+                            <select name="persona_id" id="editPersona" class="form-select" required>
                                 <option value="">Seleccione persona</option>
                                 @foreach($personas as $persona)
                                     <option value="{{ $persona->id }}">{{ $persona->codigo }} - {{ $persona->nombre_completo }}</option>
                                 @endforeach
                             </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Código proveedor</label>
-                            <input type="text" name="codigo_proveedor" id="editCodigoProveedor" class="form-control">
                         </div>
                     </div>
 
@@ -36,7 +32,7 @@
                                     @endforeach
                                 </div>
                             </div>
-                            <input type="hidden" name="tipos_proveedores[]" id="editarTiposSeleccionados">
+                            <div id="editarTiposSeleccionados" class="d-none"></div>
                             <input type="text" class="form-control mt-2" id="editarResumenCategorias" placeholder="Resumen de categorías" readonly>
                         </div>
                         <div class="col-md-6">
@@ -60,7 +56,7 @@
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Estado *</label>
+                            <label class="form-label">Estado <span class="text-danger">*</span></label>
                             <select name="estado" id="editEstado" class="form-select" required>
                                 <option value="activo">Activo</option>
                                 <option value="inactivo">Inactivo</option>

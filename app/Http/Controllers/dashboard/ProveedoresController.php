@@ -66,6 +66,10 @@ class ProveedoresController extends Controller
             if (!empty($tipos)) {
                 $proveedor->tiposProveedores()->sync($tipos);
             }
+            $proveedor->load([
+                'persona' => fn ($q) => $q->withTrashed(),
+                'tiposProveedores:id,nombre_tipo'
+            ]);
 
             Bitacora::registrar(
                 'proveedores',
@@ -80,7 +84,6 @@ class ProveedoresController extends Controller
                     'success' => true,
                     'message' => 'Proveedor creado exitosamente',
                     'data' => $proveedor,
-                    'redirect' => route('dashboard.proveedores.index')
                 ], 201);
             }
 
@@ -120,6 +123,10 @@ class ProveedoresController extends Controller
 
             $proveedor->update($data);
             $proveedor->tiposProveedores()->sync($tipos);
+            $proveedor->load([
+                'persona' => fn ($q) => $q->withTrashed(),
+                'tiposProveedores:id,nombre_tipo'
+            ]);
 
             Bitacora::registrar(
                 'proveedores',

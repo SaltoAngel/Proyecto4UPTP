@@ -9,18 +9,14 @@
                 @csrf
                 <div class="modal-body">
                     <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label class="form-label fw-bold">Persona *</label>
-                            <select name="persona_id" class="form-select select2" required>
+                        <div class="col-md-12">
+                            <label class="form-label fw-bold">Persona <span class="text-danger">*</span></label>
+                            <select name="persona_id" class="form-select" required>
                                 <option value="">Seleccione persona</option>
                                 @foreach($personas as $persona)
                                     <option value="{{ $persona->id }}">{{ $persona->codigo }} - {{ $persona->nombre_completo }}</option>
                                 @endforeach
                             </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Código proveedor</label>
-                            <input type="text" name="codigo_proveedor" class="form-control" placeholder="Autogenerado si se deja vacío">
                         </div>
                     </div>
 
@@ -35,7 +31,7 @@
                                     @endforeach
                                 </div>
                             </div>
-                            <input type="hidden" name="tipos_proveedores[]" id="crearTiposSeleccionados">
+                            <div id="crearTiposSeleccionados" class="d-none"></div>
                             <input type="text" class="form-control mt-2" id="crearResumenCategorias" placeholder="Resumen de categorías" readonly>
                             <small class="text-muted">Click para agregar; vuelve a hacer click para quitar.</small>
                         </div>
@@ -75,7 +71,7 @@
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Estado *</label>
+                            <label class="form-label">Estado <span class="text-danger">*</span></label>
                             <select name="estado" class="form-select" required>
                                 <option value="activo" selected>Activo</option>
                                 <option value="inactivo">Inactivo</option>
