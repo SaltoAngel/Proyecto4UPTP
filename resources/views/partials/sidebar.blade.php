@@ -59,15 +59,8 @@
             </div>
         </div>
     </div>
-    <div class="sidenav-footer position-absolute w-100 bottom-0 px-3 pb-3">
-        <a class="btn btn-outline-danger w-100 d-flex align-items-center justify-content-center" href="#" onclick="event.preventDefault(); document.getElementById('sidebar-logout-form').submit();">
-            <i class="material-icons me-2">logout</i>
-            Salir
-        </a>
-        <form id="sidebar-logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-            @csrf
-        </form>
-    </div>
+    <!-- Footer vacío: previamente aquí estaba el botón de salir -->
+    <div class="sidenav-footer position-absolute w-100 bottom-0 px-3 pb-3"></div>
 </aside>
 
 @push('scripts')

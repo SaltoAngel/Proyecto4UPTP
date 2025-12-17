@@ -12,7 +12,7 @@
         </div>
         <div class="text-end pt-1">
           <p class="text-sm mb-0 text-capitalize">Personas</p>
-          <h4 class="mb-0">{{ \App\Models\Personas::count() }}</h4>
+          <h4 class="mb-0">{{ $personasCount ?? '—' }}</h4>
         </div>
       </div>
       <hr class="dark horizontal my-0">
@@ -28,7 +28,7 @@
         </div>
         <div class="text-end pt-1">
           <p class="text-sm mb-0 text-capitalize">Proveedores</p>
-          <h4 class="mb-0">{{ \App\Models\Proveedor::count() }}</h4>
+          <h4 class="mb-0">{{ $proveedoresCount ?? '—' }}</h4>
         </div>
       </div>
       <hr class="dark horizontal my-0">
@@ -44,7 +44,7 @@
         </div>
         <div class="text-end pt-1">
           <p class="text-sm mb-0 text-capitalize">Bitácora</p>
-          <h4 class="mb-0">—</h4>
+          <h4 class="mb-0">{{ $bitacoraCount ?? '—' }}</h4>
         </div>
       </div>
       <hr class="dark horizontal my-0">
@@ -82,10 +82,10 @@
 </div>
 
 <div class="row mt-4">
-  <div class="col-12">
-    <div class="card z-index-2">
+  <div class="col-lg-8 mb-4">
+    <div class="card z-index-2 h-100">
       <div class="card-header pb-0">
-        <h6 class="mb-0">Mapa</h6>
+        <h6 class="mb-0">Mapa Nacional</h6>
       </div>
       <div class="card-body">
         <div class="chart">
@@ -94,7 +94,35 @@
       </div>
     </div>
   </div>
-  
+  <div class="col-lg-4 mb-4">
+    <div class="card h-100">
+      <div class="card-header pb-0 d-flex align-items-center justify-content-between">
+        <h6 class="mb-0"><i class="material-icons me-2" style="font-size:18px">leaderboard</i>Top 5 Clientes</h6>
+      </div>
+      <div class="card-body pt-3">
+        @php
+          $top = isset($topClientes) && is_iterable($topClientes) ? $topClientes : [
+            ['nombre' => 'Cliente A', 'total' => 120],
+            ['nombre' => 'Cliente B', 'total' => 95],
+            ['nombre' => 'Cliente C', 'total' => 78],
+            ['nombre' => 'Cliente D', 'total' => 64],
+            ['nombre' => 'Cliente E', 'total' => 51],
+          ];
+        @endphp
+        <ul class="list-group">
+          @foreach($top as $i => $c)
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span>
+                <span class="badge bg-primary me-2">{{ $i+1 }}</span>
+                {{ is_array($c) ? ($c['nombre'] ?? ($c['name'] ?? '—')) : ($c->nombre ?? ($c->name ?? '—')) }}
+              </span>
+              <span class="badge bg-gradient-success">{{ is_array($c) ? ($c['total'] ?? 0) : ($c->total ?? 0) }}</span>
+            </li>
+          @endforeach
+        </ul>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- Modal Info Geo -->

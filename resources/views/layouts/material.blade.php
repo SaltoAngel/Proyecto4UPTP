@@ -62,6 +62,20 @@
         .modal .input-group-text { background-color: #f8f9fa; color: #344767; border: 1px solid #d2d6da; }
         /* Canvas de mapa: ocupar ancho completo */
         .geo-canvas { width: 100% !important; display: block; }
+        /* Overrides globales para formularios (fuera de modales) */
+        .card .form-label, .form-label { color: #344767; }
+        .card .form-control, .card .form-select, .card textarea,
+        .form-control, .form-select, textarea {
+            background-color: #fff !important;
+            color: #344767 !important;
+            border: 1px solid #d2d6da !important;
+        }
+        .form-control:disabled, .form-select:disabled, textarea:disabled {
+            background-color: #e9ecef !important;
+            opacity: 1;
+        }
+        .form-control::placeholder, textarea::placeholder { color: #9ca3af !important; opacity: 1; }
+        .input-group-text { background-color: #f8f9fa; color: #344767; border: 1px solid #d2d6da; }
     </style>
     @stack('styles')
 </head>
@@ -69,22 +83,7 @@
     @include('partials.sidebar')
 
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
-        <!-- Navbar -->
-        <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" data-scroll="false">
-            <div class="container-fluid py-1 px-3">
-                <nav aria-label="breadcrumb">
-                    <h6 class="font-weight-bolder mb-0">@yield('title', 'Dashboard')</h6>
-                </nav>
-                <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
-                    <ul class="navbar-nav ms-auto justify-content-end">
-                        <li class="nav-item d-flex align-items-center">
-                            <span class="d-sm-inline d-none text-muted"><i class="material-icons me-1">person</i>{{ auth()->user()->persona->nombre_completo ?? auth()->user()->name }}</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-        <!-- End Navbar -->
+        @include('partials.header')
 
         <div class="container-fluid py-4">
             @yield('content')
