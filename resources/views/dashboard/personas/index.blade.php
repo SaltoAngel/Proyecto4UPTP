@@ -3,6 +3,20 @@
 
 @section('title', 'Personas - ' . config('app.name'))
 
+@push('styles')
+<style>
+    .acciones-persona .btn { display: inline-flex; align-items: center; justify-content: center; }
+    .acciones-persona .btn .material-icons { font-size: 18px; line-height: 1; }
+    /* Asegura unión visual cuando hay botones y formularios mezclados (fallback) */
+    .acciones-persona .btn + .btn { margin-left: -1px; }
+    .acciones-persona .btn + form .btn, .acciones-persona form + .btn { margin-left: -1px; }
+    .acciones-persona form { display: inline-block; margin: 0; }
+    .acciones-persona .btn { border-radius: 0; }
+    .acciones-persona .btn:first-child { border-top-left-radius: .2rem; border-bottom-left-radius: .2rem; }
+    .acciones-persona .btn:last-child { border-top-right-radius: .2rem; border-bottom-right-radius: .2rem; }
+}</style>
+@endpush
+
 @section('content')
 <div class="row mb-4">
     <div class="col-12">
@@ -96,14 +110,9 @@
                                         <i class="material-icons">restore</i>
                                     </button>
                                 @else
-                                    <form action="{{ route('dashboard.personas.destroy', $persona) }}" 
-                                          method="POST" class="d-inline form-deshabilitar-persona">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger">
-                                            <i class="material-icons">person_off</i>
-                                        </button>
-                                    </form>
+                                    <button type="button" class="btn btn-danger btn-deshabilitar-persona" data-url="{{ route('dashboard.personas.destroy', $persona) }}">
+                                        <i class="material-icons">person_off</i>
+                                    </button>
                                 @endif
                             </div>
                         </td>
@@ -627,9 +636,14 @@ $('#verPersonaModal').on('show.bs.modal', function(event) {
     }
 
     // Deshabilitar (soft delete) con SweetAlert
-    $(document).on('submit', '.form-deshabilitar-persona', function(e) {
+    $(document).on('click', '.btn-deshabilitar-persona', function(e) {
         e.preventDefault();
-        const form = $(this);
+        const boton = $(this);
+        const url = boton.data('url');
+        const fila = boton.closest('tr');
+        const acciones = fila.find('.acciones-persona');
+        const personaId = fila.data('persona-id');
+
         Swal.fire({
             title: 'Deshabilitar persona',
             text: 'Podrás restaurarla luego.',
@@ -638,31 +652,29 @@ $('#verPersonaModal').on('show.bs.modal', function(event) {
             confirmButtonText: 'Sí, deshabilitar',
             cancelButtonText: 'Cancelar'
         }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: form.attr('action'),
-                    method: 'POST',
-                    data: form.serialize(),
-                    success: function(response) {
-                        if (response.success) {
-                            Swal.fire({ icon: 'success', title: 'Deshabilitada', text: response.message, timer: 1500, showConfirmButton: false });
-                            const fila = form.closest('tr');
-                            fila.find('.estado-badge').removeClass('bg-success').addClass('bg-secondary').text('Deshabilitado');
-                            // Reemplazar acción por botón restaurar
-                            const personaId = fila.data('persona-id');
-                            const acciones = fila.find('.acciones-persona');
-                            acciones.find('form').remove();
-                            const restoreUrl = acciones.data('restore-url') || `/dashboard/personas/${personaId}/restore`;
-                            acciones.append(`<button type="button" class="btn btn-success btn-restaurar-persona" data-id="${personaId}" data-url="${restoreUrl}"><i class="fas fa-undo"></i></button>`);
-                            acciones.data('restore-url', restoreUrl);
-                            tabla.row(fila).invalidate().draw(false);
-                        }
-                    },
-                    error: function() {
-                        Swal.fire({ icon: 'error', title: 'Error', text: 'No se pudo deshabilitar la persona' });
+            if (!result.isConfirmed) return;
+
+            $.ajax({
+                url: url,
+                method: 'POST',
+                data: { _method: 'DELETE' },
+                success: function(response) {
+                    if (!response || response.success === false) {
+                        Swal.fire({ icon: 'error', title: 'Error', text: response?.message || 'No se pudo deshabilitar la persona' });
+                        return;
                     }
-                });
-            }
+                    Swal.fire({ icon: 'success', title: 'Deshabilitada', text: response.message || 'Persona deshabilitada', timer: 1500, showConfirmButton: false });
+                    fila.find('.estado-badge').removeClass('bg-success').addClass('bg-secondary').text('Deshabilitado');
+                    const restoreUrl = acciones.data('restore-url') || `/dashboard/personas/${personaId}/restore`;
+                    // Reemplazar botón de deshabilitar por restaurar
+                    boton.replaceWith(`<button type="button" class="btn btn-success btn-restaurar-persona" data-id="${personaId}" data-url="${restoreUrl}"><i class="material-icons">restore</i></button>`);
+                    acciones.data('restore-url', restoreUrl);
+                    tabla.row(fila).invalidate().draw(false);
+                },
+                error: function() {
+                    Swal.fire({ icon: 'error', title: 'Error', text: 'No se pudo deshabilitar la persona' });
+                }
+            });
         });
     });
 
@@ -697,15 +709,7 @@ $('#verPersonaModal').on('show.bs.modal', function(event) {
                         const acciones = fila.find('.acciones-persona');
                         const restoreUrl = acciones.data('restore-url') || `/dashboard/personas/${id}/restore`;
                         acciones.find('.btn-restaurar-persona').remove();
-                        acciones.append(`
-                            <form action="/dashboard/personas/${id}" method="POST" class="d-inline form-deshabilitar-persona" data-restore-url="${restoreUrl}">
-                                <input type="hidden" name="_token" value="${$('meta[name="csrf-token"]').attr('content')}">
-                                <input type="hidden" name="_method" value="DELETE">
-                                <button type="submit" class="btn btn-danger">
-                                    <i class="fas fa-user-slash"></i>
-                                </button>
-                            </form>
-                        `);
+                        acciones.append(`<button type="button" class="btn btn-danger btn-deshabilitar-persona" data-url="/dashboard/personas/${id}"><i class="material-icons">person_off</i></button>`);
                         acciones.data('restore-url', restoreUrl);
                         tabla.row(fila).invalidate().draw(false);
                     },
@@ -719,5 +723,13 @@ $('#verPersonaModal').on('show.bs.modal', function(event) {
         });
     });
 });
+
+    // (Eliminado) Form oculto: ahora usamos AJAX con SweetAlert en el click handler
 </script>
 @endpush
+
+<!-- Formulario global oculto para DELETE de persona -->
+<form id="persona-destroy-form" method="POST" class="d-none">
+    @csrf
+    @method('DELETE')
+</form>

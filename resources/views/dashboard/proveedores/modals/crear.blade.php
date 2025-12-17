@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header bg-success text-white">
-                <h5 class="modal-title"><i class="fas fa-truck me-2"></i>Registrar Proveedor</h5>
+                <h5 class="modal-title"><i class="material-icons me-2">local_shipping</i>Registrar Proveedor</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <form id="formCrearProveedor" method="POST" action="{{ route('dashboard.proveedores.store') }}">
@@ -106,8 +106,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-success"><i class="fas fa-save me-2"></i>Guardar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="material-icons me-2">close</i>Cancelar</button>
+                    <button type="submit" class="btn btn-success"><i class="material-icons me-2">save</i>Guardar</button>
                 </div>
             </form>
         </div>

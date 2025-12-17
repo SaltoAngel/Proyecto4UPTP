@@ -22,6 +22,16 @@ Route::get('/dashboard', function () {
 
 
 
+// GeoJSON público para el mapa de Venezuela
+Route::get('/geo/ve.json', function () {
+    $path = resource_path('js/ve.json');
+    abort_unless(file_exists($path), 404);
+    return response()->file($path, [
+        'Content-Type' => 'application/json',
+        'Cache-Control' => 'public, max-age=604800', // 7 días
+    ]);
+})->name('geo.ve');
+
 // Panel Administrativo
 Route::middleware([\App\Http\Middleware\Authenticate::class])->prefix('dashboard')->name('dashboard.')->group(function () {
         // //Usuarios

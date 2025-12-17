@@ -1,16 +1,28 @@
 @extends('layouts.material')
 
-@section('title', 'Proveedores - ' . config('app.name'))
+@section('title', config('app.name'))
+
+@push('styles')
+<style>
+    .acciones-proveedor .btn { display: inline-flex; align-items: center; justify-content: center; }
+    .acciones-proveedor .btn .material-icons { font-size: 18px; line-height: 1; }
+    .acciones-proveedor .btn + .btn { margin-left: -1px; }
+    .acciones-proveedor form { display: inline-block; margin: 0; }
+    .acciones-proveedor .btn { border-radius: 0; }
+    .acciones-proveedor .btn:first-child { border-top-left-radius: .2rem; border-bottom-left-radius: .2rem; }
+    .acciones-proveedor .btn:last-child { border-top-right-radius: .2rem; border-bottom-right-radius: .2rem; }
+</style>
+@endpush
 
 @section('content')
 <div class="row mb-4">
     <div class="col-12 d-flex justify-content-between align-items-center">
         <div>
-            <h2 class="mb-0"><i class="fas fa-truck me-2 text-success"></i>Módulo de Proveedores</h2>
-            <p class="text-muted mb-0">Gestión de proveedores vinculados a personas</p>
+            <h2 class="mb-0">Módulo de Proveedores</h2>
+                <p class="text-muted mb-0">Gestión de proveedores vinculados a personas</p>
         </div>
-        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#crearProveedorModal">
-            <i class="fas fa-plus me-2"></i>Nuevo Proveedor
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#crearProveedorModal">
+                <i class="material-icons me-2">add</i>Nuevo Proveedor
         </button>
     </div>
 </div>
@@ -49,10 +61,10 @@
                                 @php $categorias = $proveedor->tiposProveedores->pluck('nombre_tipo')->all(); @endphp
                                 @if(!empty($categorias))
                                     @foreach($categorias as $cat)
-                                        <span class="badge text-bg-info me-1">{{ $cat }}</span>
+                                        <span class="badge bg-info me-1">{{ $cat }}</span>
                                     @endforeach
                                 @else
-                                    <span class="badge text-bg-light">Sin categoría</span>
+                                     <span class="badge bg-light text-dark">Sin categoría</span>
                                 @endif
                             </td>
                             <td>
@@ -68,27 +80,28 @@
                             </td>
                             <td>
                                 <span class="badge {{ $estaDeshabilitado ? 'text-bg-secondary' : 'text-bg-success' }} estado-badge">
+                                    <span class="badge {{ $estaDeshabilitado ? 'bg-secondary' : 'bg-success' }} estado-badge">
                                     {{ $estaDeshabilitado ? 'Deshabilitado' : ucfirst($proveedor->estado) }}
                                 </span>
                             </td>
                             <td>
                                 <div class="btn-group btn-group-sm acciones-proveedor" data-restore-url="{{ route('dashboard.proveedores.restore', $proveedor->id) }}">
                                     <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#verProveedorModal" data-proveedor='@json($proveedor)'>
-                                        <i class="fas fa-eye"></i>
+                                            <i class="material-icons">visibility</i>
                                     </button>
                                     <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editarProveedorModal" data-proveedor='@json($proveedor)'>
-                                        <i class="fas fa-edit"></i>
+                                            <i class="material-icons">edit</i>
                                     </button>
                                     @if($estaDeshabilitado)
                                         <button type="button" class="btn btn-success btn-restaurar-proveedor" data-id="{{ $proveedor->id }}" data-url="{{ route('dashboard.proveedores.restore', $proveedor->id) }}">
-                                            <i class="fas fa-undo"></i>
+                                                <i class="material-icons">restore</i>
                                         </button>
                                     @else
                                         <form action="{{ route('dashboard.proveedores.destroy', $proveedor) }}" method="POST" class="d-inline form-deshabilitar-proveedor">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger">
-                                                <i class="fas fa-ban"></i>
+                                                <button type="submit" class="btn btn-danger">
+                                                    <i class="material-icons">block</i>
                                             </button>
                                         </form>
                                     @endif
@@ -98,7 +111,7 @@
                     @empty
                         <tr>
                             <td colspan="7" class="text-center text-muted py-4">
-                                <i class="fas fa-truck-loading fa-2x mb-3"></i>
+                                    <i class="material-icons" style="font-size:2rem;">local_shipping</i>
                                 <p>No se encontraron proveedores registrados</p>
                             </td>
                         </tr>
@@ -205,7 +218,7 @@ $(document).ready(function() {
         if (!normalizados.length) {
             return '<span class="badge text-bg-light">Sin categoría</span>';
         }
-        return normalizados.map(t => `<span class=\"badge text-bg-info me-1\">${t.nombre_tipo}</span>`).join('');
+        return normalizados.map(t => `<span class=\"badge bg-info me-1\">${t.nombre_tipo}</span>`).join('');
     }
 
     function renderContacto(proveedor) {
@@ -403,9 +416,9 @@ $(document).ready(function() {
             url: form.attr('action'),
             method: 'POST',
             data: form.serialize(),
-            beforeSend: () => form.find('button[type="submit"]').prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i>Guardando...'),
+            beforeSend: () => form.find('button[type="submit"]').prop('disabled', true).html('<i class="material-icons me-2">hourglass_empty</i>Guardando...'),
             success: (response) => {
-                form.find('button[type="submit"]').prop('disabled', false).html('<i class="fas fa-save me-2"></i>Guardar');
+                form.find('button[type="submit"]').prop('disabled', false).html('<i class="material-icons me-2">save</i>Guardar');
                 const proveedor = response.data;
                 addRow(proveedor);
                 $('#crearProveedorModal').modal('hide');
@@ -430,9 +443,9 @@ $(document).ready(function() {
             url: form.attr('action'),
             method: 'POST',
             data: form.serialize(),
-            beforeSend: () => form.find('button[type="submit"]').prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i>Actualizando...'),
+            beforeSend: () => form.find('button[type="submit"]').prop('disabled', true).html('<i class="material-icons me-2">hourglass_empty</i>Actualizando...'),
             success: (response) => {
-                form.find('button[type="submit"]').prop('disabled', false).html('<i class="fas fa-save me-2"></i>Actualizar');
+                form.find('button[type="submit"]').prop('disabled', false).html('<i class="material-icons me-2">save</i>Actualizar');
                 const proveedor = response.data;
                 updateRow(proveedor);
                 $('#editarProveedorModal').modal('hide');

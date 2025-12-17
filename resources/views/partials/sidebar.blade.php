@@ -40,15 +40,60 @@
                     <span class="nav-link-text ms-1">Bitácora</span>
                 </a>
             </li>
-            <li class="nav-item mt-3">
-                <a class="nav-link text-white" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="material-icons opacity-10">logout</i>
-                    </div>
-                    <span class="nav-link-text ms-1">Salir</span>
-                </a>
-                <form id="logout-form" action="{{ route('dashboard.logout') }}" method="GET" class="d-none"></form>
-            </li>
         </ul>
+        <!-- Debug Panel -->
+        <div class="mt-3">
+            <a class="nav-link d-flex align-items-center {{ request()->get('debug') ? 'active' : '' }}" data-bs-toggle="collapse" href="#debug-sidebar-panel" role="button" aria-expanded="false" aria-controls="debug-sidebar-panel">
+                <div class="text-center me-2 d-flex align-items-center justify-content-center">
+                    <i class="material-icons opacity-10">bug_report</i>
+                </div>
+                <span class="nav-link-text ms-1">Debug</span>
+                <i class="material-icons ms-auto">expand_more</i>
+            </a>
+            <div class="collapse" id="debug-sidebar-panel">
+                <div class="border rounded p-2 bg-light" style="max-height: 180px; overflow:auto;">
+                    <ul class="list-unstyled small mb-0" id="sidebar-debug-scripts">
+                        <li class="text-muted">Cargando scripts…</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="sidenav-footer position-absolute w-100 bottom-0 px-3 pb-3">
+        <a class="btn btn-outline-danger w-100 d-flex align-items-center justify-content-center" href="#" onclick="event.preventDefault(); document.getElementById('sidebar-logout-form').submit();">
+            <i class="material-icons me-2">logout</i>
+            Salir
+        </a>
+        <form id="sidebar-logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+            @csrf
+        </form>
     </div>
 </aside>
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    try {
+        const list = document.getElementById('sidebar-debug-scripts');
+        if (!list) return;
+        const scripts = Array.from(document.scripts).map(s => s.src).filter(Boolean);
+        const unique = Array.from(new Set(scripts));
+        if (unique.length === 0) {
+            list.innerHTML = '<li class="text-muted">No hay scripts con src cargados.</li>';
+            return;
+        }
+        const items = unique.map(src => {
+            const cleanSrc = src.split('#')[0];
+            const name = cleanSrc.split('/').pop().split('?')[0] || cleanSrc;
+            return `<li class="d-flex align-items-center gap-2 mb-1">
+                                <i class="material-icons" style="font-size:16px;">insert_link</i>
+                                <span title="${cleanSrc}">${name}</span>
+                            </li>`;
+        }).join('');
+        list.innerHTML = items;
+    } catch (e) {
+        console.error('Sidebar debug error:', e);
+    }
+});
+</script>
+@endpush

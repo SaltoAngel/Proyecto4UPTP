@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Material Dashboard')</title>
+    <title>@yield('title', config('app.name'))</title>
 
     <!-- Google Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,6 +28,40 @@
         .navbar.navbar-main { background: #fff; }
         .navbar .navbar-nav .nav-link, .navbar .navbar-nav .nav-link i, .navbar .navbar-nav .nav-link span { color: #344767; }
         .card, .card-header, .card-body { color: #344767; }
+        /* DataTables: arreglar paginación con texto (Primero/Anterior/Siguiente/Último) */
+        .dataTables_wrapper .dataTables_paginate .pagination .page-link {
+            width: auto !important;
+            height: auto !important;
+            min-width: 2.25rem;
+            padding: .375rem .75rem;
+            border-radius: .375rem !important;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.2;
+        }
+        .dataTables_wrapper .dataTables_paginate .pagination .page-item { margin: 0 .125rem; }
+        .dataTables_wrapper .dataTables_paginate .pagination .page-item.active .page-link {
+            background: #1a73e8;
+            border-color: #1a73e8;
+            color: #fff;
+        }
+        /* Compatibilidad de inputs en modales con Material CSS */
+        .modal .modal-content { background-color: #fff; }
+        .modal .form-label, .modal .form-check-label { color: #344767; }
+        .modal .form-control, .modal .form-select, .modal textarea {
+            background-color: #fff !important;
+            color: #344767 !important;
+            border: 1px solid #d2d6da !important;
+        }
+        .modal .form-control:disabled, .modal .form-select:disabled, .modal textarea:disabled {
+            background-color: #e9ecef !important;
+            opacity: 1;
+        }
+        .modal .form-control::placeholder, .modal textarea::placeholder { color: #9ca3af !important; opacity: 1; }
+        .modal .input-group-text { background-color: #f8f9fa; color: #344767; border: 1px solid #d2d6da; }
+        /* Canvas de mapa: ocupar ancho completo */
+        .geo-canvas { width: 100% !important; display: block; }
     </style>
     @stack('styles')
 </head>
@@ -44,7 +78,7 @@
                 <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
                     <ul class="navbar-nav ms-auto justify-content-end">
                         <li class="nav-item d-flex align-items-center">
-                            <span class="d-sm-inline d-none text-muted"><i class="material-icons me-1">person</i>{{ auth()->user()->name ?? 'Usuario' }}</span>
+                            <span class="d-sm-inline d-none text-muted"><i class="material-icons me-1">person</i>{{ auth()->user()->persona->nombre_completo ?? auth()->user()->name }}</span>
                         </li>
                     </ul>
                 </div>
@@ -64,6 +98,9 @@
     <script src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+    <!-- Geo charts dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-geo@4.3.0/build/index.umd.min.js"></script>
     <script src="{{ asset('material/js/material-dashboard.min.js') }}"></script>
     @stack('scripts')
 </body>

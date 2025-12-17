@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header bg-warning">
-                <h5 class="modal-title"><i class="fas fa-edit me-2"></i>Editar Proveedor</h5>
+                <h5 class="modal-title"><i class="material-icons me-2">edit</i>Editar Proveedor</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <form id="formEditarProveedor" method="POST" action="#">
@@ -102,8 +102,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-warning text-dark"><i class="fas fa-save me-2"></i>Actualizar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="material-icons me-2">close</i>Cancelar</button>
+                    <button type="submit" class="btn btn-warning text-dark"><i class="material-icons me-2">save</i>Actualizar</button>
                 </div>
             </form>
         </div>

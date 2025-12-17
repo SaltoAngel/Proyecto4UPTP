@@ -25,9 +25,6 @@
             }
             .sidebar { transition: transform var(--sidebar-transition); will-change: transform; }
             .wrapper { transition: margin-left var(--sidebar-transition); will-change: margin-left; }
-            /* Estado visible/oculto del sidebar con animación */
-            body:not(.sidebar-collapsed) .sidebar { transform: translateX(0); }
-            body.sidebar-collapsed .sidebar { transform: translateX(calc(-1 * var(--sidebar-width))); }
             body:not(.sidebar-collapsed) .wrapper { margin-left: var(--sidebar-width); }
             body.sidebar-collapsed .wrapper { margin-left: 0; }
         }

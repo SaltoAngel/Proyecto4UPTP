@@ -10,10 +10,10 @@
   "search": "Buscar:",
   "zeroRecords": "No se encontraron resultados",
   "paginate": {
-    "first": "Primero",
-    "last": "Último",
-    "next": "Siguiente",
-    "previous": "Anterior"
+    "first": "<i class=\"material-icons\">first_page</i>",
+    "last": "<i class=\"material-icons\">last_page</i>",
+    "next": "<i class=\"material-icons\">chevron_right</i>",
+    "previous": "<i class=\"material-icons\">chevron_left</i>"
   },
   "aria": {
     "sortAscending": ": activar para ordenar la columna de manera ascendente",
