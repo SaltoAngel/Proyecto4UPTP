@@ -43,14 +43,10 @@ class Proveedor extends Model
         'email_comercial',
         'calificacion',
         'observaciones_calificacion',
-        'fecha_ultima_evaluacion',
         'estado',
         'fecha_registro',
         'fecha_ultima_compra',
         'monto_total_compras',
-        'banco',
-        'tipo_cuenta',
-        'numero_cuenta',
     ];
 
     protected $casts = [

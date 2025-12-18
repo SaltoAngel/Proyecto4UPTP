@@ -37,7 +37,7 @@ class DashboardController extends Controller
                 ];
             });
 
-        return view('material.dashboard', compact(
+        return view('dashboard.dashboard', compact(
             'personasCount',
             'proveedoresCount',
             'bitacoraCount',

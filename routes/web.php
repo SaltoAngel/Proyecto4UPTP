@@ -8,6 +8,8 @@ use App\Http\Controllers\dashboard\ReportesController;
 use App\Http\Controllers\dashboard\ProveedoresController;
 use App\Http\Controllers\dashboard\SettingsController;
 use App\Http\Controllers\dashboard\DashboardController;
+use App\Http\Controllers\dashboard\RecepcionesController;
+use App\Http\Controllers\dashboard\OrdenesCompraController;
 
 Route::get('/', function () {
     return Auth::check() ? redirect('/dashboard') : view('welcome');
@@ -54,6 +56,14 @@ Route::middleware([\App\Http\Middleware\Authenticate::class])
         ]);
         Route::post('proveedores/buscar', [ProveedoresController::class, 'buscar'])->name('proveedores.buscar');
         Route::post('proveedores/{id}/restore', [ProveedoresController::class, 'restore'])->name('proveedores.restore');
+
+        // Recepciones (stubs)
+        Route::get('/recepciones', [RecepcionesController::class, 'index'])->name('recepciones.index');
+        Route::get('/recepciones/create', [RecepcionesController::class, 'create'])->name('recepciones.create');
+
+        // Órdenes de compra (stubs)
+        Route::get('/ordenes-compra', [OrdenesCompraController::class, 'index'])->name('ordenes-compra.index');
+        Route::get('/ordenes-compra/create', [OrdenesCompraController::class, 'create'])->name('ordenes-compra.create');
 
         // Reportes
         Route::get('/reportes/personas/{formato?}', [ReportesController::class, 'personas'])
