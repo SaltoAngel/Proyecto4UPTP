@@ -1,3 +1,10 @@
+{{--
+  Partial: Header (Navbar principal)
+  Contiene:
+    - Título de la vista (yield title)
+    - Campana de notificaciones (dropdown placeholder)
+    - Menú de usuario con acceso a Configuración y Logout (POST)
+--}}
 <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" data-scroll="false">
   <div class="container-fluid py-1 px-3">
     <nav aria-label="breadcrumb">
@@ -5,7 +12,7 @@
     </nav>
     <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
       <ul class="navbar-nav ms-auto align-items-center">
-        <!-- Notificaciones -->
+        <!-- Notificaciones: dropdown con placeholder -->
         <li class="nav-item dropdown me-3">
           <a class="nav-link p-0" href="#" id="notifDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="Notificaciones">
             <i class="material-icons">notifications</i>
@@ -14,7 +21,7 @@
             <li class="px-2 py-1 text-sm text-muted">No hay notificaciones</li>
           </ul>
         </li>
-        <!-- Usuario -->
+        <!-- Usuario: nombre y menú (configuración + logout) -->
         <li class="nav-item dropdown">
           <a class="nav-link d-flex align-items-center p-0" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="material-icons me-1">person</i>

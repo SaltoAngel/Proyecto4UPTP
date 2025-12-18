@@ -1,3 +1,13 @@
+{{--
+    Layout: Material Dashboard
+    Propósito: Estructura base para todas las vistas del panel.
+    Incluye:
+        - Fuentes, Material CSS, DataTables y SweetAlert.
+        - Overrides de estilo (sidebar, navbar, cards, forms, paginación, modales).
+        - Scripts: Bootstrap, jQuery, DataTables, Chart.js, Geo (topojson + chartjs-chart-geo), Material Dashboard.
+        - Helpers: partials.skeleton (skeletonAttach/skeletonReady) para loading.
+        - Partials: sidebar, header, footer.
+--}}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -62,6 +72,12 @@
         .modal .input-group-text { background-color: #f8f9fa; color: #344767; border: 1px solid #d2d6da; }
         /* Canvas de mapa: ocupar ancho completo */
         .geo-canvas { width: 100% !important; display: block; }
+        /* Skeleton loading */
+        .skeleton { position: relative; overflow: hidden; background-color: #e9ecef; border-radius: .375rem; }
+        .skeleton::after { content: ""; position: absolute; top: 0; left: -150px; height: 100%; width: 150px; background: linear-gradient(90deg, transparent, rgba(255,255,255,.6), transparent); animation: skeleton-shimmer 1.2s ease-in-out infinite; }
+        .skeleton-text { height: 12px; margin-bottom: 8px; border-radius: 4px; background-color: #e9ecef; }
+        .skeleton-rect { height: 170px; }
+        @keyframes skeleton-shimmer { 0% { transform: translateX(0); } 100% { transform: translateX(100%); } }
         /* Overrides globales para formularios (fuera de modales) */
         .card .form-label, .form-label { color: #344767; }
         .card .form-control, .card .form-select, .card textarea,
@@ -101,6 +117,7 @@
     <script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-geo@4.3.0/build/index.umd.min.js"></script>
     <script src="{{ asset('material/js/material-dashboard.min.js') }}"></script>
+    @include('partials.skeleton')
     @stack('scripts')
 </body>
 </html>

@@ -1,4 +1,18 @@
 <?php
+/**
+ * Modelo: Bitacora
+ * Propósito: Registro de acciones del sistema (quién, qué, cuándo) con diffs de datos.
+ * Tabla: bitacora
+ * Atributos:
+ *  - codigo, user_id, modulo, accion, detalle, datos_anteriores, datos_nuevos, ip, user_agent
+ * Casts:
+ *  - datos_anteriores, datos_nuevos como array; timestamps como datetime
+ * Relaciones:
+ *  - user(): belongsTo User
+ * Utilidades:
+ *  - generarCodigo(): crea código único con fecha
+ *  - registrar(): helper para insertar registros de bitácora desde acciones
+ */
 
 namespace App\Models;
 

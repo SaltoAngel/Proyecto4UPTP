@@ -1,4 +1,19 @@
 <?php
+/**
+ * Modelo: Proveedor
+ * Propósito: Representa proveedores y su información comercial.
+ * Tabla: proveedores (explícita para evitar pluralización incorrecta)
+ * Atributos:
+ *  - contacto, calificación, fechas, cuentas bancarias, monto_total_compras, etc.
+ * Relaciones:
+ *  - persona(): belongsTo Personas
+ *  - tiposProveedores(): belongsToMany TiposProveedores
+ *  - repuestos(), materiasPrimas(): hasMany
+ * Utilidades:
+ *  - generarCodigo(): genera código PROV-0001
+ * Eventos:
+ *  - boot(): asigna automáticamente código_proveedor en creating
+ */
 
 namespace App\Models;
 

@@ -1,3 +1,10 @@
+{{--
+    Partial: Sidebar (Navegación lateral)
+    Contiene:
+        - Enlaces a Dashboard, Personas, Proveedores y Bitácora.
+        - Panel Debug plegable: lista scripts cargados (por src) para verificación.
+        - Footer vacío (logout se trasladó al header).
+--}}
 <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 bg-white" id="sidenav-main">
     <div class="sidenav-header">
         <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
@@ -41,7 +48,7 @@
                 </a>
             </li>
         </ul>
-        <!-- Debug Panel -->
+        <!-- Debug Panel: listado de scripts cargados -->
         <div class="mt-3">
             <a class="nav-link d-flex align-items-center {{ request()->get('debug') ? 'active' : '' }}" data-bs-toggle="collapse" href="#debug-sidebar-panel" role="button" aria-expanded="false" aria-controls="debug-sidebar-panel">
                 <div class="text-center me-2 d-flex align-items-center justify-content-center">

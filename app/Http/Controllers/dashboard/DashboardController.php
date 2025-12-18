@@ -1,4 +1,14 @@
 <?php
+/**
+ * Controlador: DashboardController
+ * Propósito: Renderizar el panel principal (Material Dashboard)
+ * Datos que provee a la vista:
+ *  - personasCount, proveedoresCount, bitacoraCount: métricas de conteo rápido
+ *  - topClientes: listado demo (últimas personas) como placeholder
+ * Notas:
+ *  - La vista usa skeleton loading y gráficos (Chart.js) + mapa (chartjs-chart-geo)
+ *  - Conectar topClientes a datos reales cuando se defina el criterio
+ */
 
 namespace App\Http\Controllers\dashboard;
 

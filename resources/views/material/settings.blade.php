@@ -2,6 +2,14 @@
 
 @section('title', 'Configuración de Usuario')
 
+{{--
+  Vista: Configuración de Usuario
+  Propósito: Editar datos personales vinculados a `persona` y cambiar contraseña del `user` autenticado.
+  Flujo:
+    - GET muestra formulario con valores actuales.
+    - POST `dashboard.configuracion.update` valida y guarda en `persona`; si se envía password, verifica `current_password` y actualiza.
+  Estilos: Usa overrides globales para inputs en el layout Material.
+--}}
 @section('content')
 <div class="row">
   <div class="col-lg-7 mb-4">
@@ -10,6 +18,7 @@
         <h6 class="mb-0"><i class="material-icons me-2" style="font-size:18px">person</i>Datos personales</h6>
       </div>
       <div class="card-body">
+        {{-- Mensajes de error y éxito --}}
         @if ($errors->any())
           <div class="alert alert-danger">
             <ul class="mb-0">
@@ -22,6 +31,7 @@
         @if (session('status'))
           <div class="alert alert-success">{{ session('status') }}</div>
         @endif
+        {{-- Formulario de datos personales (tabla personas) --}}
         <form method="POST" action="{{ route('dashboard.configuracion.update') }}">
           @csrf
           <div class="row g-3">
@@ -71,6 +81,7 @@
         <h6 class="mb-0"><i class="material-icons me-2" style="font-size:18px">lock</i>Cambiar contraseña</h6>
       </div>
       <div class="card-body">
+        {{-- Formulario de cambio de contraseña (tabla users) --}}
         <form method="POST" action="{{ route('dashboard.configuracion.update') }}">
           @csrf
           <div class="mb-3">

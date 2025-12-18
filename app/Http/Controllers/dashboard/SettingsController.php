@@ -1,4 +1,14 @@
 <?php
+/**
+ * Controlador: SettingsController
+ * Propósito: Mostrar y actualizar la configuración del usuario autenticado.
+ * Flujo:
+ *  - index(): muestra la vista con datos de usuario y su persona relacionada
+ *  - update(): valida y guarda campos en persona; si se envía password, valida current_password y actualiza en users
+ * Consideraciones:
+ *  - Email se almacena en la tabla personas (no en users)
+ *  - Usa mensajes de error/éxito vía sesión
+ */
 
 namespace App\Http\Controllers\dashboard;
 
