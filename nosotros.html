@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>Nosotros - Nupilca</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="webp" href="../img/logo.jpg">
@@ -51,29 +51,34 @@
             align-items: center;
             padding: 15px 0;
         }
-    .logo {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-}
-
-.logo img {
-    height: 70px; /* Misma altura que en index.php */
-    width: auto;
-    margin-right: 10px;
-    transition: all 0.3s;
-}
-
-.logo img:hover {
-    transform: scale(1.1);
-}
-
-.logo h1 {
-    font-size: 1.8rem;
-    color: var(--primary-color);
-    margin: 0;
-    white-space: nowrap;
-}
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .logo img {
+            height: 70px; /* Misma altura que en index.php */
+            width: auto;
+            margin-right: 10px;
+            transition: all 0.3s;
+            max-width: 100%;
+        }
+        
+        .logo img:hover {
+            transform: scale(1.1);
+        }
+        
+        .logo h1 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin: 0;
+            white-space: nowrap;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+        }
+        
         .nav-links {
             display: flex;
             list-style: none;
@@ -90,6 +95,8 @@
             transition: color 0.3s;
             padding: 5px 10px;
             border-radius: 5px;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .nav-links a:hover {
@@ -108,6 +115,14 @@
             gap: 15px;
         }
         
+        .nav-buttons.mobile {
+            display: none;
+            flex-direction: column;
+            width: 100%;
+            padding: 20px;
+            gap: 10px;
+        }
+        
         .btn {
             padding: 10px 20px;
             border-radius: 5px;
@@ -118,6 +133,9 @@
             text-decoration: none;
             display: inline-block;
             text-align: center;
+            font-size: 16px;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .btn-primary {
@@ -157,12 +175,16 @@
         .about-hero h1 {
             font-size: 3.5rem;
             margin-bottom: 20px;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .about-hero p {
             font-size: 1.3rem;
             max-width: 800px;
             margin: 0 auto 30px;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         /* Sección de historia */
@@ -180,12 +202,16 @@
             font-size: 2.5rem;
             color: var(--primary-color);
             margin-bottom: 15px;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .section-title p {
             color: #666;
             max-width: 700px;
             margin: 0 auto;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .history-timeline {
@@ -222,6 +248,16 @@
             background-color: #f0f7f0;
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .timeline-content h3 {
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+        }
+        
+        .timeline-content p {
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .timeline-year {
@@ -282,6 +318,13 @@
         .value-card h3 {
             color: var(--primary-color);
             margin-bottom: 15px;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+        }
+        
+        .value-card p {
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         /* Equipo */
@@ -320,6 +363,7 @@
             height: 100%;
             object-fit: cover;
             transition: transform 0.5s;
+            max-width: 100%;
         }
         
         .team-member:hover .member-image img {
@@ -334,12 +378,21 @@
         .member-info h3 {
             color: var(--primary-color);
             margin-bottom: 5px;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .member-position {
             color: var(--accent-color);
             font-weight: 500;
             margin-bottom: 15px;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+        }
+        
+        .member-info p {
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .member-social {
@@ -383,11 +436,15 @@
         .stat-item h3 {
             font-size: 3rem;
             margin-bottom: 10px;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .stat-item p {
             font-size: 1.1rem;
             opacity: 0.9;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         /* Certificaciones */
@@ -435,12 +492,16 @@
         .cta h2 {
             font-size: 2.5rem;
             margin-bottom: 20px;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .cta p {
             font-size: 1.2rem;
             max-width: 700px;
             margin: 0 auto 30px;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         /* Footer */
@@ -461,6 +522,8 @@
             font-size: 1.2rem;
             margin-bottom: 20px;
             color: var(--accent-color);
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .footer-column ul {
@@ -475,10 +538,17 @@
             color: #ccc;
             text-decoration: none;
             transition: color 0.3s;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .footer-column a:hover {
             color: white;
+        }
+        
+        .footer-column p {
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .social-icons {
@@ -510,7 +580,81 @@
             color: #aaa;
         }
         
-        /* Responsive */
+        .copyright p {
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+        }
+        
+        /* Responsive - Breakpoints principales */
+        @media (max-width: 1200px) {
+            .about-hero h1 {
+                font-size: 3rem;
+            }
+            
+            .about-hero p {
+                font-size: 1.2rem;
+            }
+            
+            .section-title h2 {
+                font-size: 2.2rem;
+            }
+            
+            .timeline-year {
+                width: 90px;
+                height: 90px;
+                font-size: 1.3rem;
+            }
+        }
+        
+        @media (max-width: 1024px) {
+            .about-hero {
+                padding: 100px 0;
+            }
+            
+            .about-hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .about-hero p {
+                font-size: 1.1rem;
+            }
+            
+            .history-section,
+            .values-section,
+            .team-section,
+            .stats-section,
+            .certifications,
+            .cta {
+                padding: 70px 0;
+            }
+            
+            .section-title {
+                margin-bottom: 40px;
+            }
+            
+            .timeline-year {
+                width: 80px;
+                height: 80px;
+                font-size: 1.2rem;
+            }
+            
+            .timeline-content {
+                padding: 25px;
+            }
+            
+            .value-card {
+                padding: 30px 25px;
+            }
+            
+            .cta h2 {
+                font-size: 2.2rem;
+            }
+            
+            .cta p {
+                font-size: 1.1rem;
+            }
+        }
+        
         @media (max-width: 992px) {
             .history-timeline::before {
                 left: 30px;
@@ -524,17 +668,36 @@
             .timeline-year {
                 margin-right: 30px;
                 margin-left: 0;
-                width: 80px;
-                height: 80px;
+                width: 70px;
+                height: 70px;
+                font-size: 1.1rem;
             }
             
             .timeline-content {
                 margin-left: 0;
                 margin-right: 0;
             }
+            
+            .values-grid,
+            .team-grid {
+                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+                gap: 25px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .cert-grid {
+                grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            }
         }
         
         @media (max-width: 768px) {
+            .container {
+                width: 95%;
+            }
+            
             .menu-toggle {
                 display: block;
             }
@@ -551,6 +714,7 @@
                 justify-content: flex-start;
                 padding-top: 50px;
                 transition: left 0.3s;
+                z-index: 999;
             }
             
             .nav-links.active {
@@ -561,23 +725,463 @@
                 margin: 15px 0;
             }
             
+            .nav-buttons {
+                display: none;
+            }
+            
+            .nav-links.active + .nav-buttons.mobile {
+                display: flex;
+                position: fixed;
+                top: calc(80px + 100vh - 80px - 120px);
+                left: 0;
+                width: 100%;
+                z-index: 1000;
+            }
+            
+            .logo img {
+                height: 60px;
+            }
+            
+            .logo h1 {
+                font-size: 1.6rem;
+            }
+            
+            .about-hero {
+                padding: 80px 0;
+            }
+            
             .about-hero h1 {
+                font-size: 2.4rem;
+            }
+            
+            .about-hero p {
+                font-size: 1.1rem;
+                padding: 0 15px;
+            }
+            
+            .history-section,
+            .values-section,
+            .team-section,
+            .stats-section,
+            .certifications,
+            .cta {
+                padding: 60px 0;
+            }
+            
+            .section-title {
+                margin-bottom: 30px;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+            
+            .section-title p {
+                padding: 0 15px;
+            }
+            
+            .history-timeline::before {
+                left: 20px;
+            }
+            
+            .timeline-item {
+                margin-bottom: 40px;
+            }
+            
+            .timeline-year {
+                width: 60px;
+                height: 60px;
+                font-size: 1rem;
+                margin-right: 20px;
+            }
+            
+            .timeline-content {
+                padding: 20px;
+            }
+            
+            .timeline-content h3 {
+                font-size: 1.3rem;
+            }
+            
+            .values-grid,
+            .team-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .value-card {
+                padding: 25px 20px;
+            }
+            
+            .value-icon {
+                width: 70px;
+                height: 70px;
+                font-size: 1.7rem;
+            }
+            
+            .member-image {
+                height: 220px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+            
+            .stat-item h3 {
                 font-size: 2.5rem;
             }
+            
+            .cert-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+            
+            .cert-item {
+                padding: 20px;
+            }
+            
+            .cta {
+                padding: 50px 0;
+            }
+            
+            .cta h2 {
+                font-size: 2rem;
+            }
+            
+            .cta p {
+                font-size: 1.1rem;
+                padding: 0 15px;
+            }
+            
+            .btn {
+                padding: 12px 20px;
+                font-size: 0.95rem;
+            }
         }
-        .header .logo{
-    cursor: pointer;
-}
-
-.header .logo img{
-    height: 70px;
-    width: auto;
-    transition: all 0.3s;
-}
-
-.header .logo img:hover{
-    transform: scale(1.2);
-}
+        
+        @media (max-width: 576px) {
+            .logo h1 {
+                font-size: 1.4rem;
+            }
+            
+            .logo img {
+                height: 50px;
+            }
+            
+            .about-hero {
+                padding: 70px 0;
+            }
+            
+            .about-hero h1 {
+                font-size: 2rem;
+                padding: 0 10px;
+            }
+            
+            .about-hero p {
+                font-size: 1rem;
+                padding: 0 10px;
+            }
+            
+            .history-section,
+            .values-section,
+            .team-section,
+            .stats-section,
+            .certifications,
+            .cta {
+                padding: 50px 0;
+            }
+            
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+            
+            .section-title p {
+                font-size: 1rem;
+            }
+            
+            .timeline-item {
+                margin-bottom: 30px;
+            }
+            
+            .timeline-year {
+                width: 50px;
+                height: 50px;
+                font-size: 0.9rem;
+                margin-right: 15px;
+            }
+            
+            .timeline-content {
+                padding: 15px;
+            }
+            
+            .timeline-content h3 {
+                font-size: 1.2rem;
+            }
+            
+            .timeline-content p {
+                font-size: 0.95rem;
+            }
+            
+            .value-card h3 {
+                font-size: 1.3rem;
+            }
+            
+            .member-info h3 {
+                font-size: 1.3rem;
+            }
+            
+            .member-info p {
+                font-size: 0.95rem;
+            }
+            
+            .stat-item h3 {
+                font-size: 2rem;
+            }
+            
+            .stat-item p {
+                font-size: 1rem;
+            }
+            
+            .cta h2 {
+                font-size: 1.8rem;
+            }
+            
+            .cta p {
+                font-size: 1rem;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 25px;
+            }
+            
+            .social-icons {
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .logo h1 {
+                font-size: 1.2rem;
+                white-space: normal;
+            }
+            
+            .logo img {
+                height: 45px;
+            }
+            
+            .about-hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .about-hero p {
+                font-size: 0.95rem;
+            }
+            
+            .btn {
+                padding: 10px 18px;
+                font-size: 0.9rem;
+                width: 100%;
+                max-width: 300px;
+                margin: 0 auto;
+                display: block;
+            }
+            
+            .timeline-content .btn {
+                width: auto;
+                display: inline-block;
+            }
+            
+            .section-title h2 {
+                font-size: 1.6rem;
+            }
+            
+            .timeline-content h3 {
+                font-size: 1.1rem;
+            }
+            
+            .timeline-content p {
+                font-size: 0.9rem;
+            }
+            
+            .value-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+                margin-bottom: 15px;
+            }
+            
+            .value-card h3 {
+                font-size: 1.2rem;
+            }
+            
+            .value-card p {
+                font-size: 0.9rem;
+            }
+            
+            .member-image {
+                height: 200px;
+            }
+            
+            .member-info {
+                padding: 20px 15px;
+            }
+            
+            .member-info h3 {
+                font-size: 1.2rem;
+            }
+            
+            .member-info p {
+                font-size: 0.9rem;
+            }
+            
+            .cta h2 {
+                font-size: 1.6rem;
+            }
+            
+            .cta p {
+                font-size: 0.95rem;
+            }
+            
+            .copyright {
+                font-size: 0.8rem;
+            }
+        }
+        
+        @media (max-width: 360px) {
+            .logo h1 {
+                font-size: 1.1rem;
+            }
+            
+            .logo img {
+                height: 40px;
+            }
+            
+            .about-hero h1 {
+                font-size: 1.6rem;
+            }
+            
+            .about-hero p {
+                font-size: 0.9rem;
+            }
+            
+            .section-title h2 {
+                font-size: 1.5rem;
+            }
+            
+            .section-title p {
+                font-size: 0.9rem;
+            }
+            
+            .timeline-item {
+                flex-direction: column !important;
+                align-items: flex-start;
+            }
+            
+            .timeline-year {
+                margin-bottom: 15px;
+                align-self: flex-start;
+            }
+            
+            .timeline-content {
+                width: 100%;
+            }
+            
+            .value-card {
+                padding: 20px 15px;
+            }
+            
+            .value-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 1.3rem;
+            }
+            
+            .value-card h3 {
+                font-size: 1.1rem;
+            }
+            
+            .value-card p {
+                font-size: 0.85rem;
+            }
+            
+            .member-image {
+                height: 180px;
+            }
+            
+            .stat-item h3 {
+                font-size: 1.8rem;
+            }
+            
+            .cert-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .cta h2 {
+                font-size: 1.4rem;
+            }
+            
+            .cta p {
+                font-size: 0.9rem;
+            }
+        }
+        
+        /* Mejoras para orientación horizontal en móviles */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .about-hero {
+                padding: 60px 0;
+            }
+            
+            .about-hero h1 {
+                font-size: 2rem;
+                margin-bottom: 10px;
+            }
+            
+            .about-hero p {
+                margin-bottom: 20px;
+                font-size: 0.95rem;
+            }
+            
+            .nav-links {
+                top: 70px;
+                height: calc(100vh - 70px);
+            }
+            
+            .history-section,
+            .values-section,
+            .team-section,
+            .stats-section {
+                padding: 40px 0;
+            }
+            
+            .timeline-item {
+                margin-bottom: 30px;
+            }
+            
+            .values-grid,
+            .team-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        /* Mejoras para evitar desbordamientos de texto */
+        p, h1, h2, h3, h4, li, a {
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+        }
+        
+        /* Mejora para imágenes responsivas */
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        /* Mejora para tablas y elementos de formulario */
+        input, textarea, select, button {
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
@@ -855,7 +1459,7 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-column">
-                    <h3>Nupilca C.A</h3>
+                    <h3>Nupilca C.A</h1>
                     <p>Líderes en producción y distribución de alimentos balanceados para animales de granja.</p>
                     <div class="social-icons">
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
@@ -900,19 +1504,57 @@
     </footer>
 
     <script>
-        // Menú móvil
+        // Menú móvil mejorado
         const menuToggle = document.querySelector('.menu-toggle');
         const navLinks = document.querySelector('.nav-links');
+        const navButtons = document.querySelector('.nav-buttons');
+        
+        // Crear una copia de los botones para el menú móvil
+        const mobileButtons = navButtons.cloneNode(true);
+        mobileButtons.classList.add('mobile');
+        mobileButtons.style.display = 'none';
+        
+        // Insertar los botones después del menú
+        navLinks.parentNode.insertBefore(mobileButtons, navLinks.nextSibling);
         
         menuToggle.addEventListener('click', () => {
             navLinks.classList.toggle('active');
+            
+            // Mostrar/ocultar botones en móvil
+            if (window.innerWidth <= 768) {
+                if (navLinks.classList.contains('active')) {
+                    mobileButtons.style.display = 'flex';
+                } else {
+                    mobileButtons.style.display = 'none';
+                }
+            }
         });
         
         // Cerrar menú al hacer clic en un enlace
         document.querySelectorAll('.nav-links a').forEach(link => {
             link.addEventListener('click', () => {
                 navLinks.classList.remove('active');
+                if (window.innerWidth <= 768) {
+                    mobileButtons.style.display = 'none';
+                }
             });
+        });
+        
+        // Cerrar menú al hacer clic en cualquier botón dentro del menú móvil
+        document.querySelectorAll('.mobile .btn').forEach(button => {
+            button.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                mobileButtons.style.display = 'none';
+            });
+        });
+        
+        // Redimensionamiento de ventana
+        window.addEventListener('resize', () => {
+            // Si la ventana es más grande que 768px, asegurarse de que el menú esté visible
+            if (window.innerWidth > 768) {
+                navLinks.classList.remove('active');
+                mobileButtons.style.display = 'none';
+            }
         });
         
         // Marcar enlace activo
