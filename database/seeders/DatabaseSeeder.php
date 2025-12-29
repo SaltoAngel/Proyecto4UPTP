@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             Tipo_Proveedores::class,
             Categorias_Materias::class,
             PersonasClientesProveedoresSeeder::class,
+            ReportesSeeder::class,
         ]);
     }
 }
