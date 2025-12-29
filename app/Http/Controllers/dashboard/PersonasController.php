@@ -42,8 +42,6 @@ class PersonasController extends Controller
     public function store(PersonasRequest $request)
     {
         try {
-            Log::info('Creando nueva persona', ['data' => $request->except('_token')]);
-            
             $data = $request->validated();
             $data['activo'] = $data['activo'] ?? true;
             $data['codigo'] = $data['codigo'] ?? Persona::generarCodigo($data['tipo_documento']);
