@@ -40,4 +40,9 @@ class ReportesController extends Controller
 
         return response()->download($path, $nombre, ['Content-Type' => $contentType]);
     }
+
+        public function test()
+    {
+        return view('reportes.test'); // Crea esta vista si no existe
+    }
 }

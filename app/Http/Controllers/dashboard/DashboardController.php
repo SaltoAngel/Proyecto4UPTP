@@ -44,4 +44,30 @@ class DashboardController extends Controller
             'topClientes'
         ));
     }
+
+    /**
+     * Devuelve el estado de debug para Jasper y dependencias.
+     */
+    public function debugStatus()
+    {
+        $status = [];
+
+        // Verificar PHP Jasper
+        $status['php_jasper'] = class_exists('PHPJasper\PHPJasper') ? 'Cargado' : 'No encontrado';
+
+        // Verificar JasperStarter
+        $jasperStarterCheck = @exec('jasperstarter --version 2>&1', $output, $return);
+        $status['jasperstarter'] = $return === 0 ? 'Instalado' : 'No encontrado';
+
+        // Verificar Java
+        $javaCheck = @exec('java -version 2>&1', $output, $return);
+        $status['java'] = $return === 0 ? 'Instalado' : 'No encontrado';
+
+        // Verificar archivos .jrxml
+        $jrxmlPath = base_path('app/Reports/templates');
+        $jrxmlFiles = glob($jrxmlPath . '/*.jrxml');
+        $status['jrxml_files'] = count($jrxmlFiles) > 0 ? count($jrxmlFiles) . ' archivos encontrados' : 'No encontrados';
+
+        return response()->json($status);
+    }
 }

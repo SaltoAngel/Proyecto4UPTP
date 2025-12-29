@@ -60,6 +60,12 @@ Route::middleware([\App\Http\Middleware\Authenticate::class])
             ->whereIn('formato', ['pdf', 'xlsx'])
             ->name('reportes.personas');
 
+        // Test reports
+        Route::get('/test-reports', [ReportesController::class, 'test'])->name('test-reports');
+
+        // Debug status
+        Route::get('/debug-status', [DashboardController::class, 'debugStatus'])->name('debug-status');
+
         // Configuración de usuario
         Route::get('/configuracion', [SettingsController::class, 'index'])->name('configuracion');
         Route::post('/configuracion', [SettingsController::class, 'update'])->name('configuracion.update');
