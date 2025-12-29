@@ -2,12 +2,12 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>Servicios - Nupilca</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="webp" href="../img/logo.jpg">
     <style>
-      /* Estilos generales */
+        /* Estilos generales */
         * {
             margin: 0;
             padding: 0;
@@ -60,11 +60,14 @@
         .logo img {
             height: 50px;
             margin-right: 10px;
+            max-width: 100%;
         }
         
         .logo h1 {
             font-size: 1.8rem;
             color: var(--primary-color);
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .nav-links {
@@ -83,6 +86,8 @@
             transition: color 0.3s;
             padding: 5px 10px;
             border-radius: 5px;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .nav-links a:hover {
@@ -101,6 +106,14 @@
             gap: 15px;
         }
         
+        .nav-buttons.mobile {
+            display: none;
+            flex-direction: column;
+            width: 100%;
+            padding: 20px;
+            gap: 10px;
+        }
+        
         .btn {
             padding: 10px 20px;
             border-radius: 5px;
@@ -111,6 +124,9 @@
             text-decoration: none;
             display: inline-block;
             text-align: center;
+            font-size: 16px;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .btn-primary {
@@ -150,12 +166,16 @@
         .services-hero h1 {
             font-size: 3.5rem;
             margin-bottom: 20px;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .services-hero p {
             font-size: 1.3rem;
             max-width: 800px;
             margin: 0 auto 30px;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         /* Sección de servicios completos */
@@ -173,12 +193,16 @@
             font-size: 2.5rem;
             color: var(--primary-color);
             margin-bottom: 15px;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .section-title p {
             color: #666;
             max-width: 700px;
             margin: 0 auto;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         /* Servicio principal */
@@ -208,6 +232,7 @@
             height: 350px;
             object-fit: cover;
             transition: transform 0.5s;
+            max-width: 100%;
         }
         
         .service-image:hover img {
@@ -222,12 +247,16 @@
             font-size: 2rem;
             color: var(--primary-color);
             margin-bottom: 20px;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .service-content p {
             margin-bottom: 20px;
             font-size: 1.1rem;
             text-align: justify;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .service-features {
@@ -240,11 +269,14 @@
             display: flex;
             align-items: center;
             text-align: justify;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .service-features i {
             color: var(--primary-color);
             margin-right: 10px;
+            flex-shrink: 0;
         }
         
         /* Grid de servicios adicionales */
@@ -273,6 +305,7 @@
             width: 100%;
             height: 200px;
             object-fit: cover;
+            max-width: 100%;
         }
         
         .service-card-content {
@@ -283,6 +316,13 @@
             color: var(--primary-color);
             margin-bottom: 10px;
             font-size: 1.4rem;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+        }
+        
+        .service-card p {
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         /* Tabla de comparación */
@@ -300,6 +340,8 @@
             background-color: var(--primary-color);
             color: white;
             margin: 0;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         table {
@@ -311,6 +353,8 @@
             padding: 20px;
             text-align: left;
             border-bottom: 1px solid #eee;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         th {
@@ -340,12 +384,16 @@
         .cta h2 {
             font-size: 2.5rem;
             margin-bottom: 20px;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .cta p {
             font-size: 1.2rem;
             max-width: 700px;
             margin: 0 auto 30px;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         /* Footer */
@@ -366,6 +414,8 @@
             font-size: 1.2rem;
             margin-bottom: 20px;
             color: var(--accent-color);
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .footer-column ul {
@@ -380,10 +430,17 @@
             color: #ccc;
             text-decoration: none;
             transition: color 0.3s;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .footer-column a:hover {
             color: white;
+        }
+        
+        .footer-column p {
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .social-icons {
@@ -415,10 +472,84 @@
             color: #aaa;
         }
         
-        /* Responsive */
+        .copyright p {
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+        }
+        
+        /* Responsive - Breakpoints principales */
+        @media (max-width: 1200px) {
+            .services-hero h1 {
+                font-size: 3rem;
+            }
+            
+            .services-hero p {
+                font-size: 1.2rem;
+            }
+            
+            .main-service {
+                gap: 40px;
+                padding: 35px;
+            }
+        }
+        
+        @media (max-width: 1024px) {
+            .services-hero {
+                padding: 80px 0;
+            }
+            
+            .services-hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .services-hero p {
+                font-size: 1.1rem;
+            }
+            
+            .services-section {
+                padding: 70px 0;
+            }
+            
+            .section-title h2 {
+                font-size: 2.2rem;
+            }
+            
+            .service-content h3 {
+                font-size: 1.8rem;
+            }
+            
+            .service-content p {
+                font-size: 1rem;
+            }
+            
+            .main-service {
+                gap: 35px;
+                padding: 30px;
+                margin-bottom: 60px;
+            }
+            
+            .service-image img {
+                height: 300px;
+            }
+            
+            .cta h2 {
+                font-size: 2.2rem;
+            }
+            
+            .cta p {
+                font-size: 1.1rem;
+            }
+            
+            .services-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 25px;
+            }
+        }
+        
         @media (max-width: 992px) {
             .main-service {
                 flex-direction: column;
+                text-align: center;
             }
             
             .main-service:nth-child(even) {
@@ -428,9 +559,30 @@
             .service-image, .service-content {
                 width: 100%;
             }
+            
+            .service-image img {
+                height: 280px;
+            }
+            
+            .service-features {
+                text-align: left;
+            }
+            
+            .services-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+            
+            table {
+                display: block;
+                overflow-x: auto;
+            }
         }
         
         @media (max-width: 768px) {
+            .container {
+                width: 95%;
+            }
+            
             .menu-toggle {
                 display: block;
             }
@@ -447,6 +599,7 @@
                 justify-content: flex-start;
                 padding-top: 50px;
                 transition: left 0.3s;
+                z-index: 999;
             }
             
             .nav-links.active {
@@ -457,14 +610,363 @@
                 margin: 15px 0;
             }
             
-            .services-hero h1 {
-                font-size: 2.5rem;
+            .nav-buttons {
+                display: none;
             }
             
-            table {
-                display: block;
-                overflow-x: auto;
+            .nav-links.active + .nav-buttons.mobile {
+                display: flex;
+                position: fixed;
+                top: calc(80px + 100vh - 80px - 120px);
+                left: 0;
+                width: 100%;
+                z-index: 1000;
             }
+            
+            .services-hero {
+                padding: 70px 0;
+            }
+            
+            .services-hero h1 {
+                font-size: 2.4rem;
+            }
+            
+            .services-hero p {
+                font-size: 1.1rem;
+                padding: 0 15px;
+            }
+            
+            .services-section {
+                padding: 60px 0;
+            }
+            
+            .section-title {
+                margin-bottom: 40px;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+            
+            .section-title p {
+                padding: 0 15px;
+            }
+            
+            .main-service {
+                padding: 25px 20px;
+                margin-bottom: 50px;
+                gap: 30px;
+            }
+            
+            .service-content h3 {
+                font-size: 1.7rem;
+            }
+            
+            .service-image img {
+                height: 250px;
+            }
+            
+            .service-features li {
+                font-size: 0.95rem;
+            }
+            
+            .services-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .service-card img {
+                height: 180px;
+            }
+            
+            .service-card-content {
+                padding: 20px;
+            }
+            
+            .cta {
+                padding: 60px 0;
+            }
+            
+            .cta h2 {
+                font-size: 2rem;
+            }
+            
+            .cta p {
+                font-size: 1.1rem;
+                padding: 0 15px;
+            }
+            
+            .btn {
+                padding: 12px 20px;
+                font-size: 0.95rem;
+            }
+            
+            .comparison-table {
+                margin: 50px 0;
+            }
+            
+            .comparison-table h3 {
+                padding: 20px;
+                font-size: 1.3rem;
+            }
+            
+            th, td {
+                padding: 15px 10px;
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .logo h1 {
+                font-size: 1.5rem;
+            }
+            
+            .logo img {
+                height: 40px;
+            }
+            
+            .services-hero {
+                padding: 60px 0;
+            }
+            
+            .services-hero h1 {
+                font-size: 2rem;
+                padding: 0 10px;
+            }
+            
+            .services-hero p {
+                font-size: 1rem;
+                padding: 0 10px;
+            }
+            
+            .services-section {
+                padding: 50px 0;
+            }
+            
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+            
+            .section-title p {
+                font-size: 1rem;
+            }
+            
+            .main-service {
+                padding: 20px 15px;
+                margin-bottom: 40px;
+                gap: 25px;
+            }
+            
+            .service-content h3 {
+                font-size: 1.5rem;
+            }
+            
+            .service-content p {
+                font-size: 0.95rem;
+            }
+            
+            .service-image img {
+                height: 220px;
+            }
+            
+            .service-features li {
+                font-size: 0.9rem;
+            }
+            
+            .service-card h4 {
+                font-size: 1.2rem;
+            }
+            
+            .cta {
+                padding: 50px 0;
+            }
+            
+            .cta h2 {
+                font-size: 1.8rem;
+            }
+            
+            .cta p {
+                font-size: 1rem;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 25px;
+            }
+            
+            .social-icons {
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .services-hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .services-hero p {
+                font-size: 0.95rem;
+            }
+            
+            .btn {
+                padding: 10px 18px;
+                font-size: 0.9rem;
+                width: 100%;
+                max-width: 300px;
+                margin: 0 auto;
+                display: block;
+            }
+            
+            .main-service .btn {
+                width: auto;
+                display: inline-block;
+            }
+            
+            .section-title h2 {
+                font-size: 1.7rem;
+            }
+            
+            .service-content h3 {
+                font-size: 1.4rem;
+            }
+            
+            .service-image img {
+                height: 200px;
+            }
+            
+            .service-features {
+                margin: 20px 0;
+            }
+            
+            .service-features li {
+                font-size: 0.85rem;
+                align-items: flex-start;
+            }
+            
+            .service-card-content {
+                padding: 15px;
+            }
+            
+            .cta h2 {
+                font-size: 1.6rem;
+            }
+            
+            .copyright {
+                font-size: 0.8rem;
+            }
+        }
+        
+        @media (max-width: 360px) {
+            .logo h1 {
+                font-size: 1.3rem;
+            }
+            
+            .logo img {
+                height: 35px;
+            }
+            
+            .services-hero h1 {
+                font-size: 1.6rem;
+            }
+            
+            .services-hero p {
+                font-size: 0.9rem;
+            }
+            
+            .section-title h2 {
+                font-size: 1.5rem;
+            }
+            
+            .section-title p {
+                font-size: 0.9rem;
+            }
+            
+            .main-service {
+                padding: 15px 10px;
+                margin-bottom: 30px;
+                gap: 20px;
+            }
+            
+            .service-content h3 {
+                font-size: 1.3rem;
+            }
+            
+            .service-content p {
+                font-size: 0.9rem;
+            }
+            
+            .service-image img {
+                height: 180px;
+            }
+            
+            .service-card img {
+                height: 160px;
+            }
+            
+            .service-card h4 {
+                font-size: 1.1rem;
+            }
+            
+            .service-card p {
+                font-size: 0.9rem;
+            }
+            
+            .cta h2 {
+                font-size: 1.4rem;
+            }
+            
+            .cta p {
+                font-size: 0.9rem;
+            }
+        }
+        
+        /* Mejoras para orientación horizontal en móviles */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .services-hero {
+                padding: 40px 0;
+            }
+            
+            .services-hero h1 {
+                font-size: 2rem;
+                margin-bottom: 10px;
+            }
+            
+            .services-hero p {
+                margin-bottom: 20px;
+                font-size: 0.95rem;
+            }
+            
+            .nav-links {
+                top: 70px;
+                height: calc(100vh - 70px);
+            }
+            
+            .main-service {
+                padding: 20px;
+                margin-bottom: 40px;
+            }
+            
+            .service-image img {
+                height: 200px;
+            }
+        }
+        
+        /* Mejoras para evitar desbordamientos de texto */
+        p, h1, h2, h3, h4, li, a, td, th {
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+        }
+        
+        /* Mejora para imágenes responsivas */
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        /* Mejora para tablas y elementos de formulario */
+        input, textarea, select, button {
+            font-size: 16px;
         }
     </style>
 </head>
@@ -580,7 +1082,7 @@
             
             <div class="services-grid">
                 <div class="service-card">
-                    <img src="https://images.unsplash.com/photo-1546975490-a79abdd545eb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1467&q=80" alt="Nutrición especializada">
+                    <img src="https://www.icovv.com/wp-content/uploads/2025/08/veterinario-en-bata-de-laboratorio-de-pie-en-el-establo-scaled.jpg" alt="Nutrición especializada">
                     <div class="service-card-content">
                         <h4>Nutrición Especializada</h4>
                         <p>Formulaciones específicas para animales con necesidades nutricionales particulares o en etapas críticas de desarrollo.</p>
@@ -673,7 +1175,7 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-column">
-                    <h3>Agropecuaria Granja Feliz</h3>
+                    <h3>Nupilca C.A</h3>
                     <p>Líderes en producción y distribución de alimentos balanceados para animales de granja.</p>
                     <div class="social-icons">
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
@@ -703,12 +1205,7 @@
                     </ul>
                 </div>
                 
-                <div class="footer-column">
-                    <h3>Contacto</h3>
-                    <p>Carretera Central Km 45, Valle del Sol</p>
-                    <p>Tel: +1 (555) 123-4567</p>
-                    <p>Email: info@granjafeliz.com</p>
-                </div>
+
             </div>
             
             <div class="copyright">
@@ -718,19 +1215,57 @@
     </footer>
 
     <script>
-        // Menú móvil
+        // Menú móvil mejorado
         const menuToggle = document.querySelector('.menu-toggle');
         const navLinks = document.querySelector('.nav-links');
+        const navButtons = document.querySelector('.nav-buttons');
+        
+        // Crear una copia de los botones para el menú móvil
+        const mobileButtons = navButtons.cloneNode(true);
+        mobileButtons.classList.add('mobile');
+        mobileButtons.style.display = 'none';
+        
+        // Insertar los botones después del menú
+        navLinks.parentNode.insertBefore(mobileButtons, navLinks.nextSibling);
         
         menuToggle.addEventListener('click', () => {
             navLinks.classList.toggle('active');
+            
+            // Mostrar/ocultar botones en móvil
+            if (window.innerWidth <= 768) {
+                if (navLinks.classList.contains('active')) {
+                    mobileButtons.style.display = 'flex';
+                } else {
+                    mobileButtons.style.display = 'none';
+                }
+            }
         });
         
         // Cerrar menú al hacer clic en un enlace
         document.querySelectorAll('.nav-links a').forEach(link => {
             link.addEventListener('click', () => {
                 navLinks.classList.remove('active');
+                if (window.innerWidth <= 768) {
+                    mobileButtons.style.display = 'none';
+                }
             });
+        });
+        
+        // Cerrar menú al hacer clic en cualquier botón dentro del menú móvil
+        document.querySelectorAll('.mobile .btn').forEach(button => {
+            button.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                mobileButtons.style.display = 'none';
+            });
+        });
+        
+        // Redimensionamiento de ventana
+        window.addEventListener('resize', () => {
+            // Si la ventana es más grande que 768px, asegurarse de que el menú esté visible
+            if (window.innerWidth > 768) {
+                navLinks.classList.remove('active');
+                mobileButtons.style.display = 'none';
+            }
         });
         
         // Marcar enlace activo

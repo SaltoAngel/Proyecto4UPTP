@@ -40,4 +40,67 @@ class ReportesController extends Controller
 
         return response()->download($path, $nombre, ['Content-Type' => $contentType]);
     }
+
+    /**
+     * Genera un reporte genérico basado en el template.
+     */
+    public function generar(Request $request, $plantilla, $formato = 'pdf', JasperService $jasperService)
+    {
+        try {
+            // Map format names if needed
+            $formatMap = [
+                'pdf' => 'pdf',
+                'xlsx' => 'xlsx',
+                'excel' => 'xlsx',
+                'xls' => 'xls',
+                'html' => 'html',
+                'docx' => 'docx',
+                'odt' => 'odt',
+                'csv' => 'csv',
+            ];
+            
+            $jasperFormat = $formatMap[$formato] ?? 'pdf';
+            
+            // Get parameters from request
+            $params = $request->all();
+            
+            // Generate report
+            $outputFile = $jasperService->generarReporte(
+                $plantilla . '.jrxml', // Make sure to include .jrxml extension
+                $jasperFormat,
+                $params
+            );
+            
+            // Return the file
+            $filename = "reporte_{$plantilla}_" . date('Ymd_His') . ".{$jasperFormat}";
+            
+            return response()->download($outputFile, $filename)
+                ->deleteFileAfterSend(true);
+            
+        } catch (\Exception $e) {
+            Log::error('Error al generar reporte', [
+                'template' => $plantilla,
+                'error' => $e->getMessage()
+            ]);
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al generar el reporte: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Página de prueba para reportes.
+     */
+    public function test()
+    {
+        $templatesPath = base_path('app/Reports/templates');
+        $templates = glob($templatesPath . '/*.jrxml');
+        $templateNames = array_map(function($path) {
+            return basename($path, '.jrxml');
+        }, $templates);
+
+        return view('test', compact('templateNames'));
+    }
 }
