@@ -1,4 +1,16 @@
 <?php
+/**
+ * Modelo: Personas
+ * Propósito: Representa personas naturales o jurídicas vinculadas al sistema.
+ * Tabla: personas (nombre personalizado en migración)
+ * Atributos:
+ *  - nombres, apellidos, razon_social, nombre_comercial, documento, contacto, etc.
+ * Relación:
+ *  - user(): hasOne User (usuario asociado)
+ * Utilidades:
+ *  - generarCodigo(): crea código legible PER-<TIPO>-0001
+ *  - getNombreCompletoAttribute(): devuelve nombre completo (natural/jurídica)
+ */
 
 namespace App\Models;
 

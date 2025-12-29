@@ -7,104 +7,110 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', config('app.name'))</title>
 
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-
-    <!-- Bootstrap 5 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- DataTables -->
+    {{-- Iconografía y vendors externos --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.min.css">
-    
-    <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
-    <style>
-        body { background-color: #f8f9fa; }
-        .navbar { box-shadow: 0 2px 4px rgba(0,0,0,.1); }
-        .card { border: none; box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,.075); }
-        .table th { font-weight: 600; }
-        .badge-activo { background-color: #28a745; }
-        .badge-inactivo { background-color: #6c757d; }
-    </style>
-    
+
+    {{-- Assets compilados con Vite (incluye CoreUI) --}}
+    @vite(['resources/css/app.css', 'resources/sass/app.scss', 'resources/js/app.js'])
+
     @stack('styles')
+    <style>
+        /* Desktop: animación uniforme entre sidebar y contenido */
+        @media (min-width: 992px) {
+            :root {
+                --sidebar-width: 16rem;
+                --sidebar-transition: 360ms ease-in-out;
+            }
+            .sidebar { transition: transform var(--sidebar-transition); will-change: transform; }
+            .wrapper { transition: margin-left var(--sidebar-transition); will-change: margin-left; }
+            body:not(.sidebar-collapsed) .wrapper { margin-left: var(--sidebar-width); }
+            body.sidebar-collapsed .wrapper { margin-left: 0; }
+        }
+
+        /* Respeto a usuarios con reducción de movimiento */
+        @media (prefers-reduced-motion: reduce) {
+            .sidebar, .wrapper { transition: none !important; }
+        }
+    </style>
 </head>
-<body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
-        <div class="container">
-            <a class="navbar-brand" href="{{ route('dashboard') }}">
-                <i class="fas fa-tachometer-alt me-2"></i>Dashboard
-            </a>
-            
-            <div class="collapse navbar-collapse">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('dashboard.personas.*') ? 'active' : '' }}" 
-                           href="{{ route('dashboard.personas.index') }}">
-                            <i class="fas fa-users me-1"></i>Personas
-                        </a>
-                    </li>
-                </ul>
-                
-                <div class="navbar-nav">
-                    <span class="nav-link text-light">
-                        <i class="fas fa-user me-1"></i>{{ auth()->user()->persona->nombre_completo ?? auth()->user()->name }}
+<body class="bg-light">
+    @include('partials.sidebar')
+
+    <div class="wrapper d-flex flex-column min-vh-100 bg-light">
+        <header class="header header-sticky mb-4">
+            <div class="container-fluid border-bottom d-flex align-items-center">
+                <button class="header-toggler px-md-0 me-3" type="button">
+                    <i class="fa fa-bars"></i>
+                </button>
+                <div class="flex-grow-1"></div>
+                <div class="d-flex align-items-center gap-3">
+                    <span class="text-muted">
+                        <i class="fa fa-user me-1"></i>{{ auth()->user()->persona->nombre_completo ?? auth()->user()->name }}
                     </span>
-                    <a class="nav-link" href="{{ route('logout') }}" 
-                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                        <i class="fas fa-sign-out-alt me-1"></i>Cerrar Sesión
-                    </a>
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                         @csrf
                     </form>
+                    <button class="btn btn-outline-secondary btn-sm" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        <i class="fa fa-sign-out-alt me-1"></i>Salir
+                    </button>
                 </div>
             </div>
-        </div>
-    </nav>
-    
-    <!-- Contenido -->
-    <div class="container-fluid py-4">
-        <div class="container">
-            @if(session('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <div class="container-fluid bg-white py-2 border-bottom">
+                <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <h5 class="mb-0 fw-semibold">@yield('title', 'Dashboard')</h5>
+                    <div class="ms-auto">
+                        @hasSection('breadcrumbs')
+                            @yield('breadcrumbs')
+                        @else
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb my-0 small">
+                                    <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Inicio</a></li>
+                                    <li class="breadcrumb-item active"><span>@yield('title', 'Dashboard')</span></li>
+                                </ol>
+                            </nav>
+                        @endif
+                    </div>
                 </div>
-            @endif
-            
-            @if(session('error'))
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <i class="fas fa-exclamation-circle me-2"></i>{{ session('error') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
-            @endif
-            
-            @yield('content')
+            </div>
+        </header>
+
+        <div class="body flex-grow-1 px-3">
+            <div class="container-lg">
+                @if(session('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
+                        <button type="button" class="btn-close" data-coreui-dismiss="alert"></button>
+                    </div>
+                @endif
+                @if(session('error'))
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="fas fa-exclamation-circle me-2"></i>{{ session('error') }}
+                        <button type="button" class="btn-close" data-coreui-dismiss="alert"></button>
+                    </div>
+                @endif
+
+                @yield('content')
+            </div>
         </div>
+
+        <footer class="footer px-4 py-3 bg-white border-top">
+            <div class="ms-auto">{{ config('app.name') }} &copy; {{ now()->year }}</div>
+        </footer>
     </div>
-    
+
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.min.js"></script>
-    
+
     <script>
-        // CSRF Token para AJAX
         $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        
-        // Inicializar tooltips
-        $(function () {
-            $('[data-bs-toggle="tooltip"]').tooltip();
+            headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') }
         });
     </script>
-    
+
     @stack('scripts')
 </body>
 </html>

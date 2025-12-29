@@ -1,4 +1,18 @@
 <?php
+/**
+ * Modelo: User
+ * Propósito: Representa a los usuarios del sistema (autenticación, estados, verificación).
+ * Relaciones:
+ *  - persona(): belongsTo Personas (datos personales)
+ * Atributos relevantes:
+ *  - status, last_login_at, is_verified, verification_code
+ * Scopes:
+ *  - scopeActive(), scopeVerified()
+ * Utilidades:
+ *  - getFullNameAttribute(): obtiene nombre completo desde persona
+ * Nota:
+ *  - Métodos 2FA están presentes pero deshabilitados (comentados)
+ */
 
 namespace App\Models;
 

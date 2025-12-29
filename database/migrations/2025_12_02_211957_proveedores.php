@@ -26,19 +26,6 @@ return new class extends Migration
             $table->string('telefono_comercial')->nullable();
             $table->string('email_comercial')->nullable()->unique();
             
-            // Condiciones comerciales
-            $table->enum('condiciones_pago', [
-                'contado', 
-                'credito_15', 
-                'credito_30', 
-                'credito_60', 
-                'credito_90',
-                'anticipo'
-            ])->default('credito_30');
-            
-            $table->integer('dias_credito')->nullable()->default(30);
-            $table->decimal('limite_credito', 15, 2)->nullable()->default(0);
-            $table->decimal('descuento', 5, 2)->nullable()->default(0);
             
             // Calificación y evaluación
             $table->integer('calificacion')->nullable()->default(5)->comment('1-5 estrellas');
@@ -62,7 +49,6 @@ return new class extends Migration
             $table->string('banco')->nullable();
             $table->string('tipo_cuenta')->nullable();
             $table->string('numero_cuenta')->nullable();
-            $table->string('numero_cuenta_interbancario')->nullable();
             
             // Auditoría
             $table->timestamps();
