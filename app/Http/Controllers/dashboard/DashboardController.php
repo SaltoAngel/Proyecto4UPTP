@@ -58,12 +58,13 @@ class DashboardController extends Controller
         // Verificar JasperStarter (global o incluido en vendor)
         $jasperstarterStatus = 'No encontrado';
 
-        // 1) Intento global (en PATH)
-        @exec('jasperstarter --version 2>&1', $outJasperGlobal, $retJasperGlobal);
-        if (isset($retJasperGlobal) && $retJasperGlobal === 0) {
-            $jasperstarterStatus = 'Instalado (global)';
+        // Verificar Java PRIMERO antes de intentar ejecutar JasperStarter
+        $javaCompatible = $this->isJava8Compatible();
+        
+        if (!$javaCompatible) {
+            $jasperstarterStatus = 'Java 8 requerido - versión actual no compatible';
         } else {
-            // 2) Buscar en vendor (recursivamente) por binario jasperstarter o jasperstarter.exe
+            // Solo buscar archivos, NO ejecutar comandos
             $vendorDir = base_path('vendor');
             $foundPath = null;
             if (is_dir($vendorDir)) {
@@ -81,14 +82,9 @@ class DashboardController extends Controller
             }
 
             if ($foundPath) {
-            $cmd = escapeshellarg($foundPath) . ' --version 2>&1';
-            @exec($cmd, $outJasperVendor, $retJasperVendor);
-            if (isset($retJasperVendor) && $retJasperVendor === 0) {
-                $jasperstarterStatus = 'Instalado (vendor: ' . $foundPath . ')';
+                $jasperstarterStatus = 'Encontrado en vendor (' . $foundPath . '), compatible con Java 8';
             } else {
-                // si existe pero no ejecutable, reportar su presencia
-                $jasperstarterStatus = 'Encontrado en vendor (' . $foundPath . '), no ejecutable';
-            }
+                $jasperstarterStatus = 'No encontrado en vendor';
             }
         }
 
@@ -156,5 +152,37 @@ class DashboardController extends Controller
         }
 
         return response()->json($status);
+    }
+    
+    private function isJava8Compatible()
+    {
+        $javaPath = $this->getJavaPath();
+        $versionCmd = '"' . $javaPath . '" -version 2>&1';
+        $versionOutput = [];
+        exec($versionCmd, $versionOutput);
+        
+        $versionString = implode(' ', $versionOutput);
+        
+        // Check if it's Java 8 (1.8.x or openjdk version "8.x")
+        return preg_match('/1\.8\.|openjdk version "8\.|java version "1\.8/', $versionString);
+    }
+    
+    private function getJavaPath()
+    {
+        // Priority: env variable, then Java 8, then system java
+        $javaPath = env('JAVA_PATH');
+        
+        if ($javaPath && file_exists($javaPath)) {
+            return $javaPath;
+        }
+        
+        // Default to Java 8
+        $java8Path = 'C:\\Program Files\\Eclipse Adoptium\\jdk-8.0.402.6\\bin\\java.exe';
+        if (file_exists($java8Path)) {
+            return $java8Path;
+        }
+        
+        // Fallback to system java
+        return 'java';
     }
 }

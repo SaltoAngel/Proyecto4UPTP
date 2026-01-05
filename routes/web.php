@@ -93,6 +93,27 @@ Route::middleware([\App\Http\Middleware\Authenticate::class])
     });
 
 Route::get('/test-jasper-command', function() {
+    // Validate Java 8 first
+    $javaPath = env('JAVA_PATH', 'C:\\Program Files\\Eclipse Adoptium\\jdk-8.0.402.6\\bin\\java.exe');
+    if (!file_exists($javaPath)) {
+        $javaPath = 'java';
+    }
+    
+    $versionCmd = '"' . $javaPath . '" -version 2>&1';
+    $versionOutput = [];
+    exec($versionCmd, $versionOutput);
+    
+    $versionString = implode(' ', $versionOutput);
+    $isJava8 = preg_match('/1\.8\.|openjdk version "8\.|java version "1\.8/', $versionString);
+    
+    if (!$isJava8) {
+        return response()->json([
+            'error' => 'JasperReports requiere Java 8. Versión actual no compatible.',
+            'java_version' => $versionString,
+            'java_path' => $javaPath
+        ], 400);
+    }
+    
     $jasper = new PHPJasper\PHPJasper();
     
     try {
@@ -140,7 +161,8 @@ Route::get('/test-jasper-command', function() {
             'version' => $version,
             'command' => $command,
             'input_exists' => file_exists($input),
-            'java_path' => exec('where java'),
+            'java_path' => $javaPath,
+            'java_compatible' => true
         ]);
         
     } catch (\Exception $e) {

@@ -18,27 +18,27 @@ class ReportesController extends Controller
         $formato = in_array($formato, ['pdf', 'xlsx']) ? $formato : 'pdf';
 
         $params = [
-            // Ejemplo de filtro opcional: estado activo
             'activo' => $request->boolean('solo_activos', false) ? 1 : null,
         ];
 
-        $resultado = $jasper->generarReporte('personas', $formato, $params);
+        try {
+            $outputFile = $jasper->generarReporte('personas.jrxml', $formato, $params);
+            
+            $nombre = 'reporte_personas_' . date('Ymd_His') . '.' . $formato;
+            $contentType = $formato === 'pdf'
+                ? 'application/pdf'
+                : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 
-        if (!$resultado['success']) {
-            Log::error('Error al generar reporte de personas', ['error' => $resultado['error'] ?? 'desconocido']);
+            return response()->download($outputFile, $nombre, ['Content-Type' => $contentType]);
+            
+        } catch (\Exception $e) {
+            Log::error('Error al generar reporte de personas', ['error' => $e->getMessage()]);
+            
             if ($request->ajax() || $request->wantsJson()) {
-                return response()->json(['success' => false, 'message' => $resultado['error'] ?? 'No se pudo generar el reporte'], 500);
+                return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
             }
-            return back()->with('error', $resultado['error'] ?? 'No se pudo generar el reporte');
+            return back()->with('error', $e->getMessage());
         }
-
-        $path = $resultado['path'];
-        $nombre = $resultado['filename'] ?? ('reporte_personas.' . $formato);
-        $contentType = $formato === 'pdf'
-            ? 'application/pdf'
-            : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-
-        return response()->download($path, $nombre, ['Content-Type' => $contentType]);
     }
 
     /**
