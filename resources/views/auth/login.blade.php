@@ -1407,16 +1407,8 @@ function formatErrors(errors) {
                 setLoading(false);
                 
                 if (data.success || data.redirect) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: '¡Bienvenido!',
-                        text: 'Ingresando a tu cuenta...',
-                        timer: 1500,
-                        showConfirmButton: false,
-                        timerProgressBar: true
-                    }).then(() => {
-                        window.location.href = data.redirect || '/dashboard';
-                    });
+                    // Redirigir directamente sin alerta
+                    window.location.href = data.redirect || '/dashboard';
                 } else {
                     // Mostrar errores
                     let errorMessage = 'El correo o la contraseña son incorrectos';

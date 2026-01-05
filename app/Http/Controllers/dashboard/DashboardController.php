@@ -17,6 +17,7 @@ use Illuminate\Http\Request;
 use App\Models\Personas;
 use App\Models\Proveedor;
 use App\Models\Bitacora;
+use App\Services\ExchangeRateService;
 
 class DashboardController extends Controller
 {
@@ -152,6 +153,19 @@ class DashboardController extends Controller
         }
 
         return response()->json($status);
+    }
+    
+    /**
+     * API endpoint for exchange rate
+     */
+    public function exchangeRate(ExchangeRateService $exchangeService)
+    {
+        $data = $exchangeService->getFormattedRate();
+        
+        return response()->json([
+            'success' => true,
+            'data' => $data
+        ]);
     }
     
     private function isJava8Compatible()
