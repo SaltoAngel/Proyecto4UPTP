@@ -19,7 +19,6 @@ class DatabaseSeeder extends Seeder
             SpatieRolesPermissionsSeeder::class,
             UsuariosSeeder::class,
             Tipo_Proveedores::class,
-            Categorias_Materias::class,
             PersonasClientesProveedoresSeeder::class,
             ReportesSeeder::class,
         ]);

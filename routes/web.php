@@ -86,6 +86,9 @@ Route::middleware([\App\Http\Middleware\Authenticate::class])
 
         // Debug status
         Route::get('/debug-status', [DashboardController::class, 'debugStatus'])->name('debug-status');
+        
+        // Exchange rate API
+        Route::get('/api/exchange-rate', [DashboardController::class, 'exchangeRate'])->name('api.exchange-rate');
 
         // Configuración de usuario
         Route::get('/configuracion', [SettingsController::class, 'index'])->name('configuracion');

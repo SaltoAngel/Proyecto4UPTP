@@ -59,11 +59,31 @@
       <hr class="dark horizontal my-0">
     </div>
   </div>
+  <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+    <div class="card">
+      <div class="card-header p-3 pt-2">
+        <div class="icon icon-lg icon-shape bg-gradient-warning shadow-warning text-center border-radius-xl mt-n4 position-absolute">
+          <i class="material-icons opacity-10">attach_money</i>
+        </div>
+        <div class="text-end pt-1">
+          <p class="text-sm mb-0 text-capitalize">USD (BCV)</p>
+          <h4 class="mb-0" id="usd-rate">—</h4>
+          <p class="text-xs mb-0" id="usd-change">
+            <span class="text-success font-weight-bolder"></span>
+          </p>
+        </div>
+      </div>
+      <hr class="dark horizontal my-0">
+      <div class="card-footer p-3">
+        <p class="mb-0 text-xs" id="rate-date">Última actualización: —</p>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="row mt-4">
   <div class="col-lg-8 mb-4">
-    <div class="card h-100">
+    <div class="card h-80">
       <div class="card-header pb-0 d-flex align-items-center justify-content-between">
         <h6 class="mb-0"><i class="material-icons me-2" style="font-size:18px">event</i> Calendario</h6>
       </div>
@@ -86,7 +106,7 @@
   </div>
   <style>
     #calendar .fc-toolbar-title { font-size: 1rem; }
-    #calendar { min-height: 620px; }
+    #calendar { min-height: 320px; }
   </style>
 </div>
 
@@ -209,6 +229,44 @@
 --}}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+  // Obtener tasa del BCV
+  const fetchExchangeRate = async () => {
+    try {
+      const response = await fetch('https://api.dolarvzla.com/public/exchange-rate');
+      const data = await response.json();
+      
+      if (data.current) {
+        const usdRate = data.current.usd;
+        const changePercent = data.changePercentage?.usd || 0;
+        const date = data.current.date;
+        
+        // Actualizar la tasa
+        document.getElementById('usd-rate').textContent = `Bs. ${usdRate.toFixed(2)}`;
+        
+        // Actualizar el cambio porcentual
+        const changeEl = document.getElementById('usd-change').querySelector('span');
+        const isPositive = changePercent >= 0;
+        changeEl.className = isPositive ? 'text-success font-weight-bolder' : 'text-danger font-weight-bolder';
+        changeEl.innerHTML = `${isPositive ? '+' : ''}${changePercent.toFixed(2)}% <i class="material-icons text-sm">${isPositive ? 'arrow_upward' : 'arrow_downward'}</i>`;
+        
+        // Actualizar fecha
+        const dateParts = date.split('-');
+        const dateFormatted = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
+        document.getElementById('rate-date').textContent = `Última actualización: ${dateFormatted}`;
+      }
+    } catch (error) {
+      console.error('Error al obtener tasa BCV:', error);
+      document.getElementById('usd-rate').textContent = 'Error';
+      document.getElementById('rate-date').textContent = 'No disponible';
+    }
+  };
+  
+  // Obtener tasa al cargar
+  fetchExchangeRate();
+  
+  // Actualizar cada 30 minutos
+  setInterval(fetchExchangeRate, 30 * 60 * 1000);
+  
   const l = document.getElementById('md-line');
   const b = document.getElementById('md-bars');
   const g = document.getElementById('md-geo');

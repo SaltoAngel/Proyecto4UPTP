@@ -45,21 +45,6 @@
                     <span class="nav-link-text ms-1">Proveedores</span>
                 </a>
             </li>
-
-            <li class="nav-item">
-                <a class="nav-link text-white {{ request()->routeIs('dashboard.recepciones.*') ? 'active bg-gradient-primary' : '' }}" href="{{ route('dashboard.recepciones.index') }}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center position-relative">
-                        <i class="material-icons opacity-10">inventory_2</i>
-                        @if($recepcionesPendientes > 0)
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem;">
-                                {{ $recepcionesPendientes }}
-                            </span>
-                        @endif
-                    </div>
-                    <span class="nav-link-text ms-1 fw-bold">📦 Recepción</span>
-                </a>
-            </li>
-
             <li class="nav-item">
                 <a class="nav-link text-white {{ request()->routeIs('dashboard.bitacora.*') ? 'active bg-gradient-primary' : '' }}" href="{{ route('dashboard.bitacora.index') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -69,9 +54,6 @@
                 </a>
             </li>
         </ul>
-
-        <!-- Acciones rápidas eliminadas a solicitud -->
-
         <div class="mt-3">
             <a class="nav-link d-flex align-items-center {{ request()->get('debug') ? 'active' : '' }}" data-bs-toggle="collapse" href="#debug-sidebar-panel" role="button" aria-expanded="false" aria-controls="debug-sidebar-panel">
                 <div class="text-center me-2 d-flex align-items-center justify-content-center">
