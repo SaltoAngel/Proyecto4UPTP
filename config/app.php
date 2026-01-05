@@ -65,7 +65,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'America/Caracas',
 
     /*
     |--------------------------------------------------------------------------
@@ -104,6 +104,11 @@ return [
             explode(',', (string) env('APP_PREVIOUS_KEYS', ''))
         ),
     ],
+
+    // Formato de fecha por defecto
+    'date_format' => 'd/m/Y',
+    'time_format' => 'h:i A',
+    'datetime_format' => 'd/m/Y h:i A',
 
     /*
     |--------------------------------------------------------------------------

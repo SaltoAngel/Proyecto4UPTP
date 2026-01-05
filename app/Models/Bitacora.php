@@ -72,4 +72,29 @@ class Bitacora extends Model
             'user_agent' => request()->userAgent()
         ]);
     }
+
+        public function getHora12Attribute()
+    {
+        return $this->created_at->format('h:i A'); // Ej: 02:30 PM
+    }
+
+        public function getFecha12Attribute()
+    {
+        return $this->created_at->format('d/m/Y h:i A'); // Ej: 06/01/2024 02:30 PM
+    }
+        public function getFechaLegibleAttribute()
+    {
+        $fecha = $this->created_at;
+        $hoy = now()->startOfDay();
+        
+        if ($fecha->isToday()) {
+            return 'Hoy ' . $fecha->format('h:i A');
+        } elseif ($fecha->isYesterday()) {
+            return 'Ayer ' . $fecha->format('h:i A');
+        } elseif ($fecha->diffInDays($hoy) < 7) {
+            return $fecha->locale('es')->dayName . ' ' . $fecha->format('h:i A');
+        } else {
+            return $fecha->format('d/m/Y h:i A');
+        }
+    }
 }

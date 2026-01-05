@@ -47,10 +47,14 @@ class PersonasController extends Controller
             $data['codigo'] = $data['codigo'] ?? Persona::generarCodigo($data['tipo_documento']);
             
             $persona = Persona::create($data);
+            $nombrePersona = $persona->tipo === 'juridica'
+                ? ($persona->razon_social ?: $persona->nombre_comercial)
+                : trim(($persona->nombres ?? '') . ' ' . ($persona->apellidos ?? ''));
+
             Bitacora::registrar(
                 'personas',
-                'crear',
-                'Creó persona ID ' . $persona->id,
+                'create',
+                'Creó persona: ' . ($nombrePersona ?: ('ID ' . $persona->id)),
                 null,
                 $persona->toArray()
             );
@@ -108,10 +112,14 @@ class PersonasController extends Controller
             $datosAnteriores = $persona->toArray();
             
             $persona->update($request->validated());
+            $nombrePersona = $persona->tipo === 'juridica'
+                ? ($persona->razon_social ?: $persona->nombre_comercial)
+                : trim(($persona->nombres ?? '') . ' ' . ($persona->apellidos ?? ''));
+
             Bitacora::registrar(
                 'personas',
-                'actualizar',
-                'Actualizó persona ID ' . $persona->id,
+                'update',
+                'Actualizó persona: ' . ($nombrePersona ?: ('ID ' . $persona->id)),
                 $datosAnteriores,
                 $persona->toArray()
             );
@@ -155,10 +163,14 @@ class PersonasController extends Controller
             $persona->activo = false;
             $persona->save();
             $persona->delete();
+            $nombrePersona = $persona->tipo === 'juridica'
+                ? ($persona->razon_social ?: $persona->nombre_comercial)
+                : trim(($persona->nombres ?? '') . ' ' . ($persona->apellidos ?? ''));
+
             Bitacora::registrar(
                 'personas',
                 'deshabilitar',
-                'Deshabilitó persona ID ' . $persona->id,
+                'Deshabilitó persona: ' . ($nombrePersona ?: ('ID ' . $persona->id)),
                 $datosAnteriores,
                 $persona->toArray()
             );
@@ -200,10 +212,14 @@ class PersonasController extends Controller
             $persona->restore();
             $persona->activo = true;
             $persona->save();
+            $nombrePersona = $persona->tipo === 'juridica'
+                ? ($persona->razon_social ?: $persona->nombre_comercial)
+                : trim(($persona->nombres ?? '') . ' ' . ($persona->apellidos ?? ''));
+
             Bitacora::registrar(
                 'personas',
                 'restaurar',
-                'Restauró persona ID ' . $persona->id,
+                'Restauró persona: ' . ($nombrePersona ?: ('ID ' . $persona->id)),
                 $datosAnteriores,
                 $persona->toArray()
             );
