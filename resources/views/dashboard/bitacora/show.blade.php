@@ -40,7 +40,7 @@
                             </tr>
                             <tr>
                                 <td class="fw-semibold">Fecha</td>
-                                <td>{{ $bitacora->created_at->format('d/m/Y H:i:s') }}</td>
+                                <td>{{ $bitacora->created_at->format('d/m/Y h:i:s A') }}</td>
                             </tr>
                             <tr>
                                 <td class="fw-semibold">IP</td>
