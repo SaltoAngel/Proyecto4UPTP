@@ -126,7 +126,6 @@ class PersonasClientesProveedoresSeeder extends Seeder
             'contacto_comercial' => 'María Fernanda Díaz',
             'telefono_comercial' => '0412-7003345',
             'email_comercial' => 'ventas@agroandes.com',
-            'condiciones_pago' => 'credito_30',
             'dias_credito' => 30,
             'limite_credito' => 50000,
             'descuento' => 5,

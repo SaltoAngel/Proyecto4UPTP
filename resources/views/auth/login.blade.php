@@ -7,6 +7,8 @@
     <link rel="shortcut icon" href="{{ asset('img/favicon.ico') }}" type="image/x-icon" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <link rel="icon" type="webp" href="../img/logo.jpg">
     <style>
         /* Estilos generales */
@@ -347,6 +349,13 @@
             transform: translateY(-3px);
         }
         
+        .btn-primary:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+        
         /* Animación de carga */
         .spinner {
             display: inline-block;
@@ -394,6 +403,31 @@
         
         .alert ul li:last-child {
             margin-bottom: 0;
+        }
+        
+        /* Indicadores de validación en tiempo real */
+        .input-error {
+            border-color: #f44336 !important;
+            background-color: #fff5f5 !important;
+        }
+        
+        .input-success {
+            border-color: #4caf50 !important;
+            background-color: #f0fff4 !important;
+        }
+        
+        .validation-feedback {
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: block;
+        }
+        
+        .validation-error {
+            color: #f44336;
+        }
+        
+        .validation-success {
+            color: #4caf50;
         }
         
         /* RESPONSIVE - Para tablets grandes y laptops pequeñas */
@@ -921,8 +955,6 @@
             }
         }
         
-    
-        
         /* Animación de entrada para elementos del formulario */
         .form-group, .form-options, .btn-primary {
             animation: slideUp 0.5s ease-out forwards;
@@ -945,15 +977,11 @@
             }
         }
         
-        /* Keyframes para animación de mensajes */
-        @keyframes slideInRight {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-        
-        @keyframes slideOutRight {
-            from { transform: translateX(0); opacity: 1; }
-            to { transform: translateX(100%); opacity: 0; }
+        .text-danger {
+            color: #f44336;
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: block;
         }
     </style>
 </head>
@@ -995,22 +1023,6 @@
                     <p>Ingresa tus credenciales para acceder a tu cuenta</p>
                 </div>
 
-                @if ($errors->any())
-                    <div class="alert alert-error">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-
-                @if (session('status'))
-                    <div class="alert alert-success">
-                        {{ session('status') }}
-                    </div>
-                @endif
-
                 <form class="login-form" method="POST" action="{{ route('login') }}" id="loginForm">
                     @csrf
 
@@ -1022,7 +1034,7 @@
                                 type="email" 
                                 id="email" 
                                 name="email" 
-                                class="form-control @error('email') error @enderror" 
+                                class="form-control" 
                                 value="{{ old('email') }}" 
                                 required 
                                 autocomplete="email" 
@@ -1030,6 +1042,7 @@
                                 placeholder="ejemplo@correo.com"
                             >
                         </div>
+                        <span id="email-error" class="validation-feedback validation-error" style="display: none;"></span>
                     </div>
                     
                     <div class="form-group">
@@ -1040,7 +1053,7 @@
                                 type="password" 
                                 id="password" 
                                 name="password" 
-                                class="form-control @error('password') error @enderror" 
+                                class="form-control" 
                                 required 
                                 autocomplete="current-password"
                                 placeholder="Ingresa tu contraseña"
@@ -1049,6 +1062,7 @@
                                 <i class="fas fa-eye"></i>
                             </span>
                         </div>
+                        <span id="password-error" class="validation-feedback validation-error" style="display: none;"></span>
                     </div>
                     
                     <div class="form-options">
@@ -1069,16 +1083,25 @@
     </div>
 
     <script>
+        // Configuración global
+        const CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        const LOGIN_URL = "{{ route('login') }}";
+        
+        // Elementos del DOM
+        const loginForm = document.getElementById('loginForm');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const loginButton = document.getElementById('loginButton');
+        const buttonText = document.getElementById('buttonText');
+        const spinner = document.getElementById('spinner');
+        
         // Mostrar/ocultar contraseña
         const togglePassword = document.getElementById('togglePassword');
-        const passwordInput = document.getElementById('password');
-        
         if (togglePassword && passwordInput) {
             togglePassword.addEventListener('click', function() {
                 const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
                 passwordInput.setAttribute('type', type);
                 
-                // Cambiar icono del ojo
                 const eyeIcon = this.querySelector('i');
                 if (type === 'text') {
                     eyeIcon.classList.remove('fa-eye');
@@ -1090,87 +1113,349 @@
             });
         }
         
-        // Manejo del formulario de login
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const loginButton = document.getElementById('loginButton');
-            const buttonText = document.getElementById('buttonText');
-            const spinner = document.getElementById('spinner');
-            
-            
-            // Validación simple
-            if (!email || !password) {
-                showMessage('Por favor, completa todos los campos', 'error');
-                e.preventDefault();
-                return;
-            }
-            
-            if (!isValidEmail(email)) {
-                showMessage('Por favor, ingresa un correo electrónico válido', 'error');
-                e.preventDefault();
-                return;
-            }
-            
-            // Mostrar estado de carga
-            loginButton.disabled = true;
-            buttonText.textContent = 'Iniciando sesión...';
-            spinner.style.display = 'block';
-        });
-        
         // Función para validar email
         function isValidEmail(email) {
             const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             return re.test(email);
         }
         
-        // Función para mostrar mensajes
-        function showMessage(message, type) {
-            // Eliminar mensajes anteriores
-            const existingMessage = document.querySelector('.message');
-            if (existingMessage) {
-                existingMessage.remove();
+        // Función para mostrar error en campo
+        function showFieldError(fieldId, message) {
+            const field = document.getElementById(fieldId);
+            const errorSpan = document.getElementById(`${fieldId}-error`);
+            
+            if (field && errorSpan) {
+                field.classList.add('input-error');
+                field.classList.remove('input-success');
+                errorSpan.textContent = message;
+                errorSpan.classList.remove('validation-success');
+                errorSpan.classList.add('validation-error');
+                errorSpan.style.display = 'block';
             }
-            
-            // Crear elemento de mensaje
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${type}`;
-            messageDiv.textContent = message;
-            
-            // Estilos para el mensaje
-            messageDiv.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                padding: 15px 20px;
-                border-radius: 10px;
-                color: white;
-                font-weight: 500;
-                z-index: 1000;
-                animation: slideInRight 0.3s ease-out;
-                box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            `;
-            
-            if (type === 'success') {
-                messageDiv.style.backgroundColor = 'var(--primary-color)';
-            } else if (type === 'error') {
-                messageDiv.style.backgroundColor = '#f44336';
-            } else if (type === 'info') {
-                messageDiv.style.backgroundColor = '#2196F3';
-            }
-            
-            document.body.appendChild(messageDiv);
-            
-            // Remover mensaje después de 5 segundos
-            setTimeout(() => {
-                messageDiv.style.animation = 'slideOutRight 0.3s ease-out forwards';
-                setTimeout(() => {
-                    if (messageDiv.parentNode) {
-                        messageDiv.remove();
-                    }
-                }, 300);
-            }, 5000);
         }
+        
+        // Función para limpiar error de campo
+        function clearFieldError(fieldId) {
+            const field = document.getElementById(fieldId);
+            const errorSpan = document.getElementById(`${fieldId}-error`);
+            
+            if (field && errorSpan) {
+                field.classList.remove('input-error');
+                field.classList.remove('input-success');
+                errorSpan.style.display = 'none';
+                errorSpan.textContent = '';
+            }
+        }
+        
+        // Función para mostrar éxito en campo
+        function showFieldSuccess(fieldId) {
+            const field = document.getElementById(fieldId);
+            const errorSpan = document.getElementById(`${fieldId}-error`);
+            
+            if (field && errorSpan) {
+                field.classList.remove('input-error');
+                field.classList.add('input-success');
+                errorSpan.style.display = 'none';
+            }
+        }
+        
+        // Validación en tiempo real
+        emailInput.addEventListener('input', function() {
+            const email = this.value.trim();
+            
+            if (!email) {
+                clearFieldError('email');
+            } else if (!isValidEmail(email)) {
+                showFieldError('email', 'Por favor ingresa un email válido');
+            } else {
+                showFieldSuccess('email');
+                // Verificar si el email existe en el sistema (opcional)
+                checkEmailExists(email);
+            }
+        });
+        
+        passwordInput.addEventListener('input', function() {
+            const password = this.value;
+            
+            if (!password) {
+                clearFieldError('password');
+            } else if (password.length < 8) {
+                showFieldError('password', 'La contraseña debe tener al menos 8 caracteres');
+            } else {
+                showFieldSuccess('password');
+            }
+        });
+        
+        // Función para verificar si el email existe (opcional)
+        async function checkEmailExists(email) {
+            if (!email || !isValidEmail(email)) return;
+            
+            try {
+                const response = await fetch('/api/check-email', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': CSRF_TOKEN,
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({ email: email })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    if (!data.exists) {
+                        showFieldError('email', 'Este email no está registrado');
+                    }
+                }
+            } catch (error) {
+                console.log('No se pudo verificar el email:', error);
+            }
+        }
+        
+        // Validación del formulario antes de enviar
+        function validateForm() {
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+            let isValid = true;
+            
+            // Validar email
+            if (!email) {
+                showFieldError('email', 'El correo electrónico es obligatorio');
+                isValid = false;
+            } else if (!isValidEmail(email)) {
+                showFieldError('email', 'Por favor ingresa un email válido');
+                isValid = false;
+            }
+            
+            // Validar password
+            if (!password) {
+                showFieldError('password', 'La contraseña es obligatoria');
+                isValid = false;
+            } else if (password.length < 8) {
+                showFieldError('password', 'La contraseña debe tener al menos 8 caracteres');
+                isValid = false;
+            }
+            
+            return isValid;
+        }
+        
+        // Función para mostrar SweetAlert
+        function showAlert(icon, title, text, confirmButtonText = 'Aceptar') {
+            return Swal.fire({
+                icon: icon,
+                title: title,
+                text: text,
+                confirmButtonText: confirmButtonText,
+                confirmButtonColor: '#2e7d32',
+                timer: icon === 'success' ? 2000 : undefined,
+                timerProgressBar: icon === 'success'
+            });
+        }
+        
+        // Función para mostrar/ocultar loading
+        function setLoading(isLoading) {
+            if (isLoading) {
+                loginButton.disabled = true;
+                buttonText.style.display = 'none';
+                spinner.style.display = 'block';
+            } else {
+                loginButton.disabled = false;
+                buttonText.style.display = 'block';
+                spinner.style.display = 'none';
+            }
+        }
+        
+        // Manejar envío del formulario con Fetch
+async function submitForm() {
+    this.errors = {};
+    this.loading = true;
+    
+    // Limpiar errores de campos
+    clearFieldError('email');
+    clearFieldError('password');
+    
+    try {
+        const response = await fetch('{{ route("login") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                email: this.form.email,
+                password: this.form.password,
+                remember: this.form.remember || false
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+            // Éxito - mostrar SweetAlert y redirigir
+            Swal.fire({
+                icon: 'success',
+                title: '¡Inicio exitoso!',
+                text: data.message || 'Inicio de sesión exitoso',
+                timer: 1500,
+                showConfirmButton: false,
+                timerProgressBar: true,
+                willClose: () => {
+                    window.location.href = data.redirect || '/dashboard';
+                }
+            });
+            
+        } else {
+            // Error del servidor
+            this.loading = false;
+            
+            // Si hay errores de validación en campos específicos
+            if (data.errors) {
+                // Mostrar errores en los campos
+                if (data.errors.email) {
+                    showFieldError('email', data.errors.email[0]);
+                }
+                if (data.errors.password) {
+                    showFieldError('password', data.errors.password[0]);
+                }
+                
+                // Si son errores de campos (validación), mostrar también en SweetAlert
+                if (data.errors.email || data.errors.password) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error de validación',
+                        html: this.formatErrors(data.errors),
+                        confirmButtonText: 'Entendido',
+                        confirmButtonColor: '#2e7d32'
+                    });
+                }
+            } 
+            // Si es error de credenciales (mensaje general)
+            else if (data.message) {
+                // Mostrar SweetAlert con el error de credenciales
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error de autenticación',
+                    text: data.message,
+                    confirmButtonText: 'Intentar de nuevo',
+                    confirmButtonColor: '#2e7d32',
+                    showCloseButton: true
+                });
+                
+                // Limpiar campo de contraseña
+                this.form.password = '';
+                document.getElementById('password').value = '';
+                
+                // Poner foco en el campo de contraseña
+                setTimeout(() => {
+                    document.getElementById('password').focus();
+                }, 300);
+            }
+        }
+        
+    } catch (error) {
+        this.loading = false;
+        console.error('Error:', error);
+        
+        // Error de conexión
+        Swal.fire({
+            icon: 'error',
+            title: 'Error de conexión',
+            text: 'No se pudo conectar con el servidor. Verifica tu conexión a internet.',
+            confirmButtonText: 'Reintentar',
+            confirmButtonColor: '#2e7d32'
+        });
+    }
+}
+
+// Función para formatear errores de validación
+function formatErrors(errors) {
+    let html = '<ul class="text-left">';
+    for (const field in errors) {
+        if (errors.hasOwnProperty(field)) {
+            errors[field].forEach(error => {
+                html += `<li class="mb-1">• ${error}</li>`;
+            });
+        }
+    }
+    html += '</ul>';
+    return html;
+}
+        
+        // Manejar envío del formulario
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevenir envío tradicional
+            
+            if (!validateForm()) {
+                return;
+            }
+            
+            setLoading(true);
+            
+            const formData = new FormData(this);
+            
+            fetch(LOGIN_URL, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': CSRF_TOKEN,
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                setLoading(false);
+                
+                if (data.success || data.redirect) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: '¡Bienvenido!',
+                        text: 'Ingresando a tu cuenta...',
+                        timer: 1500,
+                        showConfirmButton: false,
+                        timerProgressBar: true
+                    }).then(() => {
+                        window.location.href = data.redirect || '/dashboard';
+                    });
+                } else {
+                    // Mostrar errores
+                    let errorMessage = 'El correo o la contraseña son incorrectos';
+                    
+                    if (data.errors) {
+                        const errorList = Object.values(data.errors).flat();
+                        if (errorList.some(err => err.includes('email'))) {
+                            errorMessage = 'Por favor revisa tu correo electrónico';
+                        } else if (errorList.some(err => err.includes('password'))) {
+                            errorMessage = 'Por favor revisa tu contraseña';
+                        }
+                    }
+                    
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'No pudimos iniciar sesión',
+                        text: errorMessage,
+                        confirmButtonText: 'Intentar nuevamente',
+                        confirmButtonColor: '#2e7d32'
+                    });
+                    
+                    // Limpiar contraseña
+                    passwordInput.value = '';
+                    passwordInput.focus();
+                }
+            })
+            .catch(error => {
+                setLoading(false);
+                console.error('Error:', error);
+                
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Problema de conexión',
+                    text: 'No pudimos conectar con el servidor. Revisa tu conexión a internet.',
+                    confirmButtonText: 'Intentar nuevamente',
+                    confirmButtonColor: '#2e7d32'
+                });
+            });
+        });
         
         // Cargar imagen alternativa si la principal falla
         const farmImage = document.querySelector('.farm-background');
@@ -1197,6 +1482,36 @@
         // Ejecutar al cargar y al redimensionar
         window.addEventListener('load', adjustFormHeight);
         window.addEventListener('resize', adjustFormHeight);
+        
+        // Validación inicial al cargar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            // Si hay errores de sesión, mostrarlos inmediatamente
+            @if($errors->any())
+                const errorMessages = [];
+                @foreach($errors->all() as $error)
+                    errorMessages.push('{{ $error }}');
+                @endforeach
+                
+                Swal.fire({
+                    icon: 'error',
+                    title: 'No pudimos iniciar sesión',
+                    html: '<ul style="text-align: left; margin: 0; padding-left: 20px;">' + 
+                          errorMessages.map(msg => '<li>Revisa tu correo y contraseña</li>').join('') + 
+                          '</ul>',
+                    confirmButtonText: 'Intentar nuevamente',
+                    confirmButtonColor: '#2e7d32',
+                    showCloseButton: true
+                });
+            @endif
+            
+            // Validar campos si tienen valor inicial
+            if (emailInput.value.trim()) {
+                emailInput.dispatchEvent(new Event('input'));
+            }
+            if (passwordInput.value) {
+                passwordInput.dispatchEvent(new Event('input'));
+            }
+        });
     </script>
 </body>
 </html>

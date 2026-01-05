@@ -122,6 +122,48 @@
     @include('partials.skeleton')
     @stack('scripts')
 
+    <!-- Session Alerts Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            @if(session('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Éxito!',
+                    text: '{{ session('success') }}',
+                    timer: 3000,
+                    showConfirmButton: false
+                });
+            @endif
+
+            @if(session('error'))
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: '{{ session('error') }}',
+                    confirmButtonText: 'Entendido'
+                });
+            @endif
+
+            @if(session('warning'))
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Advertencia',
+                    text: '{{ session('warning') }}',
+                    confirmButtonText: 'Entendido'
+                });
+            @endif
+
+            @if(session('info'))
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Información',
+                    text: '{{ session('info') }}',
+                    confirmButtonText: 'Entendido'
+                });
+            @endif
+        });
+    </script>
+
     <!-- Debug Panel -->
     <div id="debug-panel" style="position: fixed; bottom: 10px; right: 10px; width: 400px; height: 300px; background: rgba(0,0,0,0.9); color: white; border-radius: 5px; z-index: 9999; display: none; overflow-y: auto; font-size: 12px; padding: 10px;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
