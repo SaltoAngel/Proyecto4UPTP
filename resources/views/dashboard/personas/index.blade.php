@@ -324,10 +324,31 @@ $('#verPersonaModal').on('show.bs.modal', function(event) {
         ajustarTipoDocumento(persona.tipo, '#editTipoDocumento', '#editTipoDocLeyenda');
         modal.find('#editDocumento').val(persona.documento);
         modal.find('#editDireccion').val(persona.direccion);
+        const splitPhone = (val = '') => {
+            const digits = String(val || '').replace(/\D/g, '');
+            if (digits.length >= 11) return { pref: digits.slice(0, 4), num: digits.slice(4, 11) };
+            if (digits.length >= 4) return { pref: digits.slice(0, 4), num: digits.slice(4) };
+            return { pref: '', num: digits };
+        };
+
+        const tel = splitPhone(persona.telefono);
+        modal.find('#editTelefonoPrefijo').val(tel.pref || '0412');
+        modal.find('#editTelefono').val(tel.num || '');
+
+        const telAlt = splitPhone(persona.telefono_alternativo);
+        if (telAlt.num) {
+            modal.find('#editToggleTelAlt').prop('checked', true);
+            modal.find('#editTelAltWrapper').removeClass('d-none');
+            modal.find('#editTelefonoAlternativoPrefijo').val(telAlt.pref || '0412');
+            modal.find('#editTelefonoAlternativo').val(telAlt.num);
+        } else {
+            modal.find('#editToggleTelAlt').prop('checked', false);
+            modal.find('#editTelAltWrapper').addClass('d-none');
+            modal.find('#editTelefonoAlternativo').val('');
+        }
+
         modal.find('#editEstado').val(persona.estado);
         modal.find('#editCiudad').val(persona.ciudad);
-        modal.find('#editTelefono').val(persona.telefono);
-        modal.find('#editTelefonoAlternativo').val(persona.telefono_alternativo);
         modal.find('#editEmail').val(persona.email);
         
         toggleCamposPorTipoEdit(persona.tipo);
@@ -503,6 +524,21 @@ $('#verPersonaModal').on('show.bs.modal', function(event) {
         e.preventDefault();
 
         const form = $(this);
+        const telPref = $('#editTelefonoPrefijo').val();
+        const telNum = $('#editTelefono').val();
+        if (telNum && telNum.length === 7) {
+            $('#editTelefono').val(`${telPref}${telNum}`);
+        }
+
+        const altChecked = $('#editToggleTelAlt').is(':checked');
+        const altPref = $('#editTelefonoAlternativoPrefijo').val();
+        const altNum = $('#editTelefonoAlternativo').val();
+        if (altChecked && altNum && altNum.length === 7) {
+            $('#editTelefonoAlternativo').val(`${altPref}${altNum}`);
+        } else if (!altChecked) {
+            $('#editTelefonoAlternativo').val('');
+        }
+
         const formData = form.serialize();
         const submitBtn = form.find('button[type="submit"]');
 
