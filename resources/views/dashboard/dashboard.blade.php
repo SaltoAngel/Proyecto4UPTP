@@ -62,6 +62,35 @@
 </div>
 
 <div class="row mt-4">
+  <div class="col-lg-8 mb-4">
+    <div class="card h-100">
+      <div class="card-header pb-0 d-flex align-items-center justify-content-between">
+        <h6 class="mb-0"><i class="material-icons me-2" style="font-size:18px">event</i> Calendario</h6>
+      </div>
+      <div class="card-body">
+        <div id="calendar" class="w-100"></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4 mb-4">
+    <div class="card h-80">
+      <div class="card-header pb-0 d-flex align-items-center justify-content-between">
+        <h6 class="mb-0"><i class="material-icons me-2" style="font-size:18px">donut_large</i>Tareas por tipo</h6>
+      </div>
+      <div class="card-body">
+        <div class="chart">
+          <canvas id="md-donut" height="240"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+  <style>
+    #calendar .fc-toolbar-title { font-size: 1rem; }
+    #calendar { min-height: 620px; }
+  </style>
+</div>
+
+<div class="row mt-4">
   <div class="col-lg-6 mt-4 mb-4">
     <div class="card z-index-2">
       {{-- Gráfico de línea con skeleton controlado por JS --}}
@@ -99,8 +128,16 @@
 <div class="row mt-4">
   <div class="col-lg-8 mb-4">
     <div class="card z-index-2 h-100">
-      <div class="card-header pb-0">
+      <div class="card-header pb-0 d-flex align-items-center justify-content-between">
         <h6 class="mb-0">Mapa Nacional</h6>
+        <div class="btn-group btn-group-sm" role="group" aria-label="Zoom controls">
+          <button type="button" class="btn btn-light" id="geo-zoom-in" title="Acercar">+
+          </button>
+          <button type="button" class="btn btn-light" id="geo-zoom-out" title="Alejar">-
+          </button>
+          <button type="button" class="btn btn-secondary" id="geo-zoom-reset" title="Reset">Reset
+          </button>
+        </div>
       </div>
       <div class="card-body">
         <div class="chart">
@@ -184,6 +221,7 @@ document.addEventListener('DOMContentLoaded', function() {
   };
 
   const getFeatureName = (props={}) => props.name || props.NOMBRE || props.state || props.estado || props.Estado || '—';
+  let geoChart = null;
 
   const showGeoModal = (name, props={}) => {
     const modalEl = document.getElementById('geoInfoModal');
@@ -253,6 +291,14 @@ document.addEventListener('DOMContentLoaded', function() {
           },
           plugins: {
             legend: { display: false },
+            zoom: {
+              pan: { enabled: true, mode: 'xy' },
+              zoom: {
+                wheel: { enabled: true, speed: 0.1 },
+                pinch: { enabled: true },
+                mode: 'xy'
+              }
+            },
             tooltip: {
               callbacks: {
                 label: (ctx) => {
@@ -282,7 +328,7 @@ document.addEventListener('DOMContentLoaded', function() {
       .then(json => {
         const features = (json && json.type === 'FeatureCollection') ? json.features : [];
         if (!features.length) throw new Error('no features');
-        renderChoropleth(features, { label: 'Venezuela', projection: 'mercator', graticule: false });
+        geoChart = renderChoropleth(features, { label: 'Venezuela', projection: 'mercator', graticule: false });
         window.skeletonReady('md-geo');
       })
       // 2) Fallback: mapa mundial desde world-atlas (TopoJSON)
@@ -290,12 +336,127 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(r => r.json())
         .then(topology => {
           const countries = ChartGeo.topojson.feature(topology, topology.objects.countries).features;
-          renderChoropleth(countries, { label: 'Países (fallback)', projection: 'equalEarth', graticule: true });
+          geoChart = renderChoropleth(countries, { label: 'Países (fallback)', projection: 'equalEarth', graticule: true });
           window.skeletonReady('md-geo');
         })
       )
       .catch(() => { /* Silenciar si ambos fallan */ setTimeout(() => { window.skeletonReady('md-geo'); }, 3000); });
   }
+
+  // Controles de zoom del mapa
+  const zoomInBtn = document.getElementById('geo-zoom-in');
+  const zoomOutBtn = document.getElementById('geo-zoom-out');
+  const zoomResetBtn = document.getElementById('geo-zoom-reset');
+  const zoomStep = 1.2;
+  if (zoomInBtn) zoomInBtn.addEventListener('click', () => { try { geoChart && geoChart.zoom(zoomStep); } catch(e){} });
+  if (zoomOutBtn) zoomOutBtn.addEventListener('click', () => { try { geoChart && geoChart.zoom(1/zoomStep); } catch(e){} });
+  if (zoomResetBtn) zoomResetBtn.addEventListener('click', () => { try { geoChart && geoChart.resetZoom(); } catch(e){} });
+
+  // FullCalendar: inicialización básica con eventos de ejemplo
+  try {
+    if (window.FullCalendar && document.getElementById('calendar')) {
+      const calendarEl = document.getElementById('calendar');
+      // Fuente base de eventos del calendario (también usada para el donut)
+      const calendarEvents = [
+        { title: 'Recepción programada', start: new Date().toISOString().slice(0,10) },
+        { title: 'Orden de compra', start: new Date(Date.now() + 86400000).toISOString().slice(0,10) },
+        { title: 'Reunión proveedor', start: new Date(Date.now() + 3*86400000).toISOString().slice(0,10) }
+      ];
+
+      const calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        height: 'auto',
+        contentHeight: 'auto',
+        expandRows: true,
+        headerToolbar: {
+          left: 'prev,next today',
+          center: 'title',
+          right: 'dayGridMonth,dayGridWeek,dayGridDay'
+        },
+        locale: 'es',
+        firstDay: 1,
+        navLinks: true,
+        selectable: true,
+        selectMirror: true,
+        select: (info) => {
+          Swal && Swal.fire({ icon: 'info', title: 'Rango seleccionado', text: `${info.startStr} → ${info.endStr}` });
+        },
+        eventClick: (info) => {
+          info.jsEvent.preventDefault();
+          const e = info.event;
+          Swal && Swal.fire({ icon: 'info', title: e.title, text: e.start?.toLocaleString('es-VE') });
+        },
+        events: calendarEvents
+      });
+      calendar.render();
+
+      // Doughnut: calcular desde calendar.getEvents() y actualizar en vivo
+      if (window.Chart && document.getElementById('md-donut')) {
+        let donutChart = null;
+        const donutEl = document.getElementById('md-donut');
+        const typeFor = (title = '') => {
+          const t = (title || '').toLowerCase();
+          if (t.includes('recepci')) return 'Recepción';
+          if (t.includes('orden')) return 'Orden';
+          if (t.includes('reuni')) return 'Reunión';
+          return 'Otros';
+        };
+        const types = ['Recepción','Orden','Reunión','Otros'];
+
+        const rebuildDonut = () => {
+          try {
+            const counts = { 'Recepción':0, 'Orden':0, 'Reunión':0, 'Otros':0 };
+            const evts = calendar.getEvents();
+            evts.forEach(e => { counts[typeFor(e.title)]++; });
+            if (!donutChart) {
+              window.skeletonAttach('md-donut', { type: 'rect', height: 240 });
+              donutChart = new Chart(donutEl.getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                  labels: types,
+                  datasets: [{
+                    data: types.map(k => counts[k]),
+                    backgroundColor: ['#42a5f5','#66bb6a','#ffca28','#ab47bc'],
+                    borderWidth: 1,
+                  }]
+                },
+                options: {
+                  plugins: {
+                    legend: { position: 'bottom' },
+                    tooltip: { callbacks: { label: (ctx) => `${ctx.label}: ${ctx.parsed}` } }
+                  },
+                  cutout: '65%'
+                }
+              });
+              window.skeletonReady('md-donut');
+            } else {
+              donutChart.data.datasets[0].data = types.map(k => counts[k]);
+              donutChart.update();
+            }
+          } catch (e) { console.warn('Donut update:', e); }
+        };
+
+        // Actualizar cuando cambien los eventos del calendario
+        calendar.on('eventAdd', rebuildDonut);
+        calendar.on('eventChange', rebuildDonut);
+        calendar.on('eventRemove', rebuildDonut);
+        // Inicial tras render
+        calendar.render();
+        rebuildDonut();
+      } else {
+        // Si no hay donut, al menos renderizamos el calendario
+        calendar.render();
+      }
+    }
+  } catch (e) { console.warn('FullCalendar init:', e); }
 });
 </script>
+@endpush
+
+@push('styles')
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.css" rel="stylesheet" />
+@endpush
+
+@push('scripts')
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
 @endpush

@@ -1,10 +1,13 @@
 {{--
     Partial: Sidebar (Navegación lateral)
-    Contiene:
-        - Enlaces a Dashboard, Personas, Proveedores y Bitácora.
-        - Panel Debug plegable: lista scripts cargados (por src) para verificación.
-        - Footer vacío (logout se trasladó al header).
+    Contiene enlaces principales y un panel de debug minimal.
 --}}
+
+@php
+    $proveedoresActivos = \App\Models\Proveedor::where('estado', 'activo')->count();
+    $recepcionesPendientes = \App\Models\Recepcion::where('estado', 'pendiente')->count();
+@endphp
+
 <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 bg-white" id="sidenav-main">
     <div class="sidenav-header">
         <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
@@ -13,7 +16,8 @@
         </a>
     </div>
     <hr class="horizontal light mt-0 mb-2">
-    <div class="collapse navbar-collapse w-auto max-height-vh-100" id="sidenav-collapse-main">
+
+    <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main" style="width: 100%; overflow: auto;">
         <ul class="navbar-nav">
             <li class="nav-item">
                 <a class="nav-link text-white {{ request()->routeIs('dashboard') ? 'active bg-gradient-primary' : '' }}" href="{{ route('dashboard') }}">
@@ -23,6 +27,7 @@
                     <span class="nav-link-text ms-1">Dashboard</span>
                 </a>
             </li>
+
             <li class="nav-item">
                 <a class="nav-link text-white {{ request()->routeIs('dashboard.personas.*') ? 'active bg-gradient-primary' : '' }}" href="{{ route('dashboard.personas.index') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -31,14 +36,30 @@
                     <span class="nav-link-text ms-1">Personas</span>
                 </a>
             </li>
+
             <li class="nav-item">
                 <a class="nav-link text-white {{ request()->routeIs('dashboard.proveedores.*') ? 'active bg-gradient-primary' : '' }}" href="{{ route('dashboard.proveedores.index') }}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center position-relative">
                         <i class="material-icons opacity-10">local_shipping</i>
                     </div>
                     <span class="nav-link-text ms-1">Proveedores</span>
                 </a>
             </li>
+
+            <li class="nav-item">
+                <a class="nav-link text-white {{ request()->routeIs('dashboard.recepciones.*') ? 'active bg-gradient-primary' : '' }}" href="{{ route('dashboard.recepciones.index') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center position-relative">
+                        <i class="material-icons opacity-10">inventory_2</i>
+                        @if($recepcionesPendientes > 0)
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem;">
+                                {{ $recepcionesPendientes }}
+                            </span>
+                        @endif
+                    </div>
+                    <span class="nav-link-text ms-1 fw-bold">📦 Recepción</span>
+                </a>
+            </li>
+
             <li class="nav-item">
                 <a class="nav-link text-white {{ request()->routeIs('dashboard.bitacora.*') ? 'active bg-gradient-primary' : '' }}" href="{{ route('dashboard.bitacora.index') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -48,7 +69,9 @@
                 </a>
             </li>
         </ul>
-        <!-- Debug Panel: listado de scripts cargados -->
+
+        <!-- Acciones rápidas eliminadas a solicitud -->
+
         <div class="mt-3">
             <a class="nav-link d-flex align-items-center {{ request()->get('debug') ? 'active' : '' }}" data-bs-toggle="collapse" href="#debug-sidebar-panel" role="button" aria-expanded="false" aria-controls="debug-sidebar-panel">
                 <div class="text-center me-2 d-flex align-items-center justify-content-center">
@@ -66,8 +89,6 @@
             </div>
         </div>
     </div>
-    <!-- Footer vacío: previamente aquí estaba el botón de salir -->
-    <div class="sidenav-footer position-absolute w-100 bottom-0 px-3 pb-3"></div>
 </aside>
 
 @push('scripts')

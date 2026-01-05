@@ -31,9 +31,6 @@
                                     @endforeach
                                 </div>
                             </div>
-                            <div id="crearTiposSeleccionados" class="d-none"></div>
-                            <input type="text" class="form-control mt-2" id="crearResumenCategorias" placeholder="Resumen de categorías" readonly>
-                            <small class="text-muted">Click para agregar; vuelve a hacer click para quitar.</small>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Especialización</label>
@@ -85,24 +82,6 @@
                     <div class="mb-3">
                         <label class="form-label">Observaciones de calificación</label>
                         <textarea name="observaciones_calificacion" class="form-control" rows="2"></textarea>
-                    </div>
-
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label class="form-label">Banco</label>
-                            <input type="text" name="banco" class="form-control">
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Tipo de cuenta</label>
-                            <input type="text" name="tipo_cuenta" class="form-control">
-                        </div>
-                    </div>
-
-                    <div class="row mb-3">
-                        <div class="col-md-12">
-                            <label class="form-label">Número de cuenta</label>
-                            <input type="text" name="numero_cuenta" class="form-control">
-                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">

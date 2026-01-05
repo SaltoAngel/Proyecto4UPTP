@@ -45,11 +45,6 @@ return new class extends Migration
             $table->date('fecha_ultima_compra')->nullable();
             $table->decimal('monto_total_compras', 15, 2)->nullable()->default(0);
             
-            // Información bancaria
-            $table->string('banco')->nullable();
-            $table->string('tipo_cuenta')->nullable();
-            $table->string('numero_cuenta')->nullable();
-            
             // Auditoría
             $table->timestamps();
             $table->softDeletes();
