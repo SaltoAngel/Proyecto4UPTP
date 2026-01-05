@@ -123,6 +123,21 @@
                                 ?? 'Usuario';
                         }
                     @endphp
+                    @php
+                        $payload = [
+                            'codigo' => $registro->codigo,
+                            'modulo' => $registro->modulo,
+                            'accion' => $registro->accion,
+                            'detalle' => $registro->detalle,
+                            'fecha' => $registro->created_at?->toIso8601String(),
+                            'usuario' => optional($registro->user->persona)->nombre_completo
+                                        ?? $registro->user->name
+                                        ?? $registro->user->email
+                                        ?? 'Usuario eliminado',
+                            'datos_anteriores' => $registro->datos_anteriores,
+                            'datos_nuevos' => $registro->datos_nuevos,
+                        ];
+                    @endphp
                     <tr>
                         <td><code>{{ $registro->codigo }}</code></td>
                         <td>
@@ -142,9 +157,10 @@
                             </small>
                         </td>
                         <td class="text-center">
-                            <a href="{{ route('dashboard.bitacora.show', $registro) }}" class="btn btn-sm btn-outline-primary">
+                            <button type="button" class="btn btn-sm btn-outline-primary btn-ver-bitacora"
+                                data-bitacora='@json($payload)'>
                                 <i class="material-icons" style="font-size:1.1rem;">visibility</i>
-                            </a>
+                            </button>
                         </td>
                     </tr>
                     @empty
@@ -161,6 +177,8 @@
 
     </div>
 </div>
+
+@include('dashboard.bitacora.modals.detalle')
 @endsection
 
 @push('scripts')
@@ -196,6 +214,34 @@ document.addEventListener('DOMContentLoaded', function() {
         $('#filtroAccion').val('');
         $('#filtroUsuario').val('');
         tabla.columns([1,2,3]).search('').draw();
+    });
+
+    const modalEl = document.getElementById('modalBitacora');
+    const modal = new bootstrap.Modal(modalEl);
+    const fmtJson = (obj) => obj ? JSON.stringify(obj, null, 2) : '-';
+
+    $('#tablaBitacora').on('click', '.btn-ver-bitacora', function() {
+        const data = $(this).data('bitacora');
+        if (!data) return;
+
+        $('#modalBitacoraCodigo').text(data.codigo || 'Detalle');
+        $('#modalBitacoraUsuario').text(data.usuario || 'Usuario eliminado');
+        $('#modalBitacoraModulo')
+            .text(data.modulo || '-')
+            .removeClass()
+            .addClass('badge bg-primary');
+        $('#modalBitacoraAccion')
+            .text(data.accion || '-')
+            .removeClass()
+            .addClass('badge bg-success');
+
+        const fecha = data.fecha ? new Date(data.fecha).toLocaleString('es-ES', { dateStyle: 'short', timeStyle: 'short' }) : '-';
+        $('#modalBitacoraFecha').text(fecha);
+        $('#modalBitacoraDetalle').text(data.detalle || '-');
+        $('#modalBitacoraAntes').text(fmtJson(data.datos_anteriores));
+        $('#modalBitacoraDespues').text(fmtJson(data.datos_nuevos));
+
+        modal.show();
     });
 });
 </script>
