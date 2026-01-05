@@ -7,6 +7,7 @@
     <link rel="shortcut icon" href="{{ asset('img/favicon.ico') }}" type="image/x-icon" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="icon" type="webp" href="../img/logo.jpg">
     
     <style>
@@ -151,6 +152,26 @@
         
         .form-input.error { 
             border-color: #f44336; 
+            background-color: #fff5f5;
+        }
+        
+        .form-input.success {
+            border-color: #4caf50;
+            background-color: #f0fff4;
+        }
+        
+        .validation-feedback {
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: block;
+        }
+        
+        .validation-error {
+            color: #f44336;
+        }
+        
+        .validation-success {
+            color: #4caf50;
         }
         
         .reset-btn {
@@ -170,6 +191,28 @@
         .reset-btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 25px rgba(46, 125, 50, 0.3);
+        }
+        
+        .reset-btn:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+        
+        /* Spinner de carga */
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
         
         /* Enlace para volver al login */
@@ -323,7 +366,7 @@
             </div>
         @endif
 
-        <form class="reset-form" method="POST" action="{{ route('password.email') }}">
+        <form class="reset-form" method="POST" action="{{ route('password.email') }}" id="resetForm">
             @csrf
 
             <div class="form-group">
@@ -339,10 +382,12 @@
                     autofocus
                     placeholder="ejemplo@correo.com"
                 >
+                <span id="email-error" class="validation-feedback validation-error" style="display: none;"></span>
             </div>
 
-            <button type="submit" class="reset-btn">
-                Enviar enlace de recuperación
+            <button type="submit" class="reset-btn" id="resetButton">
+                <span id="buttonText">Enviar enlace de recuperación</span>
+                <div class="spinner" id="spinner" style="display: none;"></div>
             </button>
         </form>
 
@@ -370,6 +415,204 @@
             document.body.style.backgroundImage = `url('${fallbackImage}')`;
         };
         testImage.src = originalImage;
+        
+        // Validaciones y manejo del formulario
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('resetForm');
+            const emailInput = document.getElementById('email');
+            const resetButton = document.getElementById('resetButton');
+            const buttonText = document.getElementById('buttonText');
+            const spinner = document.getElementById('spinner');
+            
+            // Función para validar email
+            function isValidEmail(email) {
+                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return re.test(email);
+            }
+            
+            // Función para mostrar error en campo
+            function showFieldError(fieldId, message) {
+                const field = document.getElementById(fieldId);
+                const errorSpan = document.getElementById(`${fieldId}-error`);
+                
+                if (field && errorSpan) {
+                    field.classList.add('error');
+                    field.classList.remove('success');
+                    errorSpan.textContent = message;
+                    errorSpan.classList.remove('validation-success');
+                    errorSpan.classList.add('validation-error');
+                    errorSpan.style.display = 'block';
+                }
+            }
+            
+            // Función para limpiar error de campo
+            function clearFieldError(fieldId) {
+                const field = document.getElementById(fieldId);
+                const errorSpan = document.getElementById(`${fieldId}-error`);
+                
+                if (field && errorSpan) {
+                    field.classList.remove('error');
+                    field.classList.remove('success');
+                    errorSpan.style.display = 'none';
+                    errorSpan.textContent = '';
+                }
+            }
+            
+            // Función para mostrar éxito en campo
+            function showFieldSuccess(fieldId) {
+                const field = document.getElementById(fieldId);
+                const errorSpan = document.getElementById(`${fieldId}-error`);
+                
+                if (field && errorSpan) {
+                    field.classList.remove('error');
+                    field.classList.add('success');
+                    errorSpan.style.display = 'none';
+                }
+            }
+            
+            // Validación en tiempo real del email
+            emailInput.addEventListener('input', function() {
+                const email = this.value.trim();
+                
+                if (!email) {
+                    clearFieldError('email');
+                } else if (!isValidEmail(email)) {
+                    showFieldError('email', 'Por favor ingresa un email válido');
+                } else {
+                    showFieldSuccess('email');
+                }
+            });
+            
+            // Validación del formulario
+            function validateForm() {
+                const email = emailInput.value.trim();
+                let isValid = true;
+                
+                if (!email) {
+                    showFieldError('email', 'El correo electrónico es obligatorio');
+                    isValid = false;
+                } else if (!isValidEmail(email)) {
+                    showFieldError('email', 'Por favor ingresa un email válido');
+                    isValid = false;
+                }
+                
+                return isValid;
+            }
+            
+            // Función para mostrar/ocultar loading
+            function setLoading(isLoading) {
+                if (isLoading) {
+                    resetButton.disabled = true;
+                    buttonText.style.display = 'none';
+                    spinner.style.display = 'inline-block';
+                } else {
+                    resetButton.disabled = false;
+                    buttonText.style.display = 'inline-block';
+                    spinner.style.display = 'none';
+                }
+            }
+            
+            // Manejar envío del formulario
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                if (!validateForm()) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Revisa el email',
+                        text: 'Por favor ingresa un correo electrónico válido',
+                        confirmButtonText: 'Entendido',
+                        confirmButtonColor: '#2e7d32'
+                    });
+                    return;
+                }
+                
+                setLoading(true);
+                
+                const formData = new FormData(this);
+                
+                fetch(this.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    setLoading(false);
+                    
+                    if (data.success || data.status) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: '¡Enlace enviado!',
+                            text: 'Revisa tu correo electrónico para restablecer tu contraseña',
+                            confirmButtonText: 'Entendido',
+                            confirmButtonColor: '#2e7d32'
+                        }).then(() => {
+                            // Limpiar formulario
+                            emailInput.value = '';
+                            clearFieldError('email');
+                        });
+                    } else {
+                        let errorMessage = 'No pudimos enviar el enlace';
+                        
+                        if (data.errors && data.errors.email) {
+                            errorMessage = 'Verifica que el correo esté registrado en el sistema';
+                        } else if (data.message) {
+                            errorMessage = data.message;
+                        }
+                        
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'No se pudo enviar',
+                            text: errorMessage,
+                            confirmButtonText: 'Intentar nuevamente',
+                            confirmButtonColor: '#2e7d32'
+                        });
+                    }
+                })
+                .catch(error => {
+                    setLoading(false);
+                    console.error('Error:', error);
+                    
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Problema de conexión',
+                        text: 'No pudimos conectar con el servidor. Revisa tu conexión a internet.',
+                        confirmButtonText: 'Intentar nuevamente',
+                        confirmButtonColor: '#2e7d32'
+                    });
+                });
+            });
+            
+            // Mostrar alertas de sesión al cargar la página
+            @if(session('status'))
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Enlace enviado!',
+                    text: '{{ session('status') }}',
+                    confirmButtonText: 'Entendido',
+                    confirmButtonColor: '#2e7d32'
+                });
+            @endif
+            
+            @if($errors->any())
+                const errorMessages = [];
+                @foreach($errors->all() as $error)
+                    errorMessages.push('{{ $error }}');
+                @endforeach
+                
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error al enviar',
+                    text: 'Verifica que el correo esté registrado en el sistema',
+                    confirmButtonText: 'Intentar nuevamente',
+                    confirmButtonColor: '#2e7d32'
+                });
+            @endif
+        });
     </script>
 </body>
 </html>
