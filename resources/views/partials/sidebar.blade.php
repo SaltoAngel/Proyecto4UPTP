@@ -93,24 +93,54 @@
 
 @push('scripts')
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
     try {
         const list = document.getElementById('sidebar-debug-scripts');
         if (!list) return;
+
+        // Cargar scripts
         const scripts = Array.from(document.scripts).map(s => s.src).filter(Boolean);
         const unique = Array.from(new Set(scripts));
+        let items = '';
         if (unique.length === 0) {
-            list.innerHTML = '<li class="text-muted">No hay scripts con src cargados.</li>';
-            return;
+            items += '<li class="text-muted">No hay scripts con src cargados.</li>';
+        } else {
+            items += unique.map(src => {
+                const cleanSrc = src.split('#')[0];
+                const name = cleanSrc.split('/').pop().split('?')[0] || cleanSrc;
+                return `<li class="d-flex align-items-center gap-2 mb-1">
+                            <i class="material-icons" style="font-size:16px;">insert_link</i>
+                            <span title="${cleanSrc}">${name}</span>
+                        </li>`;
+            }).join('');
         }
-        list.innerHTML = unique.map(src => {
-            const cleanSrc = src.split('#')[0];
-            const name = cleanSrc.split('/').pop().split('?')[0] || cleanSrc;
-            return `<li class="d-flex align-items-center gap-2 mb-1">
-                        <i class="material-icons" style="font-size:16px;">insert_link</i>
-                        <span title="${cleanSrc}">${name}</span>
-                    </li>`;
-        }).join('');
+
+        // Cargar status de debug
+        try {
+            const response = await fetch('/dashboard/debug-status');
+            const status = await response.json();
+            items += '<li class="mt-2"><strong>Dependencias:</strong></li>';
+            items += `<li class="d-flex align-items-center gap-2 mb-1">
+                        <i class="material-icons" style="font-size:16px;">code</i>
+                        PHP Jasper: ${status.php_jasper}
+                      </li>`;
+            items += `<li class="d-flex align-items-center gap-2 mb-1">
+                        <i class="material-icons" style="font-size:16px;">build</i>
+                        JasperStarter: ${status.jasperstarter}
+                      </li>`;
+            items += `<li class="d-flex align-items-center gap-2 mb-1">
+                        <i class="material-icons" style="font-size:16px;">memory</i>
+                        Java: ${status.java}
+                      </li>`;
+            items += `<li class="d-flex align-items-center gap-2 mb-1">
+                        <i class="material-icons" style="font-size:16px;">description</i>
+                        Archivos .jrxml: ${status.jrxml_files}
+                      </li>`;
+        } catch (e) {
+            items += '<li class="text-danger">Error al cargar status de debug.</li>';
+        }
+
+        list.innerHTML = items;
     } catch (e) {
         console.error('Sidebar debug error:', e);
     }

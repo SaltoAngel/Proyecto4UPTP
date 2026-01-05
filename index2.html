@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>Nupilca C.A</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="webp" href="../img/logo.jpg">
@@ -60,11 +60,14 @@
         .logo img {
             height: 50px;
             margin-right: 10px;
+            max-width: 100%;
         }                                                          
         
         .logo h1 {
             font-size: 1.8rem;
             color: var(--primary-color);
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .nav-links {
@@ -83,6 +86,8 @@
             transition: color 0.3s;
             padding: 5px 10px;
             border-radius: 5px;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .nav-links a:hover {
@@ -101,6 +106,14 @@
             gap: 15px;
         }
         
+        .nav-buttons.mobile {
+            display: none;
+            flex-direction: column;
+            width: 100%;
+            padding: 20px;
+            gap: 10px;
+        }
+        
         .btn {
             padding: 10px 20px;
             border-radius: 5px;
@@ -111,6 +124,9 @@
             text-decoration: none;
             display: inline-block;
             text-align: center;
+            font-size: 16px;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .btn-primary {
@@ -150,12 +166,16 @@
         .hero h2 {
             font-size: 3rem;
             margin-bottom: 20px;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .hero p {
             font-size: 1.2rem;
             max-width: 700px;
             margin: 0 auto 30px;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         /* Nueva sección: Concepto de Nutrición Animal */
@@ -180,6 +200,8 @@
             margin-bottom: 20px;
             position: relative;
             padding-bottom: 15px;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .nutrition-text h2::after {
@@ -198,6 +220,8 @@
             font-size: 1.1rem;
             color: #555;
             text-align: justify;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .nutrition-highlights {
@@ -226,6 +250,13 @@
         .highlight-text h4 {
             color: var(--dark-color);
             margin-bottom: 5px;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+        }
+        
+        .highlight-text p {
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .nutrition-image {
@@ -245,6 +276,7 @@
             height: auto;
             display: block;
             transition: transform 0.5s ease;
+            max-width: 100%;
         }
         
         .nutrition-image:hover img {
@@ -275,6 +307,7 @@
             width: 100%;
             height: 500px;
             object-fit: cover;
+            max-width: 100%;
         }
         
         .slide-content {
@@ -285,6 +318,16 @@
             background: rgba(0, 0, 0, 0.6);
             color: white;
             padding: 20px;
+        }
+        
+        .slide-content h3 {
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+        }
+        
+        .slide-content p {
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .slider-nav {
@@ -323,12 +366,16 @@
             font-size: 2.5rem;
             color: var(--primary-color);
             margin-bottom: 15px;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .section-title p {
             color: #666;
             max-width: 700px;
             margin: 0 auto;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .services-grid {
@@ -354,6 +401,7 @@
             width: 100%;
             height: 200px;
             object-fit: cover;
+            max-width: 100%;
         }
         
         .service-card-content {
@@ -363,6 +411,13 @@
         .service-card h3 {
             color: var(--primary-color);
             margin-bottom: 10px;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+        }
+        
+        .service-card p {
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         /* Sección Nosotros preview */
@@ -381,6 +436,11 @@
             flex: 1;
         }
         
+        .about-text p {
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+        }
+        
         .about-image {
             flex: 1;
             border-radius: 10px;
@@ -392,6 +452,7 @@
             width: 100%;
             height: auto;
             display: block;
+            max-width: 100%;
         }
         
         /* Sección Contacto preview */
@@ -424,6 +485,11 @@
             margin-top: 5px;
         }
         
+        .contact-item p {
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+        }
+        
         .contact-form {
             background-color: var(--light-color);
             padding: 30px;
@@ -438,6 +504,8 @@
             display: block;
             margin-bottom: 5px;
             font-weight: 500;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .form-group input,
@@ -447,6 +515,7 @@
             border: 1px solid #ddd;
             border-radius: 5px;
             font-size: 1rem;
+            font-size: 16px;
         }
         
         .form-group textarea {
@@ -466,12 +535,16 @@
         .cta h2 {
             font-size: 2.5rem;
             margin-bottom: 20px;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .cta p {
             font-size: 1.2rem;
             max-width: 700px;
             margin: 0 auto 30px;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         /* Footer */
@@ -492,6 +565,8 @@
             font-size: 1.2rem;
             margin-bottom: 20px;
             color: var(--accent-color);
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .footer-column ul {
@@ -506,10 +581,17 @@
             color: #ccc;
             text-decoration: none;
             transition: color 0.3s;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .footer-column a:hover {
             color: white;
+        }
+        
+        .footer-column p {
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .social-icons {
@@ -541,7 +623,39 @@
             color: #aaa;
         }
         
-        /* Responsive */
+        .copyright p {
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+        }
+        
+        /* Responsive - Breakpoints principales */
+        @media (max-width: 1024px) {
+            .hero {
+                padding: 70px 0;
+            }
+            
+            .hero h2 {
+                font-size: 2.5rem;
+            }
+            
+            .section-title h2 {
+                font-size: 2.2rem;
+            }
+            
+            .nutrition-text h2 {
+                font-size: 2.2rem;
+            }
+            
+            .cta h2 {
+                font-size: 2.2rem;
+            }
+            
+            .services-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 25px;
+            }
+        }
+        
         @media (max-width: 992px) {
             .nutrition-container {
                 flex-direction: column;
@@ -557,6 +671,10 @@
         }
         
         @media (max-width: 768px) {
+            .container {
+                width: 95%;
+            }
+            
             .menu-toggle {
                 display: block;
             }
@@ -573,6 +691,7 @@
                 justify-content: flex-start;
                 padding-top: 50px;
                 transition: left 0.3s;
+                z-index: 999;
             }
             
             .nav-links.active {
@@ -583,12 +702,266 @@
                 margin: 15px 0;
             }
             
+            .nav-buttons {
+                display: none;
+            }
+            
+            .nav-links.active + .nav-buttons.mobile {
+                display: flex;
+                position: fixed;
+                top: calc(80px + 100vh - 80px - 120px);
+                left: 0;
+                width: 100%;
+                z-index: 1000;
+            }
+            
+            .hero {
+                padding: 60px 0;
+            }
+            
             .hero h2 {
-                font-size: 2.2rem;
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+                padding: 0 15px;
+            }
+            
+            .nutrition-concept,
+            .services-preview,
+            .about-preview,
+            .contact-preview,
+            .cta {
+                padding: 60px 0;
+            }
+            
+            .section-title {
+                margin-bottom: 40px;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
             }
             
             .nutrition-text h2 {
-                font-size: 2rem;
+                font-size: 1.8rem;
+            }
+            
+            .cta h2 {
+                font-size: 1.8rem;
+            }
+            
+            .slide img {
+                height: 400px;
+            }
+            
+            .slider-nav {
+                bottom: 15px;
+            }
+            
+            .btn {
+                padding: 12px 20px;
+                font-size: 0.95rem;
+            }
+            
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-form {
+                padding: 20px;
+            }
+            
+            .slider-container {
+                margin: 30px auto;
+                border-radius: 8px;
+            }
+            
+            .slide-content {
+                padding: 15px;
+            }
+            
+            .slide-content h3 {
+                font-size: 1.3rem;
+                margin-bottom: 5px;
+            }
+            
+            .slide-content p {
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .logo h1 {
+                font-size: 1.5rem;
+            }
+            
+            .logo img {
+                height: 40px;
+            }
+            
+            .hero h2 {
+                font-size: 1.8rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .nutrition-text h2,
+            .section-title h2,
+            .cta h2 {
+                font-size: 1.7rem;
+            }
+            
+            .nutrition-text p,
+            .section-title p,
+            .cta p {
+                font-size: 1rem;
+            }
+            
+            .slide img {
+                height: 300px;
+            }
+            
+            .services-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .service-card img {
+                height: 180px;
+            }
+            
+            .highlight-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .highlight-icon {
+                margin-bottom: 10px;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .social-icons {
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero h2 {
+                font-size: 1.6rem;
+            }
+            
+            .hero p {
+                font-size: 0.95rem;
+            }
+            
+            .btn {
+                padding: 10px 18px;
+                font-size: 0.9rem;
+            }
+            
+            .slide img {
+                height: 250px;
+            }
+            
+            .slide-content {
+                padding: 15px;
+            }
+            
+            .slide-content h3 {
+                font-size: 1.2rem;
+            }
+            
+            .slide-content p {
+                font-size: 0.8rem;
+            }
+            
+            .slider-container {
+                margin: 20px auto;
+            }
+            
+            .slider-nav {
+                bottom: 10px;
+            }
+            
+            .slider-dot {
+                width: 10px;
+                height: 10px;
+            }
+            
+            .form-group input,
+            .form-group textarea {
+                padding: 10px;
+            }
+            
+            .footer-column {
+                margin-bottom: 25px;
+            }
+        }
+        
+        @media (max-width: 360px) {
+            .logo h1 {
+                font-size: 1.3rem;
+            }
+            
+            .logo img {
+                height: 35px;
+            }
+            
+            .hero h2 {
+                font-size: 1.4rem;
+            }
+            
+            .hero p {
+                font-size: 0.9rem;
+            }
+            
+            .nutrition-text h2,
+            .section-title h2,
+            .cta h2 {
+                font-size: 1.5rem;
+            }
+            
+            .btn {
+                padding: 8px 16px;
+                font-size: 0.85rem;
+            }
+            
+            .service-card-content {
+                padding: 15px;
+            }
+            
+            .service-card h3 {
+                font-size: 1.2rem;
+            }
+        }
+        
+        /* Mejoras para orientación horizontal en móviles */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .hero {
+                padding: 40px 0;
+            }
+            
+            .hero h2 {
+                font-size: 1.8rem;
+                margin-bottom: 10px;
+            }
+            
+            .hero p {
+                margin-bottom: 20px;
+                font-size: 0.95rem;
+            }
+            
+            .nav-links {
+                top: 70px;
+                height: calc(100vh - 70px);
             }
         }
     </style>
@@ -611,8 +984,8 @@
                 </ul>
                 
                 <div class="nav-buttons">
-                    <a href="#" class="btn btn-primary">Agendar Pedidos</a>
-                    <a href="login2.html" class="btn btn-secondary">Iniciar Sesión</a>
+                    <a href="#" class="btn btn-primary">Agendar pedidos</a>
+                    <a href="login2.html" class="btn btn-secondary">Iniciar sesión</a>
                 </div>
                 
                 <div class="menu-toggle">
@@ -627,7 +1000,7 @@
         <div class="container">
             <h2>Alimentos de calidad para tu granja</h2>
             <p>Somos líderes en producción y distribución de alimentos balanceados para gallinas, vacas, cerdos, caballos y más. Calidad garantizada para el crecimiento saludable de tus animales.</p>
-            <a href="servicios.html" class="btn btn-primary">Conoce Nuestros Productos</a>
+            <a href="servicios.html" class="btn btn-primary">Conoce nuestros productos</a>
         </div>
     </section>
 
@@ -672,12 +1045,10 @@
                             </div>
                         </div>
                     </div>
-                    
-                    
                 </div>
                 
                 <div class="nutrition-image">
-                    <img src="../img/cerdo-gallina.jpg">
+                    <img src="../img/cerdo-gallina.jpg" alt="Nutrición animal">
                 </div>
             </div>
         </div>
@@ -742,7 +1113,7 @@
                 </div>
                 
                 <div class="service-card">
-                    <img src="https://img.freepik.com/fotos-premium/camion-cargado-sacos-que-contienen-cacahuetes-transporte-india_729664-198.jpg">
+                    <img src="https://img.freepik.com/fotos-premium/camion-cargado-sacos-que-contienen-cacahuetes-transporte-india_729664-198.jpg" alt="Despacho de alimento">
                     <div class="service-card-content">
                         <h3>Despacho de alimento</h3>
                         <p>Red de distribución que llega a todas las regiones del país con entregas oportunas.</p>
@@ -790,82 +1161,11 @@
         </div>
     </section>
 
-    <!-- Sección Contacto preview -->
-    <section class="contact-preview">
-        <div class="container">
-            <div class="section-title">
-                <h2>Contáctanos</h2>
-                <p>Estamos aquí para atender tus consultas y necesidades</p>
-            </div>
-            
-            <div class="contact-container">
-                <div class="contact-info">
-                    <div class="contact-item">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <div>
-                            <h3>Dirección</h3>
-                            <p>Carretera central Km 45, Valle del Sol</p>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <i class="fas fa-phone"></i>
-                        <div>
-                            <h3>Teléfono</h3>
-                            <p>+1 (555) 123-4567</p>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <i class="fas fa-envelope"></i>
-                        <div>
-                            <h3>Email</h3>
-                            <p>info@granjafeliz.com</p>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <i class="fas fa-clock"></i>
-                        <div>
-                            <h3>Horario de atención</h3>
-                            <p>Lunes a Viernes: 8:00 am - 6:00 pm<br>Sábados: 8:00 am - 1:00 pm</p>
-                        </div>
-                    </div>
-                    
-                    <a href="contacto.html" class="btn btn-primary">Ir a página de contacto</a>
-                </div>
-                
-                <div class="contact-form">
-                    <h3>Envíanos un mensaje rápido</h3>
-                    <form>
-                        <div class="form-group">
-                            <label for="name">Nombre completo</label>
-                            <input type="text" id="name" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="email">Correo electrónico</label>
-                            <input type="email" id="email" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="message">Mensaje</label>
-                            <textarea id="message" required></textarea>
-                        </div>
-                        
-                        <button type="submit" class="btn btn-primary">Enviar mensaje</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- CTA Section -->
     <section class="cta">
         <div class="container">
             <h2>¿Listo para mejorar la alimentación de tus animales?</h2>
             <p>Contáctanos hoy mismo y descubre cómo podemos ayudarte a optimizar la nutrición de tu granja.</p>
-            <a href="contacto.html" class="btn btn-secondary" style="background-color: white; color: var(--primary-color);">Solicitar Cotización</a>
         </div>
     </section>
 
@@ -897,10 +1197,10 @@
                 <div class="footer-column">
                     <h3>Servicios</h3>
                     <ul>
-                        <li><a href="servicios.html">Producción de Alimentos</a></li>
-                        <li><a href="servicios.html">Distribución Nacional</a></li>
-                        <li><a href="servicios.html">Asesoría Técnica</a></li>
-                        <li><a href="servicios.html">Productos Especializados</a></li>
+                        <li><a href="servicios.html">Producción de alimentos</a></li>
+                        <li><a href="servicios.html">Despacho de alimento</a></li>
+                        <li><a href="servicios.html">Asesoría técnica</a></li>
+                        <li><a href="servicios.html">Productos especializados</a></li>
                     </ul>
                 </div>
                 
@@ -943,23 +1243,61 @@
         // Cambiar slide automáticamente cada 5 segundos
         setInterval(nextSlide, 5000);
         
-        // Menú móvil
+        // Menú móvil mejorado
         const menuToggle = document.querySelector('.menu-toggle');
         const navLinks = document.querySelector('.nav-links');
+        const navButtons = document.querySelector('.nav-buttons');
+        
+        // Crear una copia de los botones para el menú móvil
+        const mobileButtons = navButtons.cloneNode(true);
+        mobileButtons.classList.add('mobile');
+        mobileButtons.style.display = 'none';
+        
+        // Insertar los botones después del menú
+        navLinks.parentNode.insertBefore(mobileButtons, navLinks.nextSibling);
         
         menuToggle.addEventListener('click', () => {
             navLinks.classList.toggle('active');
+            
+            // Mostrar/ocultar botones en móvil
+            if (window.innerWidth <= 768) {
+                if (navLinks.classList.contains('active')) {
+                    mobileButtons.style.display = 'flex';
+                } else {
+                    mobileButtons.style.display = 'none';
+                }
+            }
         });
         
         // Cerrar menú al hacer clic en un enlace
         document.querySelectorAll('.nav-links a').forEach(link => {
             link.addEventListener('click', () => {
                 navLinks.classList.remove('active');
+                if (window.innerWidth <= 768) {
+                    mobileButtons.style.display = 'none';
+                }
             });
         });
         
+        // Cerrar menú al hacer clic en cualquier botón dentro del menú móvil
+        document.querySelectorAll('.mobile .btn').forEach(button => {
+            button.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                mobileButtons.style.display = 'none';
+            });
+        });
+        
+        // Redimensionamiento de ventana
+        window.addEventListener('resize', () => {
+            // Si la ventana es más grande que 768px, asegurarse de que el menú esté visible
+            if (window.innerWidth > 768) {
+                navLinks.classList.remove('active');
+                mobileButtons.style.display = 'none';
+            }
+        });
+        
         // Marcar enlace activo
-        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        const currentPage = window.location.pathname.split('/').pop() || 'index2.html';
         document.querySelectorAll('.nav-links a').forEach(link => {
             const linkPage = link.getAttribute('href');
             if (linkPage === currentPage) {

@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\loginController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\dashboard\PersonasController;
 use App\Http\Controllers\dashboard\ReportesController;
+use App\Http\Controllers\dashboard\ReportesAdminController;
 use App\Http\Controllers\dashboard\ProveedoresController;
 use App\Http\Controllers\dashboard\SettingsController;
 use App\Http\Controllers\dashboard\DashboardController;
@@ -69,11 +70,84 @@ Route::middleware([\App\Http\Middleware\Authenticate::class])
         Route::get('/reportes/personas/{formato?}', [ReportesController::class, 'personas'])
             ->whereIn('formato', ['pdf', 'xlsx'])
             ->name('reportes.personas');
+        Route::get('/reportes/generar/{template}/{formato?}', [ReportesController::class, 'generar'])
+            ->whereIn('formato', ['pdf', 'xlsx'])
+            ->name('reportes.generar');
+
+        // Administración de Reportes
+        Route::resource('reportes-admin', ReportesAdminController::class)->parameters([
+            'reportes-admin' => 'reporte'
+        ]);
+        Route::post('reportes-admin/{reporte}/toggle', [ReportesAdminController::class, 'toggle'])
+            ->name('reportes-admin.toggle');
+
+        // Test reports
+        Route::get('/test-reports', [ReportesController::class, 'test'])->name('test-reports');
+
+        // Debug status
+        Route::get('/debug-status', [DashboardController::class, 'debugStatus'])->name('debug-status');
 
         // Configuración de usuario
         Route::get('/configuracion', [SettingsController::class, 'index'])->name('configuracion');
         Route::post('/configuracion', [SettingsController::class, 'update'])->name('configuracion.update');
     });
 
-
+Route::get('/test-jasper-command', function() {
+    $jasper = new PHPJasper\PHPJasper();
+    
+    try {
+        // Test 1: Get version
+        $version = $jasper->getVersion();
+        
+        // Test 2: Build a simple command
+        $input = storage_path('app/reports/test.jrxml');
+        
+        // Create a simple test .jrxml if it doesn't exist
+        if (!file_exists($input)) {
+            $simpleXml = '<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" 
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports 
+              http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" 
+              name="test" pageWidth="595" pageHeight="842">
+    <title>
+        <band height="79">
+            <staticText>
+                <reportElement x="20" y="20" width="200" height="30"/>
+                <text><![CDATA[Test Report]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="20" y="50" width="200" height="20"/>
+                <textFieldExpression><![CDATA[$P{TEST_PARAM}]]></textFieldExpression>
+            </textField>
+        </band>
+    </title>
+</jasperReport>';
+            
+            file_put_contents($input, $simpleXml);
+        }
+        
+        $output = storage_path('app/reports/test_output');
+        $options = [
+            'format' => ['pdf'],
+            'params' => ['TEST_PARAM' => 'Hello from Jasper!'],
+        ];
+        
+        // Show the command that will be executed
+        $command = $jasper->process($input, $output, $options)->output();
+        
+        return response()->json([
+            'version' => $version,
+            'command' => $command,
+            'input_exists' => file_exists($input),
+            'java_path' => exec('where java'),
+        ]);
+        
+    } catch (\Exception $e) {
+        return response()->json([
+            'error' => $e->getMessage(),
+            'trace' => $e->getTraceAsString()
+        ], 500);
+    }
+});
 

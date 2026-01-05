@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="webp" href="../img/logo.jpg">
     <style>
-       /* Estilos generales */
+        /* Estilos generales */
         * {
             margin: 0;
             padding: 0;
@@ -60,11 +60,14 @@
         .logo img {
             height: 50px;
             margin-right: 10px;
+            max-width: 100%;
         }
         
         .logo h1 {
             font-size: 1.8rem;
             color: var(--primary-color);
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .nav-links {
@@ -83,6 +86,8 @@
             transition: color 0.3s;
             padding: 5px 10px;
             border-radius: 5px;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .nav-links a:hover {
@@ -101,6 +106,14 @@
             gap: 15px;
         }
         
+        .nav-buttons.mobile {
+            display: none;
+            flex-direction: column;
+            width: 100%;
+            padding: 20px;
+            gap: 10px;
+        }
+        
         .btn {
             padding: 10px 20px;
             border-radius: 5px;
@@ -111,6 +124,9 @@
             text-decoration: none;
             display: inline-block;
             text-align: center;
+            font-size: 16px;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .btn-primary {
@@ -135,6 +151,9 @@
             display: none;
             font-size: 1.5rem;
             cursor: pointer;
+            background: none;
+            border: none;
+            color: var(--primary-color);
         }
         
         /* Hero Section para contacto */
@@ -143,19 +162,23 @@
             background-size: cover;
             background-position: center;
             color: white;
-            padding: 120px 0;
+            padding: 100px 0;
             text-align: center;
         }
         
         .contact-hero h1 {
             font-size: 3.5rem;
             margin-bottom: 20px;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .contact-hero p {
             font-size: 1.3rem;
             max-width: 800px;
             margin: 0 auto 30px;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         /* Sección de contacto principal */
@@ -173,12 +196,16 @@
             font-size: 2.5rem;
             color: var(--primary-color);
             margin-bottom: 15px;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .section-title p {
             color: #666;
             max-width: 700px;
             margin: 0 auto;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .contact-container {
@@ -207,6 +234,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            font-size: 1.3rem;
         }
         
         .contact-card h3 i {
@@ -229,6 +257,10 @@
             color: var(--primary-color);
             font-size: 1.2rem;
             margin-top: 3px;
+        }
+        
+        .contact-item div p {
+            word-break: break-word;
         }
         
         /* Formulario de contacto */
@@ -254,7 +286,7 @@
         }
         
         .form-group {
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
         
         .form-group label {
@@ -285,6 +317,16 @@
             resize: vertical;
         }
         
+        .checkbox {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        
+        .checkbox input {
+            margin-top: 5px;
+        }
+        
         /* Mapa */
         .map-section {
             padding: 0 0 80px;
@@ -306,12 +348,19 @@
             align-items: center;
             justify-content: center;
             color: #666;
+            text-align: center;
+            padding: 20px;
         }
         
         .map-placeholder i {
             font-size: 4rem;
             margin-bottom: 20px;
             color: var(--primary-color);
+        }
+        
+        .map-placeholder h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
         }
         
         /* Preguntas frecuentes */
@@ -380,7 +429,6 @@
         
         .hours-container {
             display: flex;
-            flex-wrap: wrap;
             justify-content: center;
             gap: 50px;
             align-items: flex-start;
@@ -398,6 +446,7 @@
             color: var(--primary-color);
             margin-bottom: 25px;
             text-align: center;
+            font-size: 1.3rem;
         }
         
         .hours-list {
@@ -435,12 +484,16 @@
         .cta h2 {
             font-size: 2.5rem;
             margin-bottom: 20px;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .cta p {
             font-size: 1.2rem;
             max-width: 700px;
             margin: 0 auto 30px;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         /* Footer */
@@ -461,6 +514,8 @@
             font-size: 1.2rem;
             margin-bottom: 20px;
             color: var(--accent-color);
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .footer-column ul {
@@ -475,10 +530,17 @@
             color: #ccc;
             text-decoration: none;
             transition: color 0.3s;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .footer-column a:hover {
             color: white;
+        }
+        
+        .footer-column p {
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         
         .social-icons {
@@ -510,8 +572,71 @@
             color: #aaa;
         }
         
-        /* Responsive */
+        .copyright p {
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+        }
+        
+        /* Responsive - Breakpoints principales */
+        @media (max-width: 1200px) {
+            .contact-hero h1 {
+                font-size: 3rem;
+            }
+            
+            .contact-hero p {
+                font-size: 1.2rem;
+            }
+        }
+        
+        @media (max-width: 1024px) {
+            .contact-hero {
+                padding: 80px 0;
+            }
+            
+            .contact-hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .contact-hero p {
+                font-size: 1.1rem;
+            }
+            
+            .contact-section {
+                padding: 70px 0;
+            }
+            
+            .section-title h2 {
+                font-size: 2.2rem;
+            }
+            
+            .cta h2 {
+                font-size: 2.2rem;
+            }
+            
+            .cta p {
+                font-size: 1.1rem;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .hours-container {
+                flex-wrap: wrap;
+            }
+            
+            .hours-card {
+                min-width: 100%;
+            }
+        }
+        
         @media (max-width: 768px) {
+            .container {
+                width: 95%;
+            }
+            
             .menu-toggle {
                 display: block;
             }
@@ -528,6 +653,7 @@
                 justify-content: flex-start;
                 padding-top: 50px;
                 transition: left 0.3s;
+                z-index: 999;
             }
             
             .nav-links.active {
@@ -538,18 +664,209 @@
                 margin: 15px 0;
             }
             
+            .nav-buttons {
+                display: none;
+            }
+            
+            .nav-links.active + .nav-buttons.mobile {
+                display: flex;
+                position: fixed;
+                top: calc(80px + 100vh - 80px - 120px);
+                left: 0;
+                width: 100%;
+                z-index: 1000;
+            }
+            
+            .contact-hero {
+                padding: 70px 0;
+            }
+            
             .contact-hero h1 {
-                font-size: 2.5rem;
+                font-size: 2.4rem;
+            }
+            
+            .contact-hero p {
+                font-size: 1.1rem;
+                padding: 0 15px;
+            }
+            
+            .contact-section {
+                padding: 60px 0;
+            }
+            
+            .section-title {
+                margin-bottom: 40px;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+            
+            .section-title p {
+                padding: 0 15px;
             }
             
             .contact-form-container {
                 padding: 25px;
             }
             
-            .hours-container {
-                flex-direction: column;
-                align-items: center;
+            .cta {
+                padding: 60px 0;
             }
+            
+            .cta h2 {
+                font-size: 2rem;
+            }
+            
+            .cta p {
+                font-size: 1.1rem;
+                padding: 0 15px;
+            }
+            
+            .btn {
+                padding: 12px 20px;
+                font-size: 0.95rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .logo h1 {
+                font-size: 1.5rem;
+            }
+            
+            .logo img {
+                height: 40px;
+            }
+            
+            .contact-hero {
+                padding: 60px 0;
+            }
+            
+            .contact-hero h1 {
+                font-size: 2rem;
+                padding: 0 10px;
+            }
+            
+            .contact-hero p {
+                font-size: 1rem;
+                padding: 0 10px;
+            }
+            
+            .contact-section {
+                padding: 50px 0;
+            }
+            
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+            
+            .section-title p {
+                font-size: 1rem;
+            }
+            
+            .contact-card {
+                padding: 20px;
+            }
+            
+            .contact-form-container {
+                padding: 20px;
+            }
+            
+            .cta h2 {
+                font-size: 1.8rem;
+            }
+            
+            .cta p {
+                font-size: 1rem;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 25px;
+            }
+            
+            .social-icons {
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .contact-hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .contact-hero p {
+                font-size: 0.95rem;
+            }
+            
+            .btn {
+                padding: 10px 18px;
+                font-size: 0.9rem;
+                width: 100%;
+                max-width: 300px;
+                margin: 0 auto;
+                display: block;
+            }
+            
+            .section-title h2 {
+                font-size: 1.7rem;
+            }
+            
+            .copyright {
+                font-size: 0.8rem;
+            }
+        }
+        
+        @media (max-width: 360px) {
+            .logo h1 {
+                font-size: 1.3rem;
+            }
+            
+            .logo img {
+                height: 35px;
+            }
+            
+            .contact-hero h1 {
+                font-size: 1.6rem;
+            }
+            
+            .contact-hero p {
+                font-size: 0.9rem;
+            }
+            
+            .section-title h2 {
+                font-size: 1.5rem;
+            }
+            
+            .section-title p {
+                font-size: 0.9rem;
+            }
+            
+            .cta h2 {
+                font-size: 1.4rem;
+            }
+            
+            .cta p {
+                font-size: 0.9rem;
+            }
+        }
+        
+        /* Mejoras para evitar desbordamientos de texto */
+        p, h1, h2, h3, h4, li, a, td, th {
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+        }
+        
+        /* Mejora para imágenes responsivas */
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        /* Mejora para tablas y elementos de formulario */
+        input, textarea, select, button {
+            font-size: 16px;
         }
     </style>
 </head>
@@ -558,10 +875,10 @@
     <header>
         <div class="container">
             <nav class="navbar">
-            <div class="logo">
-    <img src="../img/logo.jpg" alt="Logo Nupilca C.A">
-    <h1>Nupilca C.A</h1>
-</div>
+                <div class="logo">
+                    <img src="../img/logo.jpg" alt="Logo de la marca">
+                    <h1>Nupilca C.A</h1>
+                </div>
                 
                 <ul class="nav-links">
                     <li><a href="index2.html">Inicio</a></li>
@@ -571,8 +888,8 @@
                 </ul>
                 
                 <div class="nav-buttons">
-                    <a href="#" class="btn btn-primary">Agendar Pedidos</a>
-                    <a href="login2.html" class="btn btn-secondary">Iniciar Sesión</a>
+                    <a href="#" class="btn btn-primary">Agendar pedidos</a>
+                    <a href="login2.html" class="btn btn-secondary">Iniciar sesión</a>
                 </div>
                 
                 <div class="menu-toggle">
@@ -587,7 +904,6 @@
         <div class="container">
             <h1>Contáctanos</h1>
             <p>Estamos aquí para atender tus consultas, asesorarte en la nutrición de tus animales y brindarte el mejor servicio. ¡Escríbenos!</p>
-
         </div>
     </section>
 
@@ -657,20 +973,6 @@
                             </div>
                         </div>
                     </div>
-                    
-                    <!--<div class="contact-card">
-                        <h3><i class="fas fa-comments"></i> Redes Sociales</h3>
-                        <div class="contact-details">
-                            <p>Síguenos en nuestras redes sociales para estar al día con novedades, consejos y ofertas especiales.</p>
-                            <div class="social-icons">
-                                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                <a href="#"><i class="fab fa-twitter"></i></a>
-                                <a href="#"><i class="fab fa-instagram"></i></a>
-                                <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                                <a href="#"><i class="fab fa-youtube"></i></a>
-                            </div>
-                        </div>
-                    </div>-->
                 </div>
                 
                 <!-- Formulario de contacto -->
@@ -748,7 +1050,6 @@
                         </a>
                     </p>
                 </div>
-                <!-- En una implementación real, aquí iría un iframe de Google Maps -->
             </div>
         </div>
     </section>
@@ -902,19 +1203,57 @@
     </footer>
 
     <script>
-        // Menú móvil
+        // Menú móvil mejorado
         const menuToggle = document.querySelector('.menu-toggle');
         const navLinks = document.querySelector('.nav-links');
+        const navButtons = document.querySelector('.nav-buttons');
+        
+        // Crear una copia de los botones para el menú móvil
+        const mobileButtons = navButtons.cloneNode(true);
+        mobileButtons.classList.add('mobile');
+        mobileButtons.style.display = 'none';
+        
+        // Insertar los botones después del menú
+        navLinks.parentNode.insertBefore(mobileButtons, navLinks.nextSibling);
         
         menuToggle.addEventListener('click', () => {
             navLinks.classList.toggle('active');
+            
+            // Mostrar/ocultar botones en móvil
+            if (window.innerWidth <= 768) {
+                if (navLinks.classList.contains('active')) {
+                    mobileButtons.style.display = 'flex';
+                } else {
+                    mobileButtons.style.display = 'none';
+                }
+            }
         });
         
         // Cerrar menú al hacer clic en un enlace
         document.querySelectorAll('.nav-links a').forEach(link => {
             link.addEventListener('click', () => {
                 navLinks.classList.remove('active');
+                if (window.innerWidth <= 768) {
+                    mobileButtons.style.display = 'none';
+                }
             });
+        });
+        
+        // Cerrar menú al hacer clic en cualquier botón dentro del menú móvil
+        document.querySelectorAll('.mobile .btn').forEach(button => {
+            button.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                mobileButtons.style.display = 'none';
+            });
+        });
+        
+        // Redimensionamiento de ventana
+        window.addEventListener('resize', () => {
+            // Si la ventana es más grande que 768px, asegurarse de que el menú esté visible
+            if (window.innerWidth > 768) {
+                navLinks.classList.remove('active');
+                mobileButtons.style.display = 'none';
+            }
         });
         
         // Marcar enlace activo

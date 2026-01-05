@@ -180,7 +180,7 @@
             align-items: center;
             justify-content: center;
             padding: 40px;
-            background-color: white;
+            background-color: #f5f5f5;
             position: relative;
             overflow-y: auto;
         }
@@ -396,77 +396,532 @@
             margin-bottom: 0;
         }
         
-        /* Responsive */
+        /* RESPONSIVE - Para tablets grandes y laptops pequeñas */
+        @media (max-width: 1200px) {
+            .image-overlay h1 {
+                font-size: 2.4rem;
+            }
+            
+            .image-overlay p {
+                font-size: 1.1rem;
+                max-width: 500px;
+            }
+            
+            .form-header h2 {
+                font-size: 2rem;
+            }
+        }
+        
+        /* RESPONSIVE - Para tablets */
         @media (max-width: 992px) {
             .login-container {
                 flex-direction: column;
+                min-height: 100vh;
+                height: auto;
+            }
+            
+            .back-home {
+                position: fixed;
+                top: 15px;
+                left: 15px;
+                z-index: 1000;
+            }
+            
+            .back-btn {
+                padding: 8px 16px;
+                font-size: 0.9rem;
+                backdrop-filter: blur(5px);
+                background-color: rgba(255, 255, 255, 0.85);
+            }
+            
+            .back-btn:hover {
+                transform: none;
+            }
+            
+            .image-section {
+                height: 35vh;
+                min-height: 250px;
+                flex: none;
+            }
+            
+            .image-overlay {
+                padding: 20px;
+            }
+            
+            .image-overlay .logo {
+                flex-direction: row !important;
+                margin-bottom: 15px;
+                font-size: 1.8rem;
+                flex-wrap: nowrap;
+                white-space: nowrap;
+            }
+            
+            .image-overlay .logo i {
+                font-size: 2.2rem;
+                margin-right: 10px;
+                flex-shrink: 0;
+            }
+            
+            .image-overlay .logo h1 {
+                font-size: 1.6rem;
+                white-space: normal;
+                line-height: 1.2;
+            }
+            
+            .image-overlay h1 {
+                font-size: 1.8rem;
+                margin-bottom: 10px;
+                line-height: 1.2;
+            }
+            
+            .image-overlay p {
+                font-size: 0.95rem;
+                max-width: 90%;
+                margin-bottom: 20px;
+                line-height: 1.4;
+            }
+            
+            .farm-icons {
+                margin-top: 15px;
+                gap: 12px;
+                justify-content: center;
+            }
+            
+            .farm-icons i {
+                width: 45px;
+                height: 45px;
+                font-size: 1.4rem;
+            }
+            
+            .form-section {
+                flex: 1;
+                min-height: 65vh;
+                padding: 25px 20px;
+                overflow-y: auto;
+                justify-content: flex-start;
+                padding-top: 60px;
+            }
+            
+            .login-form-container {
+                max-width: 500px;
+                margin: 0 auto;
+            }
+        }
+        
+        /* RESPONSIVE - Para tablets pequeñas y móviles grandes */
+        @media (max-width: 768px) {
+            body {
+                overflow-y: auto;
+            }
+            
+            .login-container {
+                height: auto;
+                min-height: 100vh;
+            }
+            
+            .image-section {
+                height: 32vh;
+                min-height: 220px;
+            }
+            
+            .image-overlay {
+                padding: 15px;
+            }
+            
+            .image-overlay .logo {
+                flex-direction: row !important;
+                align-items: center;
+                margin-bottom: 12px;
+                font-size: 1.6rem;
+            }
+            
+            .image-overlay .logo i {
+                font-size: 2rem;
+                margin-right: 10px;
+            }
+            
+            .image-overlay .logo h1 {
+                font-size: 1.4rem;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 70vw;
+            }
+            
+            .image-overlay h1 {
+                font-size: 1.6rem;
+                margin-bottom: 8px;
+            }
+            
+            .image-overlay p {
+                font-size: 0.9rem;
+                max-width: 95%;
+                margin-bottom: 15px;
+            }
+            
+            .farm-icons {
+                gap: 10px;
+                margin-top: 12px;
+            }
+            
+            .farm-icons i {
+                width: 42px;
+                height: 42px;
+                font-size: 1.3rem;
+            }
+            
+            .form-section {
+                padding: 20px 15px;
+                padding-top: 60px;
+                min-height: 68vh;
+                display: block;
+            }
+            
+            .login-form-container {
+                width: 100%;
+                margin-top: 0;
+            }
+            
+            .form-header {
+                margin-bottom: 30px;
+            }
+            
+            .form-header h2 {
+                font-size: 1.8rem;
+                line-height: 1.2;
+            }
+            
+            .form-header p {
+                font-size: 1rem;
+                line-height: 1.4;
+            }
+            
+            .form-group {
+                margin-bottom: 20px;
+            }
+            
+            .form-group label {
+                font-size: 0.95rem;
+                margin-bottom: 6px;
+            }
+            
+            .form-control {
+                padding: 14px 45px 14px 45px;
+                font-size: 0.95rem;
+            }
+            
+            .input-with-icon i.fas {
+                font-size: 1.1rem;
+                left: 13px;
+            }
+            
+            .toggle-password {
+                right: 15px;
+                width: 22px;
+                height: 22px;
+            }
+            
+            .btn {
+                padding: 15px;
+                font-size: 1rem;
+            }
+            
+            .form-options {
+                margin-bottom: 25px;
+                gap: 15px;
+            }
+            
+            .remember-me label {
+                font-size: 0.95rem;
+            }
+            
+            .forgot-password {
+                font-size: 0.95rem;
+            }
+            
+            .logo img {
+                height: 70px;
+            }
+        }
+        
+        /* RESPONSIVE - Para móviles */
+        @media (max-width: 576px) {
+            .image-section {
+                height: 30vh;
+                min-height: 200px;
+            }
+            
+            .image-overlay {
+                padding: 12px 10px;
+            }
+            
+            .image-overlay .logo {
+                flex-direction: row !important;
+                margin-bottom: 10px;
+                font-size: 1.4rem;
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .image-overlay .logo i {
+                font-size: 1.8rem;
+                margin-right: 8px;
+                flex-shrink: 0;
+            }
+            
+            .image-overlay .logo h1 {
+                font-size: 1.2rem;
+                white-space: nowrap;
+                max-width: 60vw;
+            }
+            
+            .image-overlay h1 {
+                font-size: 1.4rem;
+                margin-bottom: 6px;
+                padding: 0 5px;
+            }
+            
+            .image-overlay p {
+                font-size: 0.85rem;
+                max-width: 98%;
+                margin-bottom: 12px;
+                padding: 0 5px;
+            }
+            
+            .farm-icons {
+                gap: 8px;
+                margin-top: 10px;
+            }
+            
+            .farm-icons i {
+                width: 38px;
+                height: 38px;
+                font-size: 1.2rem;
+            }
+            
+            .form-section {
+                padding: 15px 12px;
+                padding-top: 60px;
+                min-height: 70vh;
+            }
+            
+            .login-form-container {
+                width: 100%;
+            }
+            
+            .form-header h2 {
+                font-size: 1.6rem;
+            }
+            
+            .form-header p {
+                font-size: 0.9rem;
+            }
+            
+            .form-options {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                gap: 10px;
+                margin-bottom: 20px;
+            }
+            
+            .remember-me {
+                width: auto;
+                flex: 1;
+            }
+            
+            .remember-me label {
+                font-size: 0.9rem;
+                white-space: nowrap;
+            }
+            
+            .forgot-password {
+                align-self: center;
+                font-size: 0.9rem;
+                text-align: right;
+                white-space: nowrap;
+            }
+            
+            .form-control {
+                padding: 12px 42px 12px 42px;
+                font-size: 0.9rem;
+            }
+            
+            .input-with-icon i.fas {
+                font-size: 1rem;
+                left: 12px;
+            }
+            
+            .toggle-password {
+                right: 12px;
+                width: 20px;
+                height: 20px;
+            }
+            
+            .toggle-password i {
+                font-size: 0.9rem;
+            }
+            
+            .alert {
+                padding: 10px 12px;
+                font-size: 0.85rem;
+                margin-bottom: 15px;
+            }
+            
+            .btn {
+                padding: 14px;
+                font-size: 0.95rem;
+            }
+        }
+        
+        /* RESPONSIVE - Para móviles muy pequeños */
+        @media (max-width: 400px) {
+            .image-section {
+                height: 28vh;
+                min-height: 180px;
+            }
+            
+            .image-overlay .logo {
+                font-size: 1.2rem;
+            }
+            
+            .image-overlay .logo i {
+                font-size: 1.6rem;
+                margin-right: 6px;
+            }
+            
+            .image-overlay .logo h1 {
+                font-size: 1.1rem;
+                max-width: 55vw;
+            }
+            
+            .image-overlay h1 {
+                font-size: 1.3rem;
+            }
+            
+            .image-overlay p {
+                font-size: 0.8rem;
+                line-height: 1.3;
+            }
+            
+            .farm-icons i {
+                width: 35px;
+                height: 35px;
+                font-size: 1.1rem;
+            }
+            
+            .form-section {
+                padding: 12px 10px;
+                padding-top: 55px;
+            }
+            
+            .form-header h2 {
+                font-size: 1.4rem;
+            }
+            
+            .form-header p {
+                font-size: 0.85rem;
+            }
+            
+            .form-options {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+            
+            .remember-me {
+                width: 100%;
+            }
+            
+            .forgot-password {
+                align-self: flex-end;
+                font-size: 0.85rem;
+            }
+            
+            .form-control {
+                padding: 11px 40px 11px 40px;
+                font-size: 0.85rem;
+            }
+            
+            .input-with-icon i.fas {
+                font-size: 0.95rem;
+                left: 10px;
+            }
+            
+            .btn {
+                padding: 13px;
+                font-size: 0.9rem;
+            }
+            
+            .back-btn span {
+                display: none;
+            }
+            
+            .back-btn {
+                padding: 8px;
+                border-radius: 50%;
+                width: 36px;
+                height: 36px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            .back-btn i {
+                margin-right: 0;
+                font-size: 1rem;
+            }
+        }
+        
+        /* RESPONSIVE - Para orientación horizontal en móviles */
+        @media (max-height: 600px) and (orientation: landscape) {
+            .login-container {
+                flex-direction: row;
+            }
+            
+            .image-section {
+                height: 100vh;
+                flex: 0 0 40%;
+            }
+            
+            .image-overlay .logo {
+                flex-direction: row !important;
+            }
+            
+            .form-section {
+                height: 100vh;
+                overflow-y: auto;
+                flex: 0 0 60%;
+                padding-top: 20px;
             }
             
             .back-home {
                 top: 10px;
                 left: 10px;
             }
-            
-            .back-btn {
-                padding: 8px 15px;
-                font-size: 0.9rem;
-            }
-            
-            .image-section {
-                height: 40vh;
-                flex: none;
-            }
-            
-            .image-overlay h1 {
-                font-size: 2.2rem;
-            }
-            
-            .image-overlay p {
-                font-size: 1rem;
-            }
-            
-            .farm-icons i {
-                width: 50px;
-                height: 50px;
-                font-size: 1.5rem;
-            }
-            
+        }
+        
+        /* RESPONSIVE - Ajustes para pantallas muy altas */
+        @media (min-height: 1000px) {
             .form-section {
-                height: 60vh;
-                overflow-y: auto;
-                padding: 20px;
+                justify-content: center;
+            }
+            
+            .login-form-container {
+                max-width: 500px;
             }
         }
         
-        @media (max-width: 576px) {
-            .form-section {
-                padding: 15px;
-            }
-            
-            .form-options {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 15px;
-            }
-            
-            .image-overlay h1 {
-                font-size: 1.8rem;
-            }
-            
-            .image-overlay p {
-                font-size: 0.9rem;
-            }
-            
-            .farm-icons {
-                gap: 10px;
-            }
-            
-            .farm-icons i {
-                width: 45px;
-                height: 45px;
-                font-size: 1.3rem;
+        /* Mejoras de accesibilidad y UX */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
             }
         }
+        
+    
         
         /* Animación de entrada para elementos del formulario */
         .form-group, .form-options, .btn-primary {
@@ -722,6 +1177,26 @@
         farmImage.addEventListener('error', function() {
             this.src = 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80';
         });
+        
+        // Ajustar altura del formulario en móviles
+        function adjustFormHeight() {
+            const formSection = document.querySelector('.form-section');
+            const imageSection = document.querySelector('.image-section');
+            
+            if (window.innerWidth <= 992) {
+                const viewportHeight = window.innerHeight;
+                const imageHeight = imageSection.offsetHeight;
+                const formHeight = viewportHeight - imageHeight;
+                
+                formSection.style.minHeight = formHeight + 'px';
+            } else {
+                formSection.style.minHeight = '';
+            }
+        }
+        
+        // Ejecutar al cargar y al redimensionar
+        window.addEventListener('load', adjustFormHeight);
+        window.addEventListener('resize', adjustFormHeight);
     </script>
 </body>
 </html>

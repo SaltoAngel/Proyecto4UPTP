@@ -121,5 +121,111 @@
     <script src="{{ asset('material/js/material-dashboard.min.js') }}"></script>
     @include('partials.skeleton')
     @stack('scripts')
+
+    <!-- Debug Panel -->
+    <div id="debug-panel" style="position: fixed; bottom: 10px; right: 10px; width: 400px; height: 300px; background: rgba(0,0,0,0.9); color: white; border-radius: 5px; z-index: 9999; display: none; overflow-y: auto; font-size: 12px; padding: 10px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <strong>Debug Panel</strong>
+            <button id="debug-toggle" style="background: none; border: none; color: white; cursor: pointer;">×</button>
+        </div>
+        <div id="debug-logs"></div>
+    </div>
+    <button id="debug-show" style="position: fixed; bottom: 10px; right: 10px; background: #007bff; color: white; border: none; border-radius: 50%; width: 50px; height: 50px; cursor: pointer; z-index: 10000;">🐛</button>
+
+    <script>
+        // Debug Panel Script
+        const debugPanel = document.getElementById('debug-panel');
+        const debugLogs = document.getElementById('debug-logs');
+        const debugShow = document.getElementById('debug-show');
+        const debugToggle = document.getElementById('debug-toggle');
+
+        let isVisible = false;
+
+        debugShow.addEventListener('click', () => {
+            isVisible = !isVisible;
+            debugPanel.style.display = isVisible ? 'block' : 'none';
+            debugShow.style.display = isVisible ? 'none' : 'block';
+        });
+
+        debugToggle.addEventListener('click', () => {
+            isVisible = false;
+            debugPanel.style.display = 'none';
+            debugShow.style.display = 'block';
+        });
+
+        // Intercept console.log
+        const originalLog = console.log;
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            const message = args.map(arg => typeof arg === 'object' ? JSON.stringify(arg) : arg).join(' ');
+            debugLogs.innerHTML += `<div>[LOG] ${new Date().toLocaleTimeString()}: ${message}</div>`;
+            debugLogs.scrollTop = debugLogs.scrollHeight;
+        };
+
+        // Intercept fetch
+        const originalFetch = window.fetch;
+        window.fetch = function(...args) {
+            debugLogs.innerHTML += `<div>[FETCH] ${new Date().toLocaleTimeString()}: ${args[0]}</div>`;
+            debugLogs.scrollTop = debugLogs.scrollHeight;
+            return originalFetch.apply(this, args).then(response => {
+                debugLogs.innerHTML += `<div>[FETCH RESPONSE] ${new Date().toLocaleTimeString()}: ${response.status} ${response.statusText}</div>`;
+                debugLogs.scrollTop = debugLogs.scrollHeight;
+                return response;
+            }).catch(error => {
+                debugLogs.innerHTML += `<div>[FETCH ERROR] ${new Date().toLocaleTimeString()}: ${error.message}</div>`;
+                debugLogs.scrollTop = debugLogs.scrollHeight;
+                throw error;
+            });
+        };
+
+        // Intercept XMLHttpRequest
+        const originalOpen = XMLHttpRequest.prototype.open;
+        XMLHttpRequest.prototype.open = function(method, url, ...args) {
+            debugLogs.innerHTML += `<div>[XHR] ${new Date().toLocaleTimeString()}: ${method} ${url}</div>`;
+            debugLogs.scrollTop = debugLogs.scrollHeight;
+            this.addEventListener('load', () => {
+                debugLogs.innerHTML += `<div>[XHR RESPONSE] ${new Date().toLocaleTimeString()}: ${this.status} ${this.statusText}</div>`;
+                debugLogs.scrollTop = debugLogs.scrollHeight;
+            });
+            this.addEventListener('error', () => {
+                debugLogs.innerHTML += `<div>[XHR ERROR] ${new Date().toLocaleTimeString()}: Error en solicitud</div>`;
+                debugLogs.scrollTop = debugLogs.scrollHeight;
+            });
+            return originalOpen.apply(this, [method, url, ...args]);
+        };
+
+        // Cargar logs de Laravel y status al abrir el panel
+        debugShow.addEventListener('click', async () => {
+            if (isVisible) {
+                try {
+                    const response = await fetch('/dashboard/debug-status');
+                    const status = await response.json();
+                    
+                    // Mostrar status de dependencias
+                    debugLogs.innerHTML += '<div><strong>Status de dependencias:</strong></div>';
+                    debugLogs.innerHTML += `<div>PHP Jasper: ${status.php_jasper}</div>`;
+                    debugLogs.innerHTML += `<div>JasperStarter: ${status.jasperstarter}</div>`;
+                    debugLogs.innerHTML += `<div>Java: ${status.java}</div>`;
+                    debugLogs.innerHTML += `<div>Java Path: ${status.java_path}</div>`;
+                    debugLogs.innerHTML += `<div>Jasper JAR: ${status.jasper_jar}</div>`;
+                    debugLogs.innerHTML += `<div>JDBC Dir: ${status.jdbc_dir}</div>`;
+                    debugLogs.innerHTML += `<div>Archivos .jrxml: ${status.jrxml_files}</div>`;
+                    
+                    // Mostrar logs de Laravel
+                    if (status.recent_logs && status.recent_logs.length > 0) {
+                        debugLogs.innerHTML += '<div><strong>Últimos logs de Laravel:</strong></div>';
+                        status.recent_logs.forEach(log => {
+                            debugLogs.innerHTML += `<div>[LOG] ${log}</div>`;
+                        });
+                    } else {
+                        debugLogs.innerHTML += '<div>No hay logs recientes.</div>';
+                    }
+                    debugLogs.scrollTop = debugLogs.scrollHeight;
+                } catch (e) {
+                    debugLogs.innerHTML += `<div>[ERROR] No se pudieron cargar datos: ${e.message}</div>`;
+                }
+            }
+        });
+    </script>
 </body>
 </html>
