@@ -54,6 +54,7 @@ class Proveedor extends Model
         'fecha_ultima_compra' => 'date',
         'fecha_ultima_evaluacion' => 'date',
         'monto_total_compras' => 'decimal:2',
+        'productos_servicios' => 'array',
     ];
 
     public static function generarCodigo(): string

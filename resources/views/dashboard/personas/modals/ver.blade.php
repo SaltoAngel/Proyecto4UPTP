@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header bg-info text-white">
-                <h5 class="modal-title">
+                <h5 class="modal-title text-white">
                     <i class="material-icons me-2">badge</i>Detalles de Persona
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
@@ -23,7 +23,7 @@
                     <div class="col-md-6">
                         <div class="card h-100 shadow-sm border-0">
                             <div class="card-body">
-                                <h6 class="text-primary fw-bold mb-3">Información Principal</h6>
+                                <h6 class="form-label fw-bold mb-3">Información Principal</h6>
                                 <div class="mb-3">
                                     <div class="text-uppercase text-muted small"><i class="material-icons me-1">badge</i>Nombre</div>
                                     <div id="modalNombreCompleto" class="fw-bold"></div>

@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header bg-success text-white">
-                <h5 class="modal-title"><i class="material-icons me-2">local_shipping</i>Registrar Proveedor</h5>
+                <h5 class="modal-title text-white"><i class="material-icons me-2">local_shipping</i>Registrar Proveedor</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <form id="formCrearProveedor" method="POST" action="{{ route('dashboard.proveedores.store') }}">
@@ -14,7 +14,11 @@
                             <select name="persona_id" class="form-select" required>
                                 <option value="">Seleccione persona</option>
                                 @foreach($personas as $persona)
-                                    <option value="{{ $persona->id }}">{{ $persona->codigo }} - {{ $persona->nombre_completo }}</option>
+                                    @php
+                                        $docType = strtoupper($persona->tipo_documento);
+                                        $tipoPersona = $docType === 'J' ? 'Jurídico' : 'Natural';
+                                    @endphp
+                                    <option value="{{ $persona->id }}">{{ $docType }}-{{ $persona->documento }} - {{ $persona->nombre_completo }}</option>
                                 @endforeach
                             </select>
                             <span class="validation-feedback validation-error" style="display: none;"></span>
@@ -23,26 +27,34 @@
 
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label class="form-label">Categorías (múltiples)</label>
+                            <label class="form-label fw-bold">Categorías (múltiples)</label> <span class="text-danger">*</span></label>
                             <div class="border rounded p-2" id="crearSelectorCategorias" data-target-input="#crearTiposSeleccionados" data-target-summary="#crearResumenCategorias">
                                 <div class="d-flex flex-wrap gap-1 mb-2 categorias-seleccionadas"></div>
                                 <div class="d-flex flex-wrap gap-1 categorias-disponibles">
                                     @foreach($tiposProveedores as $tipo)
-                                        <button type="button" class="btn btn-sm btn-outline-primary categoria-item" data-id="{{ $tipo->id }}" data-nombre="{{ $tipo->nombre_tipo }}">{{ $tipo->nombre_tipo }}</button>
+                                        <button type="button" class="btn btn-sm btn-outline-success categoria-item" data-id="{{ $tipo->id }}" data-nombre="{{ $tipo->nombre_tipo }}">{{ $tipo->nombre_tipo }}</button>
                                     @endforeach
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        {{-- <div class="col-md-6">
                             <label class="form-label">Especialización</label>
                             <input type="text" name="especializacion" class="form-control">
                             <span class="validation-feedback validation-error" style="display: none;"></span>
-                        </div>
+                        </div> --}}
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Productos / Servicios</label>
-                        <textarea name="productos_servicios" class="form-control" rows="2"></textarea>
+                    <div class="mb-3" id="productosWrapper">
+                        <label class="form-label fw-bold">Productos / Servicios</label> <span class="text-danger">*</span>
+                        <div class="d-flex gap-2 mb-2">
+                            <input type="text" id="productoInput" class="form-control" placeholder="Escribe y presiona Enter" autocomplete="off">
+                            <button type="button" class="btn btn-success" id="addProductoBtn">
+                                <i class="material-icons align-middle" style="font-size:18px">add</i>
+                                Añadir
+                            </button>
+                        </div>
+                        <div class="d-flex flex-wrap gap-2" id="productosChips"></div>
+                        <div id="productosHiddenInputs" class="d-none"></div>
                         <span class="validation-feedback validation-error" style="display: none;"></span>
                     </div>
 
@@ -64,7 +76,7 @@
                         </div>
                     </div>
 
-                    <div class="row mb-3">
+                    {{-- <div class="row mb-3">
                         <div class="col-md-6">
                             <label class="form-label">Calificación (1-5)</label>
                             <select name="calificacion" class="form-select">
@@ -88,7 +100,7 @@
                     <div class="mb-3">
                         <label class="form-label">Observaciones de calificación</label>
                         <textarea name="observaciones_calificacion" class="form-control" rows="2"></textarea>
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="material-icons me-2">close</i>Cancelar</button>
@@ -114,6 +126,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const emailComercial = form.querySelector('input[name="email_comercial"]');
     const telefonoComercial = form.querySelector('input[name="telefono_comercial"]');
     const contactoComercial = form.querySelector('input[name="contacto_comercial"]');
+    const productoInput = document.getElementById('productoInput');
+    const addProductoBtn = document.getElementById('addProductoBtn');
+    const productosChips = document.getElementById('productosChips');
+    const productosHiddenInputs = document.getElementById('productosHiddenInputs');
     
     // Funciones de validación
     function isValidEmail(email) {
@@ -153,6 +169,47 @@ document.addEventListener('DOMContentLoaded', function() {
             feedback.style.display = 'none';
         }
     }
+
+    // Gestión de productos/servicios como lista (chips)
+    const addProducto = (value) => {
+        const val = (value ?? '').trim();
+        if (!val) return;
+        if (!productosHiddenInputs || !productosChips) return;
+
+        const key = val.toLowerCase();
+        if (productosHiddenInputs.querySelector(`input[data-key="${key}"]`)) {
+            if (productoInput) productoInput.value = '';
+            return;
+        }
+
+        const chip = document.createElement('span');
+        chip.className = 'badge bg-light text-dark border d-flex align-items-center gap-1 px-2 py-2';
+        chip.dataset.key = key;
+        chip.innerHTML = `<span>${val}</span><button type="button" class="btn btn-sm btn-link text-danger p-0" aria-label="Quitar">&times;</button>`;
+
+        const hidden = document.createElement('input');
+        hidden.type = 'hidden';
+        hidden.name = 'productos_servicios[]';
+        hidden.value = val;
+        hidden.dataset.key = key;
+
+        chip.querySelector('button').addEventListener('click', () => {
+            chip.remove();
+            hidden.remove();
+        });
+
+        productosChips.appendChild(chip);
+        productosHiddenInputs.appendChild(hidden);
+        if (productoInput) productoInput.value = '';
+    };
+
+    addProductoBtn?.addEventListener('click', () => addProducto(productoInput?.value));
+    productoInput?.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ',') {
+            e.preventDefault();
+            addProducto(productoInput.value);
+        }
+    });
     
     // Validaciones en tiempo real
     personaSelect.addEventListener('change', function() {
@@ -224,6 +281,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Manejar envío del formulario
     form.addEventListener('submit', function(e) {
         e.preventDefault();
+
+        // Agregar el valor pendiente (si quedó en el input) antes de validar
+        addProducto(productoInput?.value);
         
         if (!validateForm()) {
             Swal.fire({
@@ -327,6 +387,9 @@ document.addEventListener('DOMContentLoaded', function() {
         form.querySelectorAll('.validation-feedback').forEach(feedback => {
             feedback.style.display = 'none';
         });
+        if (productosChips) productosChips.innerHTML = '';
+        if (productosHiddenInputs) productosHiddenInputs.innerHTML = '';
+        if (productoInput) productoInput.value = '';
     });
 });
 </script>

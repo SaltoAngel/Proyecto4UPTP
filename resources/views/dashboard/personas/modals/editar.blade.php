@@ -1,7 +1,16 @@
+<!-- resources/views/dashboard/personas/modals/editar.blade.php -->
+<style>
+    /* Color personalizado para radios de Tipo de Persona */
+    .tipo-persona-edit .form-check-input[type='radio']:checked {
+        background-color: #62e91e;
+        border-color: #62e91e;
+        box-shadow: 0 0 0 0.2rem rgba(98, 233, 30, 0.25);
+    }
+</style>
 <div class="modal fade" id="editarPersonaModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header bg-success text-white">
+            <div class="modal-header bg-warning text-white">
                 <h5 class="modal-title text-white">
                     <i class="material-icons me-2 text-white">edit</i>Editar Persona
                 </h5>
@@ -11,9 +20,9 @@
                 @csrf
                 @method('PUT')
                 <div class="modal-body">
-                    <div class="row mb-3">
+                    <div class="row mb-3 tipo-persona-edit">
                         <div class="col-12">
-                            <label class="form-label fw-bold">Tipo de Persona *</label>
+                            <label class="form-label fw-bold">Tipo de Persona <span class="text-danger">*</span></label><br>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="tipo" id="editTipoNatural" value="natural">
                                 <label class="form-check-label" for="editTipoNatural">
@@ -32,12 +41,12 @@
                     <div class="campo-natural-edit">
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label for="editNombres" class="form-label"><i class="material-icons me-1">badge</i>Nombres *</label>
+                                <label for="editNombres" class="form-label"><i class="material-icons me-1">badge</i>Nombres <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="editNombres" name="nombres" maxlength="60" autocomplete="off">
                                 <div class="form-text text-danger small d-none" id="editNombres-error"></div>
                             </div>
                             <div class="col-md-6">
-                                <label for="editApellidos" class="form-label"><i class="material-icons me-1">badge</i>Apellidos *</label>
+                                <label for="editApellidos" class="form-label"><i class="material-icons me-1">badge</i>Apellidos <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="editApellidos" name="apellidos" maxlength="60" autocomplete="off">
                                 <div class="form-text text-danger small d-none" id="editApellidos-error"></div>
                             </div>
@@ -47,12 +56,12 @@
                     <div class="campo-juridica-edit" style="display: none;">
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label for="editRazonSocial" class="form-label"><i class="material-icons me-1">business</i>Razón Social *</label>
+                                <label for="editRazonSocial" class="form-label"><i class="material-icons me-1">business</i>Razón Social <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="editRazonSocial" name="razon_social" maxlength="120" autocomplete="off">
                                 <div class="form-text text-danger small d-none" id="editRazonSocial-error"></div>
                             </div>
                             <div class="col-md-6">
-                                <label for="editNombreComercial" class="form-label"><i class="material-icons me-1">storefront</i>Nombre Comercial</label>
+                                <label for="editNombreComercial" class="form-label"><i class="material-icons me-1">storefront</i>Nombre Comercial <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="editNombreComercial" name="nombre_comercial" maxlength="120" autocomplete="off">
                                 <div class="form-text text-danger small d-none" id="editNombreComercial-error"></div>
                             </div>
@@ -61,7 +70,7 @@
 
                     <div class="row mb-3">
                         <div class="col-md-4">
-                            <label for="editTipoDocumento" class="form-label"><i class="material-icons me-1">badge</i>Tipo Documento *</label>
+                            <label for="editTipoDocumento" class="form-label"><i class="material-icons me-1">badge</i>Tipo Documento <span class="text-danger">*</span></label>
                             <div class="input-group">
                                 <select class="form-select" id="editTipoDocumento" name="tipo_documento" required>
                                     <option value="">Seleccionar...</option>
@@ -71,11 +80,10 @@
                                     <option value="G">G - Gubernamental</option>
                                     <option value="P">P - Pasaporte</option>
                                 </select>
-                                <span class="input-group-text" id="editTipoDocLeyenda">-</span>
                             </div>
                         </div>
                         <div class="col-md-8">
-                            <label for="editDocumento" class="form-label"><i class="material-icons me-1">numbers</i>Número de Documento *</label>
+                            <label for="editDocumento" class="form-label"><i class="material-icons me-1">numbers</i>Número de Documento <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="editDocumento" name="documento" required maxlength="12" autocomplete="off">
                             <div class="form-text text-danger small d-none" id="editDocumento-error"></div>
                         </div>
@@ -83,7 +91,7 @@
 
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label for="editTelefono" class="form-label"><i class="material-icons me-1">phone</i>Teléfono Principal</label>
+                            <label for="editTelefono" class="form-label"><i class="material-icons me-1">phone</i>Teléfono Principal <span class="text-danger">*</span></label>
                             <div class="input-group">
                                 <select class="form-select" id="editTelefonoPrefijo" aria-label="Prefijo venezolano">
                                     <option value="0412">0412</option>
@@ -116,7 +124,6 @@
                                 <div class="input-group mb-1">
                                     <select class="form-select" id="editTelefonoAlternativoPrefijo" aria-label="Prefijo alternativo">
                                         <option value="0412">0412</option>
-                    
                                         <option value="0414">0414</option>
                                         <option value="0416">0416</option>
                                         <option value="0424">0424</option>
@@ -166,7 +173,7 @@
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                         <i class="material-icons me-2">close</i>Cancelar
                     </button>
-                    <button type="submit" class="btn btn-warning text-dark">
+                    <button type="submit" class="btn btn-warning text-white">
                         <i class="material-icons me-2">save</i>Actualizar
                     </button>
                 </div>

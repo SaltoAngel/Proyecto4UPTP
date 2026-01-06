@@ -170,11 +170,11 @@ $(document).ready(function() {
         function agregarChip(id, nombre) {
             // Evitar duplicados
             if ($seleccionadas.find(`.chip[data-id="${id}"]`).length) return;
-            const $chip = $(`<span class="badge bg-primary chip" data-id="${id}" data-nombre="${nombre}" style="cursor:pointer">${nombre} ×</span>`);
+            const $chip = $(`<span class="badge bg-success chip" data-id="${id}" data-nombre="${nombre}" style="cursor:pointer">${nombre} ×</span>`);
             $chip.on('click', function() {
                 // Al quitar, vuelve a la lista disponible
                 $chip.remove();
-                const $btn = $(`<button type="button" class="btn btn-sm btn-outline-primary categoria-item" data-id="${id}" data-nombre="${nombre}">${nombre}</button>`);
+                const $btn = $(`<button type="button" class="btn btn-sm btn-outline-success categoria-item" data-id="${id}" data-nombre="${nombre}">${nombre}</button>`);
                 $btn.on('click', function() {
                     agregarChip(id, nombre);
                     $(this).remove();
@@ -359,10 +359,10 @@ $(document).ready(function() {
             } else {
                 // Si no está en disponibles (ya chip), crear chip
                 if (!$seleccionadas.find(`.chip[data-id="${id}"]`).length) {
-                    const $chip = $(`<span class="badge bg-primary chip" data-id="${id}" data-nombre="${nombre}" style="cursor:pointer">${nombre} ×</span>`);
+                    const $chip = $(`<span class="badge bg-success chip" data-id="${id}" data-nombre="${nombre}" style="cursor:pointer">${nombre} ×</span>`);
                     $chip.on('click', function() {
                         $chip.remove();
-                        const $btnNuevo = $(`<button type="button" class="btn btn-sm btn-outline-primary categoria-item" data-id="${id}" data-nombre="${nombre}">${nombre}</button>`);
+                        const $btnNuevo = $(`<button type="button" class="btn btn-sm btn-outline-success categoria-item" data-id="${id}" data-nombre="${nombre}">${nombre}</button>`);
                         $btnNuevo.on('click', function() {
                             agregarChip(id, nombre);
                             $(this).remove();

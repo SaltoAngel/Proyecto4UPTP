@@ -19,7 +19,7 @@
                             <label class="form-label fw-bold">Tipo de Persona <span class="text-danger">*</span></label></label> <br>    
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="tipo" 
-                                       id="tipo_natural" value="natural" checked>
+                                       id="tipo_natural" value="natural" checked style="">
                                 <label class="form-check-label" for="tipo_natural">
                                     <i class="material-icons me-1">person</i>Persona Natural
                                 </label>

@@ -14,6 +14,7 @@
     .acciones-persona .btn { border-radius: 0; }
     .acciones-persona .btn:first-child { border-top-left-radius: .2rem; border-bottom-left-radius: .2rem; }
     .acciones-persona .btn:last-child { border-top-right-radius: .2rem; border-bottom-right-radius: .2rem; }
+
 }</style>
 @endpush
 
@@ -138,14 +139,6 @@
     </div>
 </div>
 
-{{-- <div class="d-flex justify-content-end gap-2 mb-3">
-    <a class="btn btn-outline-secondary" href="{{ route('dashboard.reportes.personas', ['formato' => 'pdf']) }}" target="_blank">
-        <i class="fas fa-file-pdf me-1"></i> PDF
-    </a>
-    <a class="btn btn-outline-success" href="{{ route('dashboard.reportes.personas', ['formato' => 'xlsx']) }}" target="_blank">
-        <i class="fas fa-file-excel me-1"></i> Excel
-    </a>
-</div> --}}
 
 <!-- Modales -->
 @include('dashboard.personas.modals.crear')
@@ -153,6 +146,11 @@
 @include('dashboard.personas.modals.editar')
 @endsection
 
+<style>
+    .form-check:not(.form-switch) .form-check-input[type=checkbox]:checked {
+    background: #62e91e
+}
+</style>
 @push('scripts')
 <script>
 $(document).ready(function() {
