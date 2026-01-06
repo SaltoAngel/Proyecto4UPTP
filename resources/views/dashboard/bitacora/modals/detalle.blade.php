@@ -1,6 +1,6 @@
     <!-- Modal Detalle Bitácora -->
     <div class="modal fade" id="modalBitacora" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable modal-fullscreen-md-down">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title d-flex align-items-center gap-2">
@@ -37,11 +37,11 @@
                     <div class="row g-3">
                         <div class="col-md-6">
                             <div class="small text-muted mb-1">Datos Anteriores</div>
-                            <pre class="bg-light p-3 rounded" id="modalBitacoraAntes" style="min-height:140px;">-</pre>
+                            <div class="bg-light p-3 rounded border" id="modalBitacoraAntes" style="min-height:140px; white-space: pre-wrap; font-family: inherit;">-</div>
                         </div>
                         <div class="col-md-6">
                             <div class="small text-muted mb-1">Datos Nuevos</div>
-                            <pre class="bg-light p-3 rounded" id="modalBitacoraDespues" style="min-height:140px;">-</pre>
+                            <div class="bg-light p-3 rounded border" id="modalBitacoraDespues" style="min-height:140px; white-space: pre-wrap; font-family: inherit;">-</div>
                         </div>
                     </div>
                 </div>
@@ -51,3 +51,15 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var modalEl = document.getElementById('modalBitacora');
+            if (!modalEl) return;
+            modalEl.addEventListener('shown.bs.modal', function () {
+                document.querySelectorAll('.modal-backdrop').forEach(function (el) {
+                    el.classList.add('modal-bitacora-backdrop');
+                });
+            });
+        });
+    </script>
