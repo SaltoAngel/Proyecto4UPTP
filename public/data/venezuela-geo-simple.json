@@ -1,0 +1,2242 @@
+{
+  "source": "Base_cartografica1.geojson (propiedades)",
+  "generated_at": "2026-01-06T15:33:47.176Z",
+  "estados": [
+    {
+      "codigo": "02",
+      "nombre": "AMAZONAS",
+      "capital": "PUERTO AYACUCHO",
+      "municipios": [
+        {
+          "codigo": "01",
+          "codigo_completo": "0201",
+          "nombre": "AUTONOMO ALTO ORINOCO",
+          "capital": "LA ESMERALDA",
+          "nota": "FALTA LA INFORMACION DE LAS PARROQUIAS"
+        },
+        {
+          "codigo": "02",
+          "codigo_completo": "0202",
+          "nombre": "AUTONOMO ATABAPO",
+          "capital": "SAN FERNANDO DE ATABAPO",
+          "nota": "FALTA LA INFORMACION DE LAS PARROQUIAS"
+        },
+        {
+          "codigo": "03",
+          "codigo_completo": "0203",
+          "nombre": "AUTONOMO ATURES",
+          "capital": "PUERTO AYACUCHO",
+          "nota": "FALTA LA INFORMACION DE LAS PARROQUIAS"
+        },
+        {
+          "codigo": "04",
+          "codigo_completo": "0204",
+          "nombre": "AUTONOMO AUTANA",
+          "capital": "ISLA RATON",
+          "nota": "FALTA LA INFORMACION DE LAS PARROQUIAS"
+        },
+        {
+          "codigo": "06",
+          "codigo_completo": "0206",
+          "nombre": "AUTONOMO MANAPIARE",
+          "capital": "SAN JUAN DE MANAPIARE",
+          "nota": "FALTA LA INFORMACION DE LAS PARROQUIAS"
+        },
+        {
+          "codigo": "05",
+          "codigo_completo": "0205",
+          "nombre": "AUTONOMO MAROA",
+          "capital": "MAROA",
+          "nota": "FALTA LA INFORMACION DE LAS PARROQUIAS"
+        },
+        {
+          "codigo": "07",
+          "codigo_completo": "0207",
+          "nombre": "AUTONOMO RIO NEGRO",
+          "capital": "SAN CARLOS DE RIO NEGRO",
+          "nota": "FALTA LA INFORMACION DE LAS PARROQUIAS"
+        }
+      ]
+    },
+    {
+      "codigo": "03",
+      "nombre": "ANZOATEGUI",
+      "capital": "BARCELONA",
+      "municipios": [
+        {
+          "codigo": "01",
+          "codigo_completo": "0301",
+          "nombre": "ANACO",
+          "capital": "ANACO"
+        },
+        {
+          "codigo": "02",
+          "codigo_completo": "0302",
+          "nombre": "ARAGUA",
+          "capital": "ARAGUA DE BARCELONA"
+        },
+        {
+          "codigo": "21",
+          "codigo_completo": "0321",
+          "nombre": "DIEGO BAUTISTA URBANEJA",
+          "capital": "LECHERIAS"
+        },
+        {
+          "codigo": "03",
+          "codigo_completo": "0303",
+          "nombre": "FERNANDO DE PEÑALVER",
+          "capital": "PUERTO PIRITU"
+        },
+        {
+          "codigo": "05",
+          "codigo_completo": "0305",
+          "nombre": "FRANCISCO DE MIRANDA",
+          "capital": "PARIAGUAN",
+          "nota": "MUNICIPIO CON CINCO PARROQUIAS Y UNA SIN DELIMITAR"
+        },
+        {
+          "codigo": "04",
+          "codigo_completo": "0304",
+          "nombre": "FRANCISCO DEL CARMEN CARVAJAL",
+          "capital": "VALLE DE GUANAPE"
+        },
+        {
+          "codigo": "06",
+          "codigo_completo": "0306",
+          "nombre": "GUANTA",
+          "capital": "GUANTA"
+        },
+        {
+          "codigo": "07",
+          "codigo_completo": "0307",
+          "nombre": "INDEPENDENCIA",
+          "capital": "SOLEDAD"
+        },
+        {
+          "codigo": "10",
+          "codigo_completo": "0310",
+          "nombre": "JOSE GREGORIO MONAGAS",
+          "capital": "MAPIRE"
+        },
+        {
+          "codigo": "08",
+          "codigo_completo": "0308",
+          "nombre": "JUAN ANTONIO SOTILLO",
+          "capital": "PUERTO LA CRUZ"
+        },
+        {
+          "codigo": "09",
+          "codigo_completo": "0309",
+          "nombre": "JUAN MANUEL CAJIGAL",
+          "capital": "ONOTO"
+        },
+        {
+          "codigo": "11",
+          "codigo_completo": "0311",
+          "nombre": "LIBERTAD",
+          "capital": "SAN MATEO"
+        },
+        {
+          "codigo": "12",
+          "codigo_completo": "0312",
+          "nombre": "MANUEL EZEQUIEL BRUZUAL",
+          "capital": "CLARINES"
+        },
+        {
+          "codigo": "13",
+          "codigo_completo": "0313",
+          "nombre": "PEDRO MARIA FREITES",
+          "capital": "CANTAURA"
+        },
+        {
+          "codigo": "14",
+          "codigo_completo": "0314",
+          "nombre": "PIRITU",
+          "capital": "PIRITU"
+        },
+        {
+          "codigo": "15",
+          "codigo_completo": "0315",
+          "nombre": "SAN JOSE DE GUANIPA",
+          "capital": "SAN JOSE DE GUANIPA",
+          "nota": "MUNICIPIO SIN PARROQUIA"
+        },
+        {
+          "codigo": "16",
+          "codigo_completo": "0316",
+          "nombre": "SAN JUAN DE CAPISTRANO",
+          "capital": "BOCA DE UCHIRE"
+        },
+        {
+          "codigo": "17",
+          "codigo_completo": "0317",
+          "nombre": "SANTA ANA",
+          "capital": "SANTA ANA"
+        },
+        {
+          "codigo": "18",
+          "codigo_completo": "0318",
+          "nombre": "SIMON BOLIVAR",
+          "capital": "BARCELONA"
+        },
+        {
+          "codigo": "19",
+          "codigo_completo": "0319",
+          "nombre": "SIMON RODRIGUEZ",
+          "capital": "EL TIGRE",
+          "nota": "MUNICIPIO CON DOS PARROQUIAS SIN DELIMITAR"
+        },
+        {
+          "codigo": "20",
+          "codigo_completo": "0320",
+          "nombre": "SIR ARTUR MC GREGOR",
+          "capital": "EL CHAPARRO"
+        }
+      ]
+    },
+    {
+      "codigo": "04",
+      "nombre": "APURE",
+      "capital": "SAN FERNANDO DE APURE",
+      "municipios": [
+        {
+          "codigo": "01",
+          "codigo_completo": "0401",
+          "nombre": "ACHAGUAS",
+          "capital": "ACHAGUAS"
+        },
+        {
+          "codigo": "02",
+          "codigo_completo": "0402",
+          "nombre": "BIRUACA",
+          "capital": "BIRUACA"
+        },
+        {
+          "codigo": "03",
+          "codigo_completo": "0403",
+          "nombre": "MUÑOZ",
+          "capital": "BRUZUAL"
+        },
+        {
+          "codigo": "04",
+          "codigo_completo": "0404",
+          "nombre": "PAEZ",
+          "capital": "GUASDUALITO"
+        },
+        {
+          "codigo": "05",
+          "codigo_completo": "0405",
+          "nombre": "PEDRO CAMEJO",
+          "capital": "SAN JUAN DE PAYARA"
+        },
+        {
+          "codigo": "06",
+          "codigo_completo": "0406",
+          "nombre": "ROMULO GALLEGOS",
+          "capital": "ELORZA"
+        },
+        {
+          "codigo": "07",
+          "codigo_completo": "0407",
+          "nombre": "SAN FERNANDO",
+          "capital": "SAN FERNANDO DE APURE"
+        }
+      ]
+    },
+    {
+      "codigo": "05",
+      "nombre": "ARAGUA",
+      "capital": "MARACAY",
+      "municipios": [
+        {
+          "codigo": "01",
+          "codigo_completo": "0501",
+          "nombre": "BOLIVAR",
+          "capital": "SAN MATEO",
+          "nota": "MUNICIPIO SIN PARROQUIA"
+        },
+        {
+          "codigo": "02",
+          "codigo_completo": "0502",
+          "nombre": "CAMATAGUA",
+          "capital": "CAMATAGUA"
+        },
+        {
+          "codigo": "17",
+          "codigo_completo": "0517",
+          "nombre": "FRANCISCO LINARES ALCANTARA",
+          "capital": "SANTA RITA"
+        },
+        {
+          "codigo": "03",
+          "codigo_completo": "0503",
+          "nombre": "GIRARDOT",
+          "capital": "MARACAY"
+        },
+        {
+          "codigo": "04",
+          "codigo_completo": "0504",
+          "nombre": "JOSE ANGEL LAMAS",
+          "capital": "SANTA CRUZ",
+          "nota": "MUNICIPIO SIN PARROQUIA"
+        },
+        {
+          "codigo": "05",
+          "codigo_completo": "0505",
+          "nombre": "JOSE FELIX RIBAS",
+          "capital": "LA VICTORIA"
+        },
+        {
+          "codigo": "06",
+          "codigo_completo": "0506",
+          "nombre": "JOSE RAFAEL REVENGA",
+          "capital": "EL CONSEJO",
+          "nota": "MUNICIPIO SIN PARROQUIA"
+        },
+        {
+          "codigo": "07",
+          "codigo_completo": "0507",
+          "nombre": "LIBERTADOR",
+          "capital": "PALO NEGRO"
+        },
+        {
+          "codigo": "08",
+          "codigo_completo": "0508",
+          "nombre": "MARIO BRICEÑO IRAGORRY",
+          "capital": "EL LIMON"
+        },
+        {
+          "codigo": "18",
+          "codigo_completo": "0518",
+          "nombre": "OCUMARE DE LA COSTA DE ORO",
+          "capital": "OCUMARE DE LA COSTA",
+          "nota": "MUNICIPIO SIN PARROQUIA"
+        },
+        {
+          "codigo": "09",
+          "codigo_completo": "0509",
+          "nombre": "SAN CASIMIRO",
+          "capital": "SAN CASIMIRO"
+        },
+        {
+          "codigo": "10",
+          "codigo_completo": "0510",
+          "nombre": "SAN SEBASTIAN",
+          "capital": "SAN SEBASTIAN",
+          "nota": "MUNICIPIO SIN PARROQUIA"
+        },
+        {
+          "codigo": "11",
+          "codigo_completo": "0511",
+          "nombre": "SANTIAGO MARIÑO",
+          "capital": "TURMERO"
+        },
+        {
+          "codigo": "12",
+          "codigo_completo": "0512",
+          "nombre": "SANTOS MICHELENA",
+          "capital": "LAS TEJERIAS"
+        },
+        {
+          "codigo": "13",
+          "codigo_completo": "0513",
+          "nombre": "SUCRE",
+          "capital": "CAGUA"
+        },
+        {
+          "codigo": "14",
+          "codigo_completo": "0514",
+          "nombre": "TOVAR",
+          "capital": "LA COLONIA TOVAR",
+          "nota": "MUNICIPIO SIN PARROQUIA"
+        },
+        {
+          "codigo": "15",
+          "codigo_completo": "0515",
+          "nombre": "URDANETA",
+          "capital": "BARBACOAS"
+        },
+        {
+          "codigo": "16",
+          "codigo_completo": "0516",
+          "nombre": "ZAMORA",
+          "capital": "VILLA DE CURA"
+        }
+      ]
+    },
+    {
+      "codigo": "06",
+      "nombre": "BARINAS",
+      "capital": "BARINAS",
+      "municipios": [
+        {
+          "codigo": "01",
+          "codigo_completo": "0601",
+          "nombre": "ALBERTO ARVELO TORREALBA",
+          "capital": "SABANETA"
+        },
+        {
+          "codigo": "12",
+          "codigo_completo": "0612",
+          "nombre": "ANDRES ELOY BLANCO",
+          "capital": "EL CANTON"
+        },
+        {
+          "codigo": "02",
+          "codigo_completo": "0602",
+          "nombre": "ANTONIO JOSE DE SUCRE",
+          "capital": "SOCOPO"
+        },
+        {
+          "codigo": "03",
+          "codigo_completo": "0603",
+          "nombre": "ARISMENDI",
+          "capital": "ARISMENDI"
+        },
+        {
+          "codigo": "04",
+          "codigo_completo": "0604",
+          "nombre": "BARINAS",
+          "capital": "BARINAS"
+        },
+        {
+          "codigo": "05",
+          "codigo_completo": "0605",
+          "nombre": "BOLIVAR",
+          "capital": "BARINITAS"
+        },
+        {
+          "codigo": "06",
+          "codigo_completo": "0606",
+          "nombre": "CRUZ PAREDES",
+          "capital": "BARRANCAS"
+        },
+        {
+          "codigo": "07",
+          "codigo_completo": "0607",
+          "nombre": "EZEQUIEL ZAMORA",
+          "capital": "SANTA BARBARA"
+        },
+        {
+          "codigo": "08",
+          "codigo_completo": "0608",
+          "nombre": "OBISPOS",
+          "capital": "OBISPOS"
+        },
+        {
+          "codigo": "09",
+          "codigo_completo": "0609",
+          "nombre": "PEDRAZA",
+          "capital": "CIUDAD BOLIVIA"
+        },
+        {
+          "codigo": "10",
+          "codigo_completo": "0610",
+          "nombre": "ROJAS",
+          "capital": "LIBERTAD"
+        },
+        {
+          "codigo": "11",
+          "codigo_completo": "0611",
+          "nombre": "SOSA",
+          "capital": "CIUDAD DE NUTRIAS"
+        }
+      ]
+    },
+    {
+      "codigo": "07",
+      "nombre": "BOLIVAR",
+      "capital": "CIUDAD BOLIVAR",
+      "municipios": [
+        {
+          "codigo": "01",
+          "codigo_completo": "0701",
+          "nombre": "CARONI",
+          "capital": "CIUDAD GUAYANA"
+        },
+        {
+          "codigo": "02",
+          "codigo_completo": "0702",
+          "nombre": "CEDEÑO",
+          "capital": "CAICARA DEL ORINOCO"
+        },
+        {
+          "codigo": "03",
+          "codigo_completo": "0703",
+          "nombre": "EL CALLAO",
+          "capital": "EL CALLAO",
+          "nota": "MUNICIPIO SIN PARROQUIA"
+        },
+        {
+          "codigo": "04",
+          "codigo_completo": "0704",
+          "nombre": "GRAN SABANA",
+          "capital": "SANTA ELENA DE UAIREN"
+        },
+        {
+          "codigo": "05",
+          "codigo_completo": "0705",
+          "nombre": "HERES",
+          "capital": "CIUDAD BOLIVAR"
+        },
+        {
+          "codigo": "11",
+          "codigo_completo": "0711",
+          "nombre": "PADRE PEDRO CHIEN",
+          "capital": "EL PALMAR",
+          "nota": "MUNICIPIO SIN PARROQUIA"
+        },
+        {
+          "codigo": "06",
+          "codigo_completo": "0706",
+          "nombre": "PIAR",
+          "capital": "UPATA"
+        },
+        {
+          "codigo": "07",
+          "codigo_completo": "0707",
+          "nombre": "RAUL LEONI",
+          "capital": "CIUDAD PIAR"
+        },
+        {
+          "codigo": "08",
+          "codigo_completo": "0708",
+          "nombre": "ROSCIO",
+          "capital": "GUASIPATI"
+        },
+        {
+          "codigo": "09",
+          "codigo_completo": "0709",
+          "nombre": "SIFONTES",
+          "capital": "TUMEREMO"
+        },
+        {
+          "codigo": "10",
+          "codigo_completo": "0710",
+          "nombre": "SUCRE",
+          "capital": "MARIPA"
+        }
+      ]
+    },
+    {
+      "codigo": "08",
+      "nombre": "CARABOBO",
+      "capital": "VALENCIA",
+      "municipios": [
+        {
+          "codigo": "01",
+          "codigo_completo": "0801",
+          "nombre": "BEJUMA",
+          "capital": "BEJUMA"
+        },
+        {
+          "codigo": "02",
+          "codigo_completo": "0802",
+          "nombre": "CARLOS ARVELO",
+          "capital": "GUIGUE"
+        },
+        {
+          "codigo": "03",
+          "codigo_completo": "0803",
+          "nombre": "DIEGO IBARRA",
+          "capital": "MARIARA"
+        },
+        {
+          "codigo": "04",
+          "codigo_completo": "0804",
+          "nombre": "GUACARA",
+          "capital": "GUACARA"
+        },
+        {
+          "codigo": "05",
+          "codigo_completo": "0805",
+          "nombre": "JUAN JOSE MORA",
+          "capital": "MORON"
+        },
+        {
+          "codigo": "06",
+          "codigo_completo": "0806",
+          "nombre": "LIBERTADOR",
+          "capital": "TOCUYITO"
+        },
+        {
+          "codigo": "07",
+          "codigo_completo": "0807",
+          "nombre": "LOS GUAYOS",
+          "capital": "LOS GUAYOS"
+        },
+        {
+          "codigo": "08",
+          "codigo_completo": "0808",
+          "nombre": "MIRANDA",
+          "capital": "MIRANDA"
+        },
+        {
+          "codigo": "09",
+          "codigo_completo": "0809",
+          "nombre": "MONTALBAN",
+          "capital": "MONTALBAN"
+        },
+        {
+          "codigo": "10",
+          "codigo_completo": "0810",
+          "nombre": "NAGUANAGUA",
+          "capital": "NAGUNAGUA"
+        },
+        {
+          "codigo": "11",
+          "codigo_completo": "0811",
+          "nombre": "PUERTO CABELLO",
+          "capital": "PUERTO CABELLO"
+        },
+        {
+          "codigo": "12",
+          "codigo_completo": "0812",
+          "nombre": "SAN DIEGO",
+          "capital": "SAN DIEGO"
+        },
+        {
+          "codigo": "13",
+          "codigo_completo": "0813",
+          "nombre": "SAN JOAQUIN",
+          "capital": "SAN JOAQUIN"
+        },
+        {
+          "codigo": "14",
+          "codigo_completo": "0814",
+          "nombre": "VALENCIA",
+          "capital": "VALENCIA"
+        }
+      ]
+    },
+    {
+      "codigo": "09",
+      "nombre": "COJEDES",
+      "capital": "SAN CARLOS",
+      "municipios": [
+        {
+          "codigo": "01",
+          "codigo_completo": "0901",
+          "nombre": "ANZOATEGUI",
+          "capital": "COJEDES"
+        },
+        {
+          "codigo": "02",
+          "codigo_completo": "0902",
+          "nombre": "FALCON",
+          "capital": "TINAQUILLO"
+        },
+        {
+          "codigo": "03",
+          "codigo_completo": "0903",
+          "nombre": "GIRARDOT",
+          "capital": "EL BAUL"
+        },
+        {
+          "codigo": "04",
+          "codigo_completo": "0904",
+          "nombre": "LIMA BLANCO",
+          "capital": "MACAPO"
+        },
+        {
+          "codigo": "05",
+          "codigo_completo": "0905",
+          "nombre": "PAO DE SAN JUAN BAUTISTA",
+          "capital": "EL PAO"
+        },
+        {
+          "codigo": "06",
+          "codigo_completo": "0906",
+          "nombre": "RICAURTE",
+          "capital": "LIBERTAD"
+        },
+        {
+          "codigo": "07",
+          "codigo_completo": "0907",
+          "nombre": "ROMULO GALLEGOS",
+          "capital": "LAS VEGAS"
+        },
+        {
+          "codigo": "08",
+          "codigo_completo": "0908",
+          "nombre": "SAN CARLOS",
+          "capital": "SAN CARLOS"
+        },
+        {
+          "codigo": "09",
+          "codigo_completo": "0909",
+          "nombre": "TINACO",
+          "capital": "TINACO"
+        }
+      ]
+    },
+    {
+      "codigo": "10",
+      "nombre": "DELTA AMACURO",
+      "capital": "TUCUPITA",
+      "municipios": [
+        {
+          "codigo": "01",
+          "codigo_completo": "1001",
+          "nombre": "ANTONIO DIAZ",
+          "capital": "CURIAPO"
+        },
+        {
+          "codigo": "02",
+          "codigo_completo": "1002",
+          "nombre": "CASACOIMA",
+          "capital": "SIERRA IMATACA"
+        },
+        {
+          "codigo": "03",
+          "codigo_completo": "1003",
+          "nombre": "PEDERNALES",
+          "capital": "PEDERNALES"
+        },
+        {
+          "codigo": "04",
+          "codigo_completo": "1004",
+          "nombre": "TUCUPITA",
+          "capital": "TUCUPITA"
+        }
+      ]
+    },
+    {
+      "codigo": "01",
+      "nombre": "DTTO CAPITAL",
+      "capital": "CARACAS",
+      "municipios": [
+        {
+          "codigo": "01",
+          "codigo_completo": "0101",
+          "nombre": "LIBERTADOR",
+          "capital": "CARACAS"
+        }
+      ]
+    },
+    {
+      "codigo": "11",
+      "nombre": "FALCON",
+      "capital": "CORO",
+      "municipios": [
+        {
+          "codigo": "01",
+          "codigo_completo": "1101",
+          "nombre": "ACOSTA",
+          "capital": "SAN JUAN DE LOS CAYOS"
+        },
+        {
+          "codigo": "02",
+          "codigo_completo": "1102",
+          "nombre": "BOLIVAR",
+          "capital": "SAN LUIS"
+        },
+        {
+          "codigo": "03",
+          "codigo_completo": "1103",
+          "nombre": "BUCHIVACOA",
+          "capital": "CAPATARIDA"
+        },
+        {
+          "codigo": "04",
+          "codigo_completo": "1104",
+          "nombre": "CACIQUE MANAURE",
+          "capital": "YARACAL",
+          "nota": "MUNICIPIO SIN PARROQUIA"
+        },
+        {
+          "codigo": "05",
+          "codigo_completo": "1105",
+          "nombre": "CARIRUBANA",
+          "capital": "PUNTO FIJO"
+        },
+        {
+          "codigo": "06",
+          "codigo_completo": "1106",
+          "nombre": "COLINA",
+          "capital": "LA VELA DE CORO"
+        },
+        {
+          "codigo": "07",
+          "codigo_completo": "1107",
+          "nombre": "DABAJURO",
+          "capital": "DABAJURO",
+          "nota": "MUNICIPIO SIN PARROQUIA"
+        },
+        {
+          "codigo": "08",
+          "codigo_completo": "1108",
+          "nombre": "DEMOCRACIA",
+          "capital": "PEDREGAL"
+        },
+        {
+          "codigo": "09",
+          "codigo_completo": "1109",
+          "nombre": "FALCON",
+          "capital": "PUEBLO NUEVO"
+        },
+        {
+          "codigo": "10",
+          "codigo_completo": "1110",
+          "nombre": "FEDERACION",
+          "capital": "CHURUGUARA"
+        },
+        {
+          "codigo": "11",
+          "codigo_completo": "1111",
+          "nombre": "JACURA",
+          "capital": "JACURA"
+        },
+        {
+          "codigo": "12",
+          "codigo_completo": "1112",
+          "nombre": "LOS TAQUES",
+          "capital": "SANTA CRUZ DE LOS TAQUES"
+        },
+        {
+          "codigo": "13",
+          "codigo_completo": "1113",
+          "nombre": "MAUROA",
+          "capital": "MENE MAUROA"
+        },
+        {
+          "codigo": "14",
+          "codigo_completo": "1114",
+          "nombre": "MIRANDA",
+          "capital": "SANTA ANA DE CORO"
+        },
+        {
+          "codigo": "15",
+          "codigo_completo": "1115",
+          "nombre": "MONSEÑOR ITURRIZA",
+          "capital": "CHICHIRIVICHE"
+        },
+        {
+          "codigo": "16",
+          "codigo_completo": "1116",
+          "nombre": "PALMASOLA",
+          "capital": "PALMASOLA",
+          "nota": "MUNICIPIO SIN PARROQUIA"
+        },
+        {
+          "codigo": "17",
+          "codigo_completo": "1117",
+          "nombre": "PETIT",
+          "capital": "CABUDARE"
+        },
+        {
+          "codigo": "18",
+          "codigo_completo": "1118",
+          "nombre": "PIRITU",
+          "capital": "PIRITU"
+        },
+        {
+          "codigo": "19",
+          "codigo_completo": "1119",
+          "nombre": "SAN FRANCISCO",
+          "capital": "MIRIMIRE",
+          "nota": "MUNICIPIO SIN PARROQUIA"
+        },
+        {
+          "codigo": "20",
+          "codigo_completo": "1120",
+          "nombre": "SILVA",
+          "capital": "TUCACAS"
+        },
+        {
+          "codigo": "21",
+          "codigo_completo": "1121",
+          "nombre": "SUCRE",
+          "capital": "LA CRUZ DE TARATARA"
+        },
+        {
+          "codigo": "22",
+          "codigo_completo": "1122",
+          "nombre": "TOCOPERO",
+          "capital": "TOCOPERO"
+        },
+        {
+          "codigo": "23",
+          "codigo_completo": "1123",
+          "nombre": "UNION",
+          "capital": "SANTA CRUZ DE BUCARAL"
+        },
+        {
+          "codigo": "24",
+          "codigo_completo": "1124",
+          "nombre": "URUMACO",
+          "capital": "URUMACO"
+        },
+        {
+          "codigo": "25",
+          "codigo_completo": "1125",
+          "nombre": "ZAMORA",
+          "capital": "PUERTO CUMAREBO"
+        }
+      ]
+    },
+    {
+      "codigo": "12",
+      "nombre": "GUARICO",
+      "capital": "SAN JUAN DE LOS MORROS",
+      "municipios": [
+        {
+          "codigo": "01",
+          "codigo_completo": "1201",
+          "nombre": "CAMAGUAN",
+          "capital": "CAMAGUAN"
+        },
+        {
+          "codigo": "02",
+          "codigo_completo": "1202",
+          "nombre": "CHAGUARAMAS",
+          "capital": "CHAGUARAMAS"
+        },
+        {
+          "codigo": "03",
+          "codigo_completo": "1203",
+          "nombre": "EL SOCORRO",
+          "capital": "EL SOCORRO"
+        },
+        {
+          "codigo": "08",
+          "codigo_completo": "1208",
+          "nombre": "FRANCISCO DE MIRANDA",
+          "capital": "CALABOZO"
+        },
+        {
+          "codigo": "11",
+          "codigo_completo": "1211",
+          "nombre": "JOSE FELIX RIBAS",
+          "capital": "TUCUPIDO"
+        },
+        {
+          "codigo": "09",
+          "codigo_completo": "1209",
+          "nombre": "JOSE TADEO MONAGAS",
+          "capital": "ALTAGRACIA DE ORITUCO"
+        },
+        {
+          "codigo": "12",
+          "codigo_completo": "1212",
+          "nombre": "JUAN GERMAN ROSCIO",
+          "capital": "SAN JUAN DE LOS MORROS"
+        },
+        {
+          "codigo": "07",
+          "codigo_completo": "1207",
+          "nombre": "JULIAN MELLADO",
+          "capital": "EL SOMBRERO"
+        },
+        {
+          "codigo": "06",
+          "codigo_completo": "1206",
+          "nombre": "LAS MERCEDES",
+          "capital": "LAS MERCEDES"
+        },
+        {
+          "codigo": "05",
+          "codigo_completo": "1205",
+          "nombre": "LEONARDO INFANTE",
+          "capital": "VALLE DE LA PASCUA"
+        },
+        {
+          "codigo": "10",
+          "codigo_completo": "1210",
+          "nombre": "ORTIZ",
+          "capital": "ORTIZ"
+        },
+        {
+          "codigo": "04",
+          "codigo_completo": "1204",
+          "nombre": "SAN GERONIMO DE GUAYABAL",
+          "capital": "GUAYABAL"
+        },
+        {
+          "codigo": "13",
+          "codigo_completo": "1213",
+          "nombre": "SAN JOSE DE GUARIBE",
+          "capital": "SAN JOSE DE GUARIBE"
+        },
+        {
+          "codigo": "14",
+          "codigo_completo": "1214",
+          "nombre": "SANTA MARIA DE IPIRE",
+          "capital": "SANTA MARIA DE IPIRE"
+        },
+        {
+          "codigo": "15",
+          "codigo_completo": "1215",
+          "nombre": "ZARAZA",
+          "capital": "ZARAZA"
+        }
+      ]
+    },
+    {
+      "codigo": "13",
+      "nombre": "LARA",
+      "capital": "BARQUISIMETO",
+      "municipios": [
+        {
+          "codigo": "01",
+          "codigo_completo": "1301",
+          "nombre": "ANDRES ELOY BLANCO",
+          "capital": "SANARE"
+        },
+        {
+          "codigo": "02",
+          "codigo_completo": "1302",
+          "nombre": "CRESPO",
+          "capital": "DUACA"
+        },
+        {
+          "codigo": "03",
+          "codigo_completo": "1303",
+          "nombre": "IRIBARREN",
+          "capital": "BARQUISIMETO"
+        },
+        {
+          "codigo": "04",
+          "codigo_completo": "1304",
+          "nombre": "JIMENEZ",
+          "capital": "QUIBOR"
+        },
+        {
+          "codigo": "05",
+          "codigo_completo": "1305",
+          "nombre": "MORAN",
+          "capital": "EL TOCUYO"
+        },
+        {
+          "codigo": "06",
+          "codigo_completo": "1306",
+          "nombre": "PALAVECINO",
+          "capital": "CABUDARE"
+        },
+        {
+          "codigo": "07",
+          "codigo_completo": "1307",
+          "nombre": "SIMON PLANAS",
+          "capital": "SARARE"
+        },
+        {
+          "codigo": "08",
+          "codigo_completo": "1308",
+          "nombre": "TORRES",
+          "capital": "CARORA"
+        },
+        {
+          "codigo": "09",
+          "codigo_completo": "1309",
+          "nombre": "URDANETA",
+          "capital": "SIQUISIQUE"
+        }
+      ]
+    },
+    {
+      "codigo": "14",
+      "nombre": "MERIDA",
+      "capital": "MERIDA",
+      "municipios": [
+        {
+          "codigo": "01",
+          "codigo_completo": "1401",
+          "nombre": "ALBERTO ADRIANI",
+          "capital": "EL VIGIA"
+        },
+        {
+          "codigo": "02",
+          "codigo_completo": "1402",
+          "nombre": "ANDRES BELLO",
+          "capital": "LA AZULITA",
+          "nota": "MUNICIPIO SIN PARROQUIA"
+        },
+        {
+          "codigo": "03",
+          "codigo_completo": "1403",
+          "nombre": "ANTONIO PINTO SALINAS",
+          "capital": "SANTA CRUZ DE MORA"
+        },
+        {
+          "codigo": "04",
+          "codigo_completo": "1404",
+          "nombre": "ARICAGUA",
+          "capital": "ARICAGUA"
+        },
+        {
+          "codigo": "05",
+          "codigo_completo": "1405",
+          "nombre": "ARZOBISPO CHACON",
+          "capital": "CANAGUA"
+        },
+        {
+          "codigo": "06",
+          "codigo_completo": "1406",
+          "nombre": "CAMPO ELIAS",
+          "capital": "EJIDO"
+        },
+        {
+          "codigo": "07",
+          "codigo_completo": "1407",
+          "nombre": "CARACCIOLO PARRA OLMEDO",
+          "capital": "TUCANI"
+        },
+        {
+          "codigo": "08",
+          "codigo_completo": "1408",
+          "nombre": "CARDENAL QUINTERO",
+          "capital": "SANTO DOMINGO"
+        },
+        {
+          "codigo": "09",
+          "codigo_completo": "1409",
+          "nombre": "GUARAQUE",
+          "capital": "GUARAQUE"
+        },
+        {
+          "codigo": "10",
+          "codigo_completo": "1410",
+          "nombre": "JULIO CESAR SALAS",
+          "capital": "ARAPUEY"
+        },
+        {
+          "codigo": "11",
+          "codigo_completo": "1411",
+          "nombre": "JUSTO BRICEÑO",
+          "capital": "TORONDOY"
+        },
+        {
+          "codigo": "12",
+          "codigo_completo": "1412",
+          "nombre": "LIBERTADOR",
+          "capital": "MERIDA"
+        },
+        {
+          "codigo": "13",
+          "codigo_completo": "1413",
+          "nombre": "MIRANDA",
+          "capital": "TIMOTES"
+        },
+        {
+          "codigo": "14",
+          "codigo_completo": "1414",
+          "nombre": "MIRANDA",
+          "capital": "TIMOTES"
+        },
+        {
+          "codigo": "15",
+          "codigo_completo": "1415",
+          "nombre": "PADRE NOGUERA",
+          "capital": "SANTA MARIA DE CAPARO",
+          "nota": "MUNICIPIO SIN PARROQUIA"
+        },
+        {
+          "codigo": "16",
+          "codigo_completo": "1416",
+          "nombre": "PUEBLO LLANO",
+          "capital": "PUEBLO LLANO",
+          "nota": "MUNICIPIO SIN PARROQUIA"
+        },
+        {
+          "codigo": "17",
+          "codigo_completo": "1417",
+          "nombre": "RANGEL",
+          "capital": "MUCUCHIES"
+        },
+        {
+          "codigo": "18",
+          "codigo_completo": "1418",
+          "nombre": "RIVAS DAVILA",
+          "capital": "BAILADORES"
+        },
+        {
+          "codigo": "19",
+          "codigo_completo": "1419",
+          "nombre": "SANTOS MARQUINA",
+          "capital": "TABAY",
+          "nota": "MUNICIPIO SIN PARROQUIA"
+        },
+        {
+          "codigo": "20",
+          "codigo_completo": "1420",
+          "nombre": "SUCRE",
+          "capital": "LAGUNILLAS"
+        },
+        {
+          "codigo": "21",
+          "codigo_completo": "1421",
+          "nombre": "TOVAR",
+          "capital": "TOVAR"
+        },
+        {
+          "codigo": "22",
+          "codigo_completo": "1422",
+          "nombre": "TULIO FEBRES CORDERO",
+          "capital": "NUEVA BOLIVIA"
+        },
+        {
+          "codigo": "23",
+          "codigo_completo": "1423",
+          "nombre": "ZEA",
+          "capital": "ZEA"
+        }
+      ]
+    },
+    {
+      "codigo": "15",
+      "nombre": "MIRANDA",
+      "capital": "LOS TEQUES",
+      "municipios": [
+        {
+          "codigo": "01",
+          "codigo_completo": "1501",
+          "nombre": "ACEVEDO",
+          "capital": "CAUCAGUA"
+        },
+        {
+          "codigo": "02",
+          "codigo_completo": "1502",
+          "nombre": "ANDRES BELLO",
+          "capital": "SAN JOSE DE BARLOVENTO"
+        },
+        {
+          "codigo": "03",
+          "codigo_completo": "1503",
+          "nombre": "BARUTA",
+          "capital": "NUESTRA SEÑORA DEL ROSARIO"
+        },
+        {
+          "codigo": "04",
+          "codigo_completo": "1504",
+          "nombre": "BRION",
+          "capital": "HIGUEROTE"
+        },
+        {
+          "codigo": "05",
+          "codigo_completo": "1505",
+          "nombre": "BUROZ",
+          "capital": "MAMPORAL"
+        },
+        {
+          "codigo": "06",
+          "codigo_completo": "1506",
+          "nombre": "CARRIZAL",
+          "capital": "CARRIZAL"
+        },
+        {
+          "codigo": "07",
+          "codigo_completo": "1507",
+          "nombre": "CHACAO",
+          "capital": "CHACAO"
+        },
+        {
+          "codigo": "08",
+          "codigo_completo": "1508",
+          "nombre": "CRISTOBAL ROJAS",
+          "capital": "CHARALLAVE"
+        },
+        {
+          "codigo": "09",
+          "codigo_completo": "1509",
+          "nombre": "EL HATILLO",
+          "capital": "EL HATILLO"
+        },
+        {
+          "codigo": "10",
+          "codigo_completo": "1510",
+          "nombre": "GUAICAIPURO",
+          "capital": "LOS TEQUES"
+        },
+        {
+          "codigo": "11",
+          "codigo_completo": "1511",
+          "nombre": "INDEPENDENCIA",
+          "capital": "SANTA TERESA DEL TUY"
+        },
+        {
+          "codigo": "12",
+          "codigo_completo": "1512",
+          "nombre": "LANDER",
+          "capital": "OCUMARE DEL TUY"
+        },
+        {
+          "codigo": "13",
+          "codigo_completo": "1513",
+          "nombre": "LOS SALIAS",
+          "capital": "SAN ANTONIO DE LOS ALTOS"
+        },
+        {
+          "codigo": "14",
+          "codigo_completo": "1514",
+          "nombre": "PAEZ",
+          "capital": "RIO CHICO"
+        },
+        {
+          "codigo": "15",
+          "codigo_completo": "1515",
+          "nombre": "PAZ CASTILLO",
+          "capital": "SANTA LUCIA"
+        },
+        {
+          "codigo": "16",
+          "codigo_completo": "1516",
+          "nombre": "PEDRO GUAL",
+          "capital": "CUPIRA"
+        },
+        {
+          "codigo": "17",
+          "codigo_completo": "1517",
+          "nombre": "PLAZA",
+          "capital": "GUARENAS"
+        },
+        {
+          "codigo": "18",
+          "codigo_completo": "1518",
+          "nombre": "SIMON BOLIVAR",
+          "capital": "SAN FRANCISCO DE YARE"
+        },
+        {
+          "codigo": "19",
+          "codigo_completo": "1519",
+          "nombre": "SUCRE",
+          "capital": "PETARE"
+        },
+        {
+          "codigo": "20",
+          "codigo_completo": "1520",
+          "nombre": "URDANETA",
+          "capital": "CUA"
+        },
+        {
+          "codigo": "21",
+          "codigo_completo": "1521",
+          "nombre": "ZAMORA",
+          "capital": "GUATIRE"
+        }
+      ]
+    },
+    {
+      "codigo": "16",
+      "nombre": "MONAGAS",
+      "capital": "MATURIN",
+      "municipios": [
+        {
+          "codigo": "01",
+          "codigo_completo": "1601",
+          "nombre": "ACOSTA",
+          "capital": "SAN ANTONIO"
+        },
+        {
+          "codigo": "02",
+          "codigo_completo": "1602",
+          "nombre": "AGUASAY",
+          "capital": "AGUASAY",
+          "nota": "MUNICIPIO SIN PARROQUIA"
+        },
+        {
+          "codigo": "03",
+          "codigo_completo": "1603",
+          "nombre": "BOLIVAR",
+          "capital": "CARIPITO",
+          "nota": "MUNICIPIO SIN PARROQUIA"
+        },
+        {
+          "codigo": "04",
+          "codigo_completo": "1604",
+          "nombre": "CARIPE",
+          "capital": "CARIPE"
+        },
+        {
+          "codigo": "05",
+          "codigo_completo": "1605",
+          "nombre": "CEDEÑO",
+          "capital": "CAICARA"
+        },
+        {
+          "codigo": "06",
+          "codigo_completo": "1606",
+          "nombre": "EZEQUIEL ZAMORA",
+          "capital": "PUNTA DE MATA"
+        },
+        {
+          "codigo": "07",
+          "codigo_completo": "1607",
+          "nombre": "LIBERTADOR",
+          "capital": "TEMBLADOR"
+        },
+        {
+          "codigo": "08",
+          "codigo_completo": "1608",
+          "nombre": "MATURIN",
+          "capital": "MATURIN"
+        },
+        {
+          "codigo": "09",
+          "codigo_completo": "1609",
+          "nombre": "PIAR",
+          "capital": "ARAGUA"
+        },
+        {
+          "codigo": "10",
+          "codigo_completo": "1610",
+          "nombre": "PUNCERES",
+          "capital": "QUIRIQUIRE"
+        },
+        {
+          "codigo": "11",
+          "codigo_completo": "1611",
+          "nombre": "SANTA BARBARA",
+          "capital": "SANTA BARBARA",
+          "nota": "MUNICIPIO SIN PARROQUIA"
+        },
+        {
+          "codigo": "12",
+          "codigo_completo": "1612",
+          "nombre": "SOTILLO",
+          "capital": "BARRANCAS"
+        },
+        {
+          "codigo": "13",
+          "codigo_completo": "1613",
+          "nombre": "URACOA",
+          "capital": "URACOA",
+          "nota": "MUNICIPIO SIN PARROQUIA"
+        }
+      ]
+    },
+    {
+      "codigo": "17",
+      "nombre": "NUEVA ESPARTA",
+      "capital": "LA ASUNCION",
+      "municipios": [
+        {
+          "codigo": "01",
+          "codigo_completo": "1701",
+          "nombre": "ANTOLIN DEL CAMPO",
+          "capital": "PLAZA PARAGUACHI",
+          "nota": "MUNICIPIO SIN PARROQUIA"
+        },
+        {
+          "codigo": "02",
+          "codigo_completo": "1702",
+          "nombre": "ARISMENDI",
+          "capital": "LA ASUNCION",
+          "nota": "MUNICIPIO SIN PARROQUIA"
+        },
+        {
+          "codigo": "03",
+          "codigo_completo": "1703",
+          "nombre": "DIAZ",
+          "capital": "SAN JUAN BAUTISTA"
+        },
+        {
+          "codigo": "04",
+          "codigo_completo": "1704",
+          "nombre": "GARCIA",
+          "capital": "EL VALLE DEL ESPIRITU SANTO"
+        },
+        {
+          "codigo": "05",
+          "codigo_completo": "1705",
+          "nombre": "GOMEZ",
+          "capital": "SANTA ANA"
+        },
+        {
+          "codigo": "06",
+          "codigo_completo": "1706",
+          "nombre": "MANEIRO",
+          "capital": "PAMPATAR"
+        },
+        {
+          "codigo": "07",
+          "codigo_completo": "1707",
+          "nombre": "MARCANO",
+          "capital": "JUAN GRIEGO"
+        },
+        {
+          "codigo": "08",
+          "codigo_completo": "1708",
+          "nombre": "MARIÑO",
+          "capital": "PORLAMAR",
+          "nota": "MUNICIPIO SIN PARROQUIA"
+        },
+        {
+          "codigo": "09",
+          "codigo_completo": "1709",
+          "nombre": "PENINSULA DE MACANAO",
+          "capital": "BOCA DEL RIO"
+        },
+        {
+          "codigo": "10",
+          "codigo_completo": "1710",
+          "nombre": "TUBORES",
+          "capital": "PUNTA DE PIEDRAS"
+        },
+        {
+          "codigo": "11",
+          "codigo_completo": "1711",
+          "nombre": "VILLALBA",
+          "capital": "SAN PEDRO DE COCHE"
+        }
+      ]
+    },
+    {
+      "codigo": "18",
+      "nombre": "PORTUGUESA",
+      "capital": "GUANARE",
+      "municipios": [
+        {
+          "codigo": "01",
+          "codigo_completo": "1801",
+          "nombre": "AGUA BLANCA",
+          "capital": "AGUA BLANCA",
+          "nota": "MUNICIPIO SIN PARROQUIA"
+        },
+        {
+          "codigo": "02",
+          "codigo_completo": "1802",
+          "nombre": "ARAURE",
+          "capital": "ARAURE"
+        },
+        {
+          "codigo": "03",
+          "codigo_completo": "1803",
+          "nombre": "ESTELLER",
+          "capital": "PIRITU"
+        },
+        {
+          "codigo": "04",
+          "codigo_completo": "1804",
+          "nombre": "GUANARE",
+          "capital": "GUANARE"
+        },
+        {
+          "codigo": "05",
+          "codigo_completo": "1805",
+          "nombre": "GUANARITO",
+          "capital": "GUANARITO"
+        },
+        {
+          "codigo": "06",
+          "codigo_completo": "1806",
+          "nombre": "MONSEÑOR JOSE VICENTE DE UNDA",
+          "capital": "PARAISO DE CHABASQUEN"
+        },
+        {
+          "codigo": "07",
+          "codigo_completo": "1807",
+          "nombre": "OSPINO",
+          "capital": "OSPINO"
+        },
+        {
+          "codigo": "08",
+          "codigo_completo": "1808",
+          "nombre": "PAEZ",
+          "capital": "ACARIGUA"
+        },
+        {
+          "codigo": "09",
+          "codigo_completo": "1809",
+          "nombre": "PAPELON",
+          "capital": "PAPELON"
+        },
+        {
+          "codigo": "10",
+          "codigo_completo": "1810",
+          "nombre": "SAN GENARO DE BOCONOITO",
+          "capital": "BOCONOITO"
+        },
+        {
+          "codigo": "11",
+          "codigo_completo": "1811",
+          "nombre": "SAN RAFAEL DE ONOTO",
+          "capital": "SAN RAFAEL DE ONOTO"
+        },
+        {
+          "codigo": "12",
+          "codigo_completo": "1812",
+          "nombre": "SANTA ROSALIA",
+          "capital": "EL PLAYON"
+        },
+        {
+          "codigo": "13",
+          "codigo_completo": "1813",
+          "nombre": "SUCRE",
+          "capital": "BISCUCUY"
+        },
+        {
+          "codigo": "14",
+          "codigo_completo": "1814",
+          "nombre": "TUREN",
+          "capital": "VILLA BRUZUAL"
+        }
+      ]
+    },
+    {
+      "codigo": "19",
+      "nombre": "SUCRE",
+      "capital": "CUMANA",
+      "municipios": [
+        {
+          "codigo": "01",
+          "codigo_completo": "1901",
+          "nombre": "ANDRES ELOY BLANCO",
+          "capital": "CASANAY"
+        },
+        {
+          "codigo": "02",
+          "codigo_completo": "1902",
+          "nombre": "ANDRES MATA",
+          "capital": "SAN JOSE DE AEROCUAR"
+        },
+        {
+          "codigo": "03",
+          "codigo_completo": "1903",
+          "nombre": "ARISMENDI",
+          "capital": "RIO CARIBE"
+        },
+        {
+          "codigo": "04",
+          "codigo_completo": "1904",
+          "nombre": "BENITEZ",
+          "capital": "EL PILAR"
+        },
+        {
+          "codigo": "05",
+          "codigo_completo": "1905",
+          "nombre": "BERMUDEZ",
+          "capital": "CARUPANO"
+        },
+        {
+          "codigo": "06",
+          "codigo_completo": "1906",
+          "nombre": "BOLIVAR",
+          "capital": "MARIGUITAR",
+          "nota": "MUNICIPIO SIN PARROQUIA"
+        },
+        {
+          "codigo": "07",
+          "codigo_completo": "1907",
+          "nombre": "CAJIGAL",
+          "capital": "YAGUARAPARO"
+        },
+        {
+          "codigo": "08",
+          "codigo_completo": "1908",
+          "nombre": "CRUZ SALMERON ACOSTA",
+          "capital": "ARAYA"
+        },
+        {
+          "codigo": "09",
+          "codigo_completo": "1909",
+          "nombre": "LIBERTADOR",
+          "capital": "TUNAPUY"
+        },
+        {
+          "codigo": "10",
+          "codigo_completo": "1910",
+          "nombre": "MARIÑO",
+          "capital": "IRAPA"
+        },
+        {
+          "codigo": "11",
+          "codigo_completo": "1911",
+          "nombre": "MEJIA",
+          "capital": "SAN ANTONIO DEL GOLFO",
+          "nota": "MUNICIPIO SIN PARROQUIA"
+        },
+        {
+          "codigo": "12",
+          "codigo_completo": "1912",
+          "nombre": "MONTES",
+          "capital": "CUMANACOA"
+        },
+        {
+          "codigo": "13",
+          "codigo_completo": "1913",
+          "nombre": "RIBERO",
+          "capital": "CARIACO"
+        },
+        {
+          "codigo": "14",
+          "codigo_completo": "1914",
+          "nombre": "SUCRE",
+          "capital": "CUMANA"
+        },
+        {
+          "codigo": "15",
+          "codigo_completo": "1915",
+          "nombre": "VALDEZ",
+          "capital": "GUIRIA"
+        }
+      ]
+    },
+    {
+      "codigo": "20",
+      "nombre": "TACHIRA",
+      "capital": "SAN CRISTOBAL",
+      "municipios": [
+        {
+          "codigo": "01",
+          "codigo_completo": "2001",
+          "nombre": "ANDRES BELLO",
+          "capital": "CORDERO",
+          "nota": "MUNICIPIO SIN PARROQUIA"
+        },
+        {
+          "codigo": "02",
+          "codigo_completo": "2002",
+          "nombre": "ANTONIO ROMULO COSTA",
+          "capital": "LAS MESAS",
+          "nota": "MUNICIPIO SIN PARROQUIA"
+        },
+        {
+          "codigo": "03",
+          "codigo_completo": "2003",
+          "nombre": "AYACUCHO",
+          "capital": "COLON"
+        },
+        {
+          "codigo": "04",
+          "codigo_completo": "2004",
+          "nombre": "BOLIVAR",
+          "capital": "SAN ANTONIO DEL TACHIRA"
+        },
+        {
+          "codigo": "05",
+          "codigo_completo": "2005",
+          "nombre": "CARDENAS",
+          "capital": "TARIBA"
+        },
+        {
+          "codigo": "06",
+          "codigo_completo": "2006",
+          "nombre": "CORDOBA",
+          "capital": "SANTA ANA DEL TACHIRA",
+          "nota": "MUNICIPIO SIN PARROQUIA"
+        },
+        {
+          "codigo": "07",
+          "codigo_completo": "2007",
+          "nombre": "FERNANDEZ FEO",
+          "capital": "SAN RAFAEL DEL PIÑAL"
+        },
+        {
+          "codigo": "08",
+          "codigo_completo": "2008",
+          "nombre": "FRANCISCO DE MIRANDA",
+          "capital": "SAN JOSE DE BOLIVAR",
+          "nota": "MUNICIPIO SIN PARROQUIA"
+        },
+        {
+          "codigo": "09",
+          "codigo_completo": "2009",
+          "nombre": "GARCIA DE HEVIA",
+          "capital": "LA FRIA"
+        },
+        {
+          "codigo": "10",
+          "codigo_completo": "2010",
+          "nombre": "GUASIMOS",
+          "capital": "PALMIRA",
+          "nota": "MUNICIPIO SIN PARROQUIA"
+        },
+        {
+          "codigo": "11",
+          "codigo_completo": "2011",
+          "nombre": "INDEPENDENCIA",
+          "capital": "CAPACHO NUEVO"
+        },
+        {
+          "codigo": "12",
+          "codigo_completo": "2012",
+          "nombre": "JAUREGUI",
+          "capital": "LA GRITA"
+        },
+        {
+          "codigo": "13",
+          "codigo_completo": "2013",
+          "nombre": "JOSE MARIA VARGAS",
+          "capital": "EL COBRE",
+          "nota": "MUNICIPIO SIN PARROQUIA"
+        },
+        {
+          "codigo": "14",
+          "codigo_completo": "2014",
+          "nombre": "JUNIN",
+          "capital": "RUBIO"
+        },
+        {
+          "codigo": "15",
+          "codigo_completo": "2015",
+          "nombre": "LIBERTAD",
+          "capital": "CAPACHO VIEJO"
+        },
+        {
+          "codigo": "16",
+          "codigo_completo": "2016",
+          "nombre": "LIBERTADOR",
+          "capital": "ABEJALES"
+        },
+        {
+          "codigo": "17",
+          "codigo_completo": "2017",
+          "nombre": "LOBATERA",
+          "capital": "LOBATERA"
+        },
+        {
+          "codigo": "18",
+          "codigo_completo": "2018",
+          "nombre": "MICHELENA",
+          "capital": "MICHELENA",
+          "nota": "MUNICIPIO SIN PARROQUIA"
+        },
+        {
+          "codigo": "19",
+          "codigo_completo": "2019",
+          "nombre": "PANAMERICANO",
+          "capital": "COLONCITO"
+        },
+        {
+          "codigo": "20",
+          "codigo_completo": "2020",
+          "nombre": "PEDRO MARIA UREÑA",
+          "capital": "UREÑA"
+        },
+        {
+          "codigo": "21",
+          "codigo_completo": "2021",
+          "nombre": "RAFAEL URDANETA",
+          "capital": "DELICIAS",
+          "nota": "MUNICIPIO SIN PARROQUIA"
+        },
+        {
+          "codigo": "22",
+          "codigo_completo": "2022",
+          "nombre": "SAMUEL DARIO MALDONADO",
+          "capital": "LA TENDIDA"
+        },
+        {
+          "codigo": "23",
+          "codigo_completo": "2023",
+          "nombre": "SAN CRISTOBAL",
+          "capital": "SAN CRISTOBAL"
+        },
+        {
+          "codigo": "29",
+          "codigo_completo": "2029",
+          "nombre": "SAN JUDAS TADEO",
+          "capital": "UMUQUENA",
+          "nota": "MUNICIPIO SIN PARROQUIA"
+        },
+        {
+          "codigo": "24",
+          "codigo_completo": "2024",
+          "nombre": "SEBORUCO",
+          "capital": "SEBORUCO",
+          "nota": "MUNICIPIO SIN PARROQUIA"
+        },
+        {
+          "codigo": "25",
+          "codigo_completo": "2025",
+          "nombre": "SIMON RODRIGUEZ",
+          "capital": "SAN SIMON",
+          "nota": "MUNICIPIO SIN PARROQUIA"
+        },
+        {
+          "codigo": "26",
+          "codigo_completo": "2026",
+          "nombre": "SUCRE",
+          "capital": "QUENIQUEA"
+        },
+        {
+          "codigo": "27",
+          "codigo_completo": "2027",
+          "nombre": "TORBES",
+          "capital": "SAN JOSECITO",
+          "nota": "MUNICIPIO SIN PARROQUIA"
+        },
+        {
+          "codigo": "28",
+          "codigo_completo": "2028",
+          "nombre": "URIBANTE",
+          "capital": "PREGONERO"
+        }
+      ]
+    },
+    {
+      "codigo": "21",
+      "nombre": "TRUJILLO",
+      "capital": "TRUJILLO",
+      "municipios": [
+        {
+          "codigo": "01",
+          "codigo_completo": "2101",
+          "nombre": "ANDRES BELLO",
+          "capital": "SANTA ISABEL"
+        },
+        {
+          "codigo": "02",
+          "codigo_completo": "2102",
+          "nombre": "BOCONO",
+          "capital": "BOCONO"
+        },
+        {
+          "codigo": "03",
+          "codigo_completo": "2103",
+          "nombre": "BOLIVAR",
+          "capital": "SABANA GRANDE"
+        },
+        {
+          "codigo": "04",
+          "codigo_completo": "2104",
+          "nombre": "CANDELARIA",
+          "capital": "CHEJENDE"
+        },
+        {
+          "codigo": "05",
+          "codigo_completo": "2105",
+          "nombre": "CARACHE",
+          "capital": "CARACHE"
+        },
+        {
+          "codigo": "06",
+          "codigo_completo": "2106",
+          "nombre": "ESCUQUE",
+          "capital": "ESCUQUE"
+        },
+        {
+          "codigo": "07",
+          "codigo_completo": "2107",
+          "nombre": "JOSE FELIPE MARQUEZ CAÑIZALES",
+          "capital": "EL PARADERO"
+        },
+        {
+          "codigo": "08",
+          "codigo_completo": "2108",
+          "nombre": "JUAN VICENTE CAMPO ELIAS",
+          "capital": "CAMPO ELIAS"
+        },
+        {
+          "codigo": "09",
+          "codigo_completo": "2109",
+          "nombre": "LA CEIBA",
+          "capital": "SANTA APOLONIA"
+        },
+        {
+          "codigo": "10",
+          "codigo_completo": "2110",
+          "nombre": "MIRANDA",
+          "capital": "EL DIVIDIVE"
+        },
+        {
+          "codigo": "11",
+          "codigo_completo": "2111",
+          "nombre": "MONTE CARMELO",
+          "capital": "MONTE CARMELO"
+        },
+        {
+          "codigo": "12",
+          "codigo_completo": "2112",
+          "nombre": "MOTATAN",
+          "capital": "MOTATAN"
+        },
+        {
+          "codigo": "13",
+          "codigo_completo": "2113",
+          "nombre": "PAMPAN",
+          "capital": "PAMPAN"
+        },
+        {
+          "codigo": "14",
+          "codigo_completo": "2114",
+          "nombre": "PAMPANITO",
+          "capital": "PAMPANITO"
+        },
+        {
+          "codigo": "15",
+          "codigo_completo": "2115",
+          "nombre": "RAFAEL RANGEL",
+          "capital": "BETIJOQUE"
+        },
+        {
+          "codigo": "16",
+          "codigo_completo": "2116",
+          "nombre": "SAN RAFAEL DE CARVAJAL",
+          "capital": "CARVAJAL"
+        },
+        {
+          "codigo": "17",
+          "codigo_completo": "2117",
+          "nombre": "SUCRE",
+          "capital": "SABANA DE MENDOZA"
+        },
+        {
+          "codigo": "18",
+          "codigo_completo": "2118",
+          "nombre": "TRUJILLO",
+          "capital": "TRUJILLO"
+        },
+        {
+          "codigo": "19",
+          "codigo_completo": "2119",
+          "nombre": "URDANETA",
+          "capital": "LA QUEBRADA"
+        },
+        {
+          "codigo": "20",
+          "codigo_completo": "2120",
+          "nombre": "VALERA",
+          "capital": "VALERA"
+        }
+      ]
+    },
+    {
+      "codigo": "24",
+      "nombre": "VARGAS",
+      "capital": "LA GUAIRA",
+      "municipios": [
+        {
+          "codigo": "01",
+          "codigo_completo": "2401",
+          "nombre": "VARGAS",
+          "capital": "LA GUAIRA",
+          "nota": "ESTADO - MUNICIPIO"
+        }
+      ]
+    },
+    {
+      "codigo": "22",
+      "nombre": "YARACUY",
+      "capital": "SAN FELIPE",
+      "municipios": [
+        {
+          "codigo": "01",
+          "codigo_completo": "2201",
+          "nombre": "ARISTIDES BASTIDAS",
+          "capital": "SAN PABLO",
+          "nota": "MUNICIPIO SIN PARROQUIA"
+        },
+        {
+          "codigo": "02",
+          "codigo_completo": "2202",
+          "nombre": "BOLIVAR",
+          "capital": "AROA",
+          "nota": "MUNICIPIO SIN PARROQUIA"
+        },
+        {
+          "codigo": "03",
+          "codigo_completo": "2203",
+          "nombre": "BRUZUAL",
+          "capital": "CHIVACOA"
+        },
+        {
+          "codigo": "04",
+          "codigo_completo": "2204",
+          "nombre": "COCOROTE",
+          "capital": "COCOROTE",
+          "nota": "MUNICIPIO SIN PARROQUIA"
+        },
+        {
+          "codigo": "05",
+          "codigo_completo": "2205",
+          "nombre": "INDEPENDENCIA",
+          "capital": "INDEPENDENCIA",
+          "nota": "MUNICIPIO SIN PARROQUIA"
+        },
+        {
+          "codigo": "06",
+          "codigo_completo": "2206",
+          "nombre": "JOSE ANTONIO PAEZ",
+          "capital": "SABANA DE PARRA",
+          "nota": "MUNICIPIO SIN PARROQUIA"
+        },
+        {
+          "codigo": "07",
+          "codigo_completo": "2207",
+          "nombre": "LA TRINIDAD",
+          "capital": "BORAURE",
+          "nota": "MUNICIPIO SIN PARROQUIA"
+        },
+        {
+          "codigo": "08",
+          "codigo_completo": "2208",
+          "nombre": "MANUEL MONGE",
+          "capital": "YUMARE",
+          "nota": "MUNICIPIO SIN PARROQUIA"
+        },
+        {
+          "codigo": "09",
+          "codigo_completo": "2209",
+          "nombre": "NIRGUA",
+          "capital": "NIRGUA"
+        },
+        {
+          "codigo": "10",
+          "codigo_completo": "2210",
+          "nombre": "PEÑA",
+          "capital": "YARITAGUA"
+        },
+        {
+          "codigo": "11",
+          "codigo_completo": "2211",
+          "nombre": "SAN FELIPE",
+          "capital": "SAN FELIPE"
+        },
+        {
+          "codigo": "12",
+          "codigo_completo": "2212",
+          "nombre": "SUCRE",
+          "capital": "GUAMA",
+          "nota": "MUNICIPIO SIN PARROQUIA"
+        },
+        {
+          "codigo": "13",
+          "codigo_completo": "2213",
+          "nombre": "URACHICHE",
+          "capital": "URACHICHE",
+          "nota": "MUNICIPIO SIN PARROQUIA"
+        },
+        {
+          "codigo": "14",
+          "codigo_completo": "2214",
+          "nombre": "VEROES",
+          "capital": "FARRIAR"
+        }
+      ]
+    },
+    {
+      "codigo": "23",
+      "nombre": "ZULIA",
+      "capital": "MARACAIBO",
+      "municipios": [
+        {
+          "codigo": "01",
+          "codigo_completo": "2301",
+          "nombre": "ALMIRANTE PADILLA",
+          "capital": "EL TORO"
+        },
+        {
+          "codigo": "02",
+          "codigo_completo": "2302",
+          "nombre": "BARALT",
+          "capital": "SAN TIMOTEO"
+        },
+        {
+          "codigo": "03",
+          "codigo_completo": "2303",
+          "nombre": "CABIMAS",
+          "capital": "CABIMAS"
+        },
+        {
+          "codigo": "04",
+          "codigo_completo": "2304",
+          "nombre": "CATATUMBO",
+          "capital": "ENCONTRADOS"
+        },
+        {
+          "codigo": "05",
+          "codigo_completo": "2305",
+          "nombre": "COLON",
+          "capital": "SAN CARLOS DEL ZULIA"
+        },
+        {
+          "codigo": "06",
+          "codigo_completo": "2306",
+          "nombre": "FRANCISCO JAVIER PULGAR",
+          "capital": "PUEBLO NUEVO (EL CHIVO)"
+        },
+        {
+          "codigo": "07",
+          "codigo_completo": "2307",
+          "nombre": "JESUS ENRIQUE LOSSADA",
+          "capital": "LA CONCEPCION"
+        },
+        {
+          "codigo": "08",
+          "codigo_completo": "2308",
+          "nombre": "JESUS MARIA SEMPRUM",
+          "capital": "CASIGUA EL CUBO"
+        },
+        {
+          "codigo": "09",
+          "codigo_completo": "2309",
+          "nombre": "LA CAÑADA DE URDANETA",
+          "capital": "CONCEPCION"
+        },
+        {
+          "codigo": "10",
+          "codigo_completo": "2310",
+          "nombre": "LAGUNILLAS",
+          "capital": "CIUDAD OJEDA"
+        },
+        {
+          "codigo": "11",
+          "codigo_completo": "2311",
+          "nombre": "MACHIQUES DE PERIJA",
+          "capital": "MACHIQUES"
+        },
+        {
+          "codigo": "12",
+          "codigo_completo": "2312",
+          "nombre": "MARA",
+          "capital": "SAN RAFAEL DE EL MOJAN"
+        },
+        {
+          "codigo": "13",
+          "codigo_completo": "2313",
+          "nombre": "MARACAIBO",
+          "capital": "MARACAIBO"
+        },
+        {
+          "codigo": "14",
+          "codigo_completo": "2314",
+          "nombre": "MIRANDA",
+          "capital": "LOS PUERTOS DE ALTAGRACIA"
+        },
+        {
+          "codigo": "15",
+          "codigo_completo": "2315",
+          "nombre": "PAEZ",
+          "capital": "SINAMAICA"
+        },
+        {
+          "codigo": "16",
+          "codigo_completo": "2316",
+          "nombre": "ROSARIO DE PERIJA",
+          "capital": "LA VILLA DEL ROSARIO"
+        },
+        {
+          "codigo": "17",
+          "codigo_completo": "2317",
+          "nombre": "SAN FRANCISCO",
+          "capital": "SAN FRANCISCO"
+        },
+        {
+          "codigo": "18",
+          "codigo_completo": "2318",
+          "nombre": "SANTA RITA",
+          "capital": "SANTA RITA"
+        },
+        {
+          "codigo": "19",
+          "codigo_completo": "2319",
+          "nombre": "SIMON BOLIVAR",
+          "capital": "TIA JUANA"
+        },
+        {
+          "codigo": "20",
+          "codigo_completo": "2320",
+          "nombre": "SUCRE",
+          "capital": "BOBURES"
+        },
+        {
+          "codigo": "21",
+          "codigo_completo": "2321",
+          "nombre": "VALMORE RODRIGUEZ",
+          "capital": "BACHAQUERO"
+        }
+      ]
+    }
+  ]
+}

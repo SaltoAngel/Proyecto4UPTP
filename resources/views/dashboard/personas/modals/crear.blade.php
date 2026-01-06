@@ -168,24 +168,86 @@
                             <input type="email" class="form-control" id="email" name="email" maxlength="120" autocomplete="off">
                             <div class="form-text text-danger small d-none" id="email-error"></div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-6">
                             <label for="estado" class="form-label">
                                 <i class="material-icons me-1">map</i>Estado<span class="text-danger"> *</span>
                             </label>
                             <select class="form-select" id="estado" name="estado" required></select>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="ciudad" class="form-label">
-                                <i class="material-icons me-1">location_city</i>Ciudad<span class="text-danger"> *</span>
-                            </label>
-                            <select class="form-select" id="ciudad" name="ciudad" required></select>
+                            <div class="form-text text-danger small d-none" id="estado-error"></div>
                         </div>
                     </div>
-                    
+
                     <div class="row mb-3">
-                        <div class="col-12">
+                        <div class="col-md-6">
+                            <label for="municipio" class="form-label">
+                                <i class="material-icons me-1">map</i>Municipio<span class="text-danger"> *</span>
+                            </label>
+                            <select class="form-select" id="municipio" name="municipio" required></select>
+                            <div class="form-text text-danger small d-none" id="municipio-error"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="parroquia" class="form-label">
+                                <i class="material-icons me-1">location_city</i>Parroquia<span class="text-danger"> *</span>
+                            </label>
+                            <select class="form-select" id="parroquia" name="parroquia" required></select>
+                            <div class="form-text text-danger small d-none" id="parroquia-error"></div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label for="tipo_via" class="form-label">
+                                <i class="material-icons me-1">signpost</i>Tipo de vía<span class="text-danger"> *</span>
+                            </label>
+                            <select class="form-select" id="tipo_via" name="tipo_via" required>
+                                <option value="">Seleccionar...</option>
+                                <option value="calle">Calle</option>
+                                <option value="avenida">Avenida</option>
+                                <option value="carrera">Carrera</option>
+                                <option value="vereda">Vereda</option>
+                                <option value="troncal">Troncal</option>
+                                <option value="autopista">Autopista</option>
+                                <option value="otro">Otro</option>
+                            </select>
+                            <div class="form-text text-danger small d-none" id="tipo_via-error"></div>
+                        </div>
+                        <div class="col-md-8">
+                            <label for="nombre_via" class="form-label">
+                                <i class="material-icons me-1">edit_road</i>Nombre de vía<span class="text-danger"> *</span>
+                            </label>
+                            <input type="text" class="form-control" id="nombre_via" name="nombre_via" maxlength="120" autocomplete="off">
+                            <div class="form-text text-danger small d-none" id="nombre_via-error"></div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="numero_piso_apto" class="form-label">
+                                <i class="material-icons me-1">home</i>Número / Piso / Apto
+                            </label>
+                            <input type="text" class="form-control" id="numero_piso_apto" name="numero_piso_apto" maxlength="40" autocomplete="off">
+                            <div class="form-text text-danger small d-none" id="numero_piso_apto-error"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="urbanizacion_sector" class="form-label">
+                                <i class="material-icons me-1">holiday_village</i>Urbanización / Sector
+                            </label>
+                            <input type="text" class="form-control" id="urbanizacion_sector" name="urbanizacion_sector" maxlength="120" autocomplete="off">
+                            <div class="form-text text-danger small d-none" id="urbanizacion_sector-error"></div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="referencia" class="form-label">
+                                <i class="material-icons me-1">place</i>Punto de referencia
+                            </label>
+                            <input type="text" class="form-control" id="referencia" name="referencia" maxlength="200" autocomplete="off">
+                            <div class="form-text text-danger small d-none" id="referencia-error"></div>
+                        </div>
+                        <div class="col-md-6">
                             <label for="direccion" class="form-label">
-                                <i class="material-icons me-1">location_on</i>Dirección Completa
+                                <i class="material-icons me-1">location_on</i>Dirección específica<span class="text-danger"> *</span>
                             </label>
                             <textarea class="form-control" id="direccion" name="direccion" rows="2" maxlength="240" autocomplete="off"></textarea>
                             <div class="form-text text-danger small d-none" id="direccion-error"></div>
@@ -208,9 +270,10 @@
 
 @push('scripts')
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
     const estadosSelect = document.getElementById('estado');
-    const ciudadesSelect = document.getElementById('ciudad');
+    const municipiosSelect = document.getElementById('municipio');
+    const parroquiasSelect = document.getElementById('parroquia');
     const nombresInput = document.getElementById('nombres');
     const apellidosInput = document.getElementById('apellidos');
     const razonInput = document.getElementById('razon_social');
@@ -223,42 +286,55 @@ document.addEventListener('DOMContentLoaded', function() {
     const telAltPrefijo = document.getElementById('telefono_alternativo_prefijo');
     const telAltToggle = document.getElementById('toggle_tel_alt');
     const telAltWrapper = document.getElementById('tel_alt_wrapper');
+    const tipoViaSelect = document.getElementById('tipo_via');
+    const nombreViaInput = document.getElementById('nombre_via');
+    const numeroPisoAptoInput = document.getElementById('numero_piso_apto');
+    const urbanizacionInput = document.getElementById('urbanizacion_sector');
+    const referenciaInput = document.getElementById('referencia');
     const direccionInput = document.getElementById('direccion');
     const form = document.getElementById('formCrearPersona');
-    if (!estadosSelect || !ciudadesSelect) return;
+    if (!estadosSelect || !municipiosSelect || !parroquiasSelect) return;
 
-    const stateCities = {
-        'Amazonas': ['Puerto Ayacucho'],
-        'Anzoátegui': ['Barcelona', 'Puerto La Cruz', 'El Tigre'],
-        'Apure': ['San Fernando de Apure', 'Guasdualito'],
-        'Aragua': ['Maracay', 'La Victoria', 'Turmero'],
-        'Barinas': ['Barinas', 'Socopó'],
-        'Bolívar': ['Ciudad Bolívar', 'Ciudad Guayana', 'Upata'],
-        'Carabobo': ['Valencia', 'Naguanagua', 'Puerto Cabello', 'Guacara'],
-        'Cojedes': ['San Carlos', 'Tinaco'],
-        'Delta Amacuro': ['Tucupita'],
-        'Distrito Capital': ['Caracas', 'El Junquito'],
-        'Falcón': ['Coro', 'Punto Fijo', 'La Vela'],
-        'Guárico': ['San Juan de los Morros', 'Calabozo', 'Valle de la Pascua'],
-        'La Guaira': ['La Guaira', 'Maiquetía'],
-        'Lara': ['Barquisimeto', 'Carora', 'El Tocuyo', 'Quíbor'],
-        'Mérida': ['Mérida', 'Ejido', 'El Vigía'],
-        'Miranda': ['Los Teques', 'Guarenas', 'Guatire', 'Baruta', 'Chacao'],
-        'Monagas': ['Maturín', 'Punta de Mata', 'Caripe'],
-        'Nueva Esparta': ['La Asunción', 'Porlamar'],
-        'Portuguesa': ['Acarigua', 'Araure', 'Guanare', 'Turén', 'Píritu', 'Ospino', 'Biscucuy', 'Guanarito', 'Papelón', 'Agua Blanca', 'San Rafael de Onoto'],
-        'Sucre': ['Cumaná', 'Carúpano'],
-        'Táchira': ['San Cristóbal', 'Rubio', 'Táriba'],
-        'Trujillo': ['Trujillo', 'Valera', 'Boconó'],
-        'Yaracuy': ['San Felipe', 'Chivacoa'],
-        'Zulia': ['Maracaibo', 'Cabimas', 'Ciudad Ojeda', 'Lagunillas']
+    let venezuelaGeo = {};
+    const venezuelaDataUrl = "{{ asset('data/venezuela.json') }}";
+    const defaultEstado = 'Distrito Capital';
+
+    const normalizeData = (data = []) => {
+        const map = {};
+        data.forEach((estado) => {
+            if (!estado?.estado) return;
+            const municipiosMap = {};
+            (estado.municipios || []).forEach((m) => {
+                if (!m?.municipio) return;
+                const parroquiasOrdenadas = (m.parroquias || []).slice().sort((a, b) => a.localeCompare(b, 'es'));
+                municipiosMap[m.municipio] = parroquiasOrdenadas;
+            });
+            map[estado.estado] = municipiosMap;
+        });
+        return map;
     };
 
-    const getFeatureName = (props = {}) => props.name || props.NOMBRE || props.state || props.estado || props.Estado || '';
-    const defaultEstado = 'Distrito Capital';
+    const loadVenezuelaData = async () => {
+        try {
+            const res = await fetch(venezuelaDataUrl, { cache: 'no-store' });
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            const json = await res.json();
+            venezuelaGeo = normalizeData(json);
+        } catch (error) {
+            console.error('No se pudo cargar venezuela.json', error);
+            venezuelaGeo = {};
+        }
+    };
 
     const renderEstados = (estados) => {
         estadosSelect.innerHTML = '';
+        if (!estados.length) {
+            const opt = document.createElement('option');
+            opt.value = '';
+            opt.textContent = 'Sin estados disponibles';
+            estadosSelect.appendChild(opt);
+            return;
+        }
         estados.forEach(estado => {
             const opt = document.createElement('option');
             opt.value = estado;
@@ -267,46 +343,78 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     };
 
-    const loadCiudades = (estado) => {
-        ciudadesSelect.innerHTML = '';
-        const ciudades = stateCities[estado] || [];
-        if (ciudades.length === 0) {
+    const renderMunicipios = (estado) => {
+        municipiosSelect.innerHTML = '';
+        const municipios = venezuelaGeo[estado] ? Object.keys(venezuelaGeo[estado]) : [];
+        if (!municipios.length) {
             const opt = document.createElement('option');
             opt.value = '';
-            opt.textContent = 'Sin ciudades disponibles';
-            ciudadesSelect.appendChild(opt);
+            opt.textContent = 'Sin municipios disponibles';
+            municipiosSelect.appendChild(opt);
+            parroquiasSelect.innerHTML = '';
+            const optP = document.createElement('option');
+            optP.value = '';
+            optP.textContent = 'Sin parroquias disponibles';
+            parroquiasSelect.appendChild(optP);
             return;
         }
-        ciudades.forEach(ciudad => {
+        municipios.forEach(m => {
             const opt = document.createElement('option');
-            opt.value = ciudad;
-            opt.textContent = ciudad;
-            ciudadesSelect.appendChild(opt);
+            opt.value = m;
+            opt.textContent = m;
+            municipiosSelect.appendChild(opt);
         });
     };
 
-    const setInicial = (estados) => {
-        const initial = estados.includes(defaultEstado) ? defaultEstado : (estados[0] || '');
-        estadosSelect.value = initial;
-        loadCiudades(initial);
+    const renderParroquias = (estado, municipio) => {
+        parroquiasSelect.innerHTML = '';
+        const parroquias = venezuelaGeo[estado]?.[municipio] || [];
+        if (!parroquias.length) {
+            const opt = document.createElement('option');
+            opt.value = '';
+            opt.textContent = 'Sin parroquias disponibles';
+            parroquiasSelect.appendChild(opt);
+            return;
+        }
+        parroquias.forEach(p => {
+            const opt = document.createElement('option');
+            opt.value = p;
+            opt.textContent = p;
+            parroquiasSelect.appendChild(opt);
+        });
     };
 
-    fetch("{{ route('geo.ve') }}")
-        .then(r => { if (!r.ok) throw new Error('geo ve no disponible'); return r.json(); })
-        .then(json => {
-            const features = Array.isArray(json?.features) ? json.features : [];
-            const estados = [...new Set(features.map(f => getFeatureName(f.properties)).filter(Boolean))].sort();
-            if (!estados.length) throw new Error('sin estados');
-            renderEstados(estados);
-            setInicial(estados);
-        })
-        .catch(() => {
-            const estadosFallback = Object.keys(stateCities).sort();
-            renderEstados(estadosFallback);
-            setInicial(estadosFallback);
-        });
+    const setInicial = () => {
+        const estados = Object.keys(venezuelaGeo).sort((a, b) => a.localeCompare(b, 'es'));
+        renderEstados(estados);
+        const initialEstado = estados.includes(defaultEstado) ? defaultEstado : (estados[0] || '');
+        estadosSelect.value = initialEstado;
+        renderMunicipios(initialEstado);
+        const firstMunicipio = municipiosSelect.options[0]?.value || '';
+        municipiosSelect.value = firstMunicipio;
+        renderParroquias(initialEstado, firstMunicipio);
+        const firstParroquia = parroquiasSelect.options[0]?.value || '';
+        parroquiasSelect.value = firstParroquia;
+    };
 
-    estadosSelect.addEventListener('change', (e) => loadCiudades(e.target.value));
+    await loadVenezuelaData();
+    setInicial();
+
+    estadosSelect.addEventListener('change', (e) => {
+        renderMunicipios(e.target.value);
+        const firstMunicipio = municipiosSelect.options[0]?.value || '';
+        municipiosSelect.value = firstMunicipio;
+        renderParroquias(e.target.value, firstMunicipio);
+        const firstParroquia = parroquiasSelect.options[0]?.value || '';
+        parroquiasSelect.value = firstParroquia;
+    });
+
+    municipiosSelect.addEventListener('change', (e) => {
+        const estado = estadosSelect.value;
+        renderParroquias(estado, e.target.value);
+        const firstParroquia = parroquiasSelect.options[0]?.value || '';
+        parroquiasSelect.value = firstParroquia;
+    });
 
     // Helpers de validación en tiempo real (similar a login)
     const showError = (input, message) => {
@@ -388,6 +496,27 @@ document.addEventListener('DOMContentLoaded', function() {
         showSuccess(emailInput);
     };
 
+    const validateEstado = () => {
+        if (!estadosSelect) return;
+        const v = estadosSelect.value.trim();
+        if (!v) return showError(estadosSelect, 'Selecciona el estado');
+        showSuccess(estadosSelect);
+    };
+
+    const validateMunicipio = () => {
+        if (!municipiosSelect) return;
+        const v = municipiosSelect.value.trim();
+        if (!v) return showError(municipiosSelect, 'Selecciona el municipio');
+        showSuccess(municipiosSelect);
+    };
+
+    const validateParroquia = () => {
+        if (!parroquiasSelect) return;
+        const v = parroquiasSelect.value.trim();
+        if (!v) return showError(parroquiasSelect, 'Selecciona la parroquia');
+        showSuccess(parroquiasSelect);
+    };
+
     const validateTelefono = () => {
         if (!telInput) return;
         const v = telInput.value.trim();
@@ -405,6 +534,29 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!onlyDigits(v)) return showError(telAltInput, 'Solo números');
         if (v.length !== 7) return showError(telAltInput, 'Debe tener 7 dígitos');
         showSuccess(telAltInput);
+    };
+
+    const validateTipoVia = () => {
+        if (!tipoViaSelect) return;
+        const v = tipoViaSelect.value.trim();
+        if (!v) return showError(tipoViaSelect, 'Selecciona el tipo de vía');
+        showSuccess(tipoViaSelect);
+    };
+
+    const validateNombreVia = () => {
+        if (!nombreViaInput) return;
+        const v = nombreViaInput.value.trim();
+        if (!v) return showError(nombreViaInput, 'Ingresa el nombre de la vía');
+        if (!onlyAlnum(v)) return showError(nombreViaInput, 'Solo letras, números y espacios');
+        showSuccess(nombreViaInput);
+    };
+
+    const validateUrbanizacion = () => {
+        if (!urbanizacionInput) return;
+        const v = urbanizacionInput.value.trim();
+        if (!v) { clearError(urbanizacionInput); return; }
+        if (!onlyAlnum(v)) return showError(urbanizacionInput, 'Solo letras, números y espacios');
+        showSuccess(urbanizacionInput);
     };
 
     const validateDireccion = () => {
@@ -429,6 +581,10 @@ document.addEventListener('DOMContentLoaded', function() {
     blockInvalidChars(docInput, /[0-9]/g);
     blockInvalidChars(telInput, /[0-9]/g);
     blockInvalidChars(telAltInput, /[0-9]/g);
+    blockInvalidChars(nombreViaInput, /[a-zA-Z0-9À-ÿ\s.'-]/g);
+    blockInvalidChars(numeroPisoAptoInput, /[a-zA-Z0-9#\-\s]/g);
+    blockInvalidChars(urbanizacionInput, /[a-zA-Z0-9À-ÿ\s.'-]/g);
+    blockInvalidChars(referenciaInput, /[a-zA-Z0-9À-ÿ\s.'-]/g);
 
     nombresInput?.addEventListener('blur', validateNombre);
     apellidosInput?.addEventListener('blur', validateApellido);
@@ -436,8 +592,14 @@ document.addEventListener('DOMContentLoaded', function() {
     comercialInput?.addEventListener('blur', validateComercial);
     docInput?.addEventListener('blur', validateDocumento);
     emailInput?.addEventListener('blur', validateEmail);
+    estadosSelect?.addEventListener('change', validateEstado);
+    municipiosSelect?.addEventListener('change', validateMunicipio);
+    parroquiasSelect?.addEventListener('change', validateParroquia);
     telInput?.addEventListener('blur', validateTelefono);
     telAltInput?.addEventListener('blur', validateTelAlt);
+    tipoViaSelect?.addEventListener('change', validateTipoVia);
+    nombreViaInput?.addEventListener('blur', validateNombreVia);
+    urbanizacionInput?.addEventListener('blur', validateUrbanizacion);
     direccionInput?.addEventListener('blur', validateDireccion);
 
     telAltToggle?.addEventListener('change', (e) => {
@@ -460,8 +622,14 @@ document.addEventListener('DOMContentLoaded', function() {
         validateComercial();
         validateDocumento();
         validateEmail();
+        validateEstado();
+        validateMunicipio();
+        validateParroquia();
         validateTelefono();
         validateTelAlt();
+        validateTipoVia();
+        validateNombreVia();
+        validateUrbanizacion();
         validateDireccion();
 
         const hasInvalid = form.querySelector('.is-invalid');

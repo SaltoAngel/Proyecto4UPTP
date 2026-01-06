@@ -127,6 +127,18 @@
             background: linear-gradient(195deg, #1f9e68 0%, #198754 100%) !important;
         }
         .text-primary { color: #198754 !important; }
+
+        .page-item.active .page-link {
+            z-index: 3;
+            color: #fff;
+            background-color: #146c43 !important;
+            border-color: #146c43 !important;
+        }
+
+        .fc .fc-button-primary {
+            background-color: #146c43 !important;
+            border-color: #146c43 !important;
+        }
         /* Responsivo sidebar + contenido */
         @media (min-width: 992px) {
             #sidenav-main { width: 260px; max-height: 100vh; overflow-y: auto; }

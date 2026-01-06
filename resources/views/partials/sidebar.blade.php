@@ -25,7 +25,7 @@
             opacity: 0.9;
         }
         #sidenav-main .nav-link.active .material-icons {
-            color: #0d6efd;
+            color: rgb(0,165,79);
             opacity: 1;
         }
         #sidenav-main .nav-link .badge { margin-left: auto; }
@@ -92,9 +92,6 @@
                     <i class="material-icons opacity-10">local_shipping</i>
                 </div>
                 <span class="nav-link-text">Proveedores</span>
-                @if($proveedoresActivos > 0)
-                <span class="badge bg-info">{{ $proveedoresActivos }}</span>
-                @endif
             </a>
         </li>
     </ul>
@@ -111,7 +108,7 @@
             <a class="nav-link text-white {{ request()->routeIs('dashboard.animales.*') ? 'active' : '' }}" 
                href="#">
                 <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                    <i class="material-icons opacity-10">agriculture</i>
+                    <i class="material-icons opacity-10">egg</i>
                 </div>
                 <span class="nav-link-text">Animales</span>
             </a>
@@ -163,6 +160,34 @@
                     <i class="material-icons opacity-10">calendar_today</i>
                 </div>
                 <span class="nav-link-text">Planificación</span>
+            </a>
+        </li>
+    </ul>
+
+    <!-- SECCIÓN 5: MAQUINARIA -->
+    <div class="px-3 mt-3">
+        <h6 class="text-uppercase text-xs font-weight-bolder opacity-6 mb-2 section-title">
+            <i class="material-icons me-1">precision_manufacturing</i>
+            <span>Maquinaria</span>
+        </h6>
+    </div>
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link text-white {{ request()->routeIs('dashboard.maquinaria.*') ? 'active' : '' }}" 
+               href="#">
+                <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                    <i class="material-icons opacity-10">agriculture</i>
+                </div>
+                <span class="nav-link-text">Equipos</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-white {{ request()->routeIs('dashboard.mantenimientos.*') ? 'active' : '' }}" 
+               href="#">
+                <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                    <i class="material-icons opacity-10">build_circle</i>
+                </div>
+                <span class="nav-link-text">Mantenimientos</span>
             </a>
         </li>
     </ul>
