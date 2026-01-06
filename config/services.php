@@ -35,4 +35,14 @@ return [
         ],
     ],
 
+    'exchange_rate' => [
+        'api_url' => env('EXCHANGE_RATE_API', 'https://api.dolarvzla.com/public/exchange-rate'),
+        'cache_minutes' => env('EXCHANGE_RATE_CACHE', 30),
+    ],
+
+    'jasper' => [
+        'java_path' => env('JAVA_PATH'),
+        'timeout' => env('JASPER_TIMEOUT', 60),
+    ],
+
 ];

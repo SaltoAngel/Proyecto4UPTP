@@ -9,7 +9,7 @@ class BitacoraController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Bitacora::with('user')
+        $query = Bitacora::with(['user.persona'])
             ->orderBy('created_at', 'desc');
         
         // Filtros
@@ -17,6 +17,10 @@ class BitacoraController extends Controller
             $query->where('modulo', 'like', '%' . $request->modulo . '%');
         }
         
+        if ($request->filled('accion')) {
+            $query->where('accion', $request->accion);
+        }
+
         if ($request->filled('usuario')) {
             $query->whereHas('user', function($q) use ($request) {
                 $q->where('name', 'like', '%' . $request->usuario . '%');
@@ -31,13 +35,16 @@ class BitacoraController extends Controller
             $query->whereDate('created_at', '<=', $request->fecha_hasta);
         }
         
-        $bitacora = $query->paginate(20);
+        $bitacora = $query->paginate(20)->appends($request->query());
+
+        $modulos = Bitacora::select('modulo')->distinct()->orderBy('modulo')->pluck('modulo');
+        $acciones = Bitacora::select('accion')->distinct()->orderBy('accion')->pluck('accion');
         
-        return view('bitacora.index', compact('bitacora'));
+        return view('dashboard.bitacora.index', compact('bitacora', 'modulos', 'acciones'));
     }
     
     public function show(Bitacora $bitacora)
     {
-        return view('bitacora.show', compact('bitacora'));
+        return view('dashboard.bitacora.show', compact('bitacora'));
     }
 }

@@ -8,13 +8,18 @@
     "require": {
         "php": "^8.2",
         "doctrine/dbal": "^4.4",
+        "geekcom/phpjasper": "^3.4",
+        "geekcom/phpjasper-laravel": "^1.1",
+        "jasperphp/jasperphp": "dev-master",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
         "laravel/ui": "^4.6",
+        "livewire/livewire": "^3.7",
         "spatie/laravel-permission": "^6.23"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
+        "icanhazstring/composer-unused": "^0.9.5",
         "laravel/pail": "^1.2.2",
         "laravel/pint": "^1.24",
         "laravel/sail": "^1.41",

@@ -1,4 +1,18 @@
 <?php
+/**
+ * Modelo: User
+ * Propósito: Representa a los usuarios del sistema (autenticación, estados, verificación).
+ * Relaciones:
+ *  - persona(): belongsTo Personas (datos personales)
+ * Atributos relevantes:
+ *  - status, last_login_at, is_verified, verification_code
+ * Scopes:
+ *  - scopeActive(), scopeVerified()
+ * Utilidades:
+ *  - getFullNameAttribute(): obtiene nombre completo desde persona
+ * Nota:
+ *  - Métodos 2FA están presentes pero deshabilitados (comentados)
+ */
 
 namespace App\Models;
 
@@ -7,6 +21,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
+use App\Models\Bitacora;
 
 class User extends Authenticatable
 {
@@ -238,5 +253,81 @@ class User extends Authenticatable
     public function isVerified()
     {
         return $this->is_verified;
+    }
+
+    protected static function booted()
+    {
+        // Sanitiza datos para no registrar credenciales en bitácora
+        $filtrar = fn(array $payload) => collect($payload)
+            ->except(['password', 'remember_token', 'verification_code'])
+            ->toArray();
+
+        static::created(function (User $user) use ($filtrar) {
+            Bitacora::registrar(
+                'usuarios',
+                'crear',
+                'Creó usuario ID ' . $user->id,
+                null,
+                $filtrar($user->getAttributes())
+            );
+        });
+
+        static::updating(function (User $user) use ($filtrar) {
+            $original = $filtrar($user->getOriginal());
+            $changes = $user->getDirty();
+
+            // Evitar ruido por campos de sesión/actividad
+            $camposRuido = ['last_login_at', 'updated_at', 'next_2fa_attempt', 'login_count'];
+            $camposSignificativos = array_diff(array_keys($changes), $camposRuido);
+            if (empty($camposSignificativos)) {
+                return;
+            }
+
+            $accion = 'actualizar';
+            $detalle = 'Actualizó usuario ID ' . $user->id;
+
+            if (array_key_exists('status', $changes)) {
+                $nuevo = $changes['status'];
+                $anterior = $original['status'] ?? null;
+                if ($nuevo === 'bloqueado') {
+                    $accion = 'bloquear';
+                    $detalle = 'Bloqueó usuario ID ' . $user->id;
+                } elseif ($nuevo !== 'activo' && $anterior !== $nuevo) {
+                    $accion = 'actualizar_estado';
+                    $detalle = 'Actualizó estado de usuario ID ' . $user->id . " ({$anterior} -> {$nuevo})";
+                } elseif ($nuevo === 'activo' && $anterior !== 'activo') {
+                    $accion = 'restaurar';
+                    $detalle = 'Reactivó usuario ID ' . $user->id;
+                }
+            }
+
+            Bitacora::registrar(
+                'usuarios',
+                $accion,
+                $detalle,
+                $original,
+                $filtrar($user->getAttributes())
+            );
+        });
+
+        static::deleted(function (User $user) use ($filtrar) {
+            Bitacora::registrar(
+                'usuarios',
+                'deshabilitar',
+                'Deshabilitó usuario ID ' . $user->id,
+                $filtrar($user->getOriginal()),
+                $filtrar($user->getAttributes())
+            );
+        });
+
+        static::restored(function (User $user) use ($filtrar) {
+            Bitacora::registrar(
+                'usuarios',
+                'restaurar',
+                'Restauró usuario ID ' . $user->id,
+                null,
+                $filtrar($user->getAttributes())
+            );
+        });
     }
 }
