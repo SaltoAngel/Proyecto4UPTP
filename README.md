@@ -1,59 +1,158 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Proyecto UPTP4 — Sistema de Gestión
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Plataforma web para administración de Personas, Proveedores, Bitácora de cambios y Reportes. Construida sobre Laravel 12 con una interfaz Material/Bootstrap, integración con JasperReports (Java 8) y utilidades modernas de frontend (Vite, Tailwind/Bootstrap, Chart.js).
 
-## About Laravel
+## Funcionalidades
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- Gestión de Personas: alta/edición/restauración, validaciones y ubicación por Estado/Municipio/Parroquia (fuente `public/data/venezuela.json`).
+- Gestión de Proveedores: alta/edición/restauración, clasificación por tipos, productos/servicios en JSON, contacto comercial y métricas básicas.
+- Bitácora de cambios: auditoría por módulo/acción/usuario, detalle de datos anteriores vs nuevos, vista responsiva y formateo claro.
+- Reportes: generación de reportes PDF/XLSX con JasperReports (plantillas `.jrxml`), pruebas de entorno Java desde ruta dedicada.
+- Dashboard: vista inicial con métricas; endpoint para tipo de cambio vía `ExchangeRateService`.
+- Recepciones y Órdenes de Compra: vistas “stub” preparadas para futura implementación.
+- Configuración de usuario: actualización de preferencias básicas.
+- Autenticación: login/logout/recuperación de contraseña, con verificación de código opcional.
+- Roles y permisos: gestión mediante `spatie/laravel-permission`.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Tecnologías y Lenguajes
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- Backend: PHP 8.2, Laravel 12, Eloquent ORM, Form Requests, Middlewares.
+- Frontend: Bootstrap 5.3, Material theme, Vite 7, Tailwind 4 (base), Sass, jQuery DataTables, Chart.js + D3/TopoJSON para mapas.
+- Livewire 3 para componentes interactivos (cuando aplique).
+- Reportes: JasperReports vía `geekcom/phpjasper`, `jasperphp/jasperphp` (requiere Java 8).
+- Autorización: `spatie/laravel-permission`.
 
-## Learning Laravel
+## Requisitos
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+- PHP 8.2+
+- Composer
+- Node.js 18+ y npm
+- Base de datos (MySQL/MariaDB recomendada)
+- Java 8 para JasperReports (configurable por `JAVA_PATH` en `.env`)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Instalación rápida
 
-## Laravel Sponsors
+1. Clonar el repositorio y entrar al proyecto
+2. Configurar entorno:
+	- Copiar `.env.example` a `.env`
+	- Definir conexión a base de datos y `JAVA_PATH` si corresponde
+3. Instalar dependencias y construir assets:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```bash
+composer install
+php artisan key:generate
+php artisan migrate --force
+npm install
+npm run build
+```
 
-### Premium Partners
+Datos de ejemplo (opcional):
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+```bash
+php artisan db:seed
+```
 
-## Contributing
+Desarrollo en caliente:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+npm run dev
+# o
+composer run dev
+```
 
-## Code of Conduct
+Servidor local:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+php artisan serve
+```
 
-## Security Vulnerabilities
+## Módulos y Rutas principales
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- Dashboard: `/dashboard`
+- Bitácora: `/dashboard/bitacora`
+- Personas: recurso REST `/dashboard/personas` (+ búsqueda/restauración)
+- Proveedores: recurso REST `/dashboard/proveedores` (+ búsqueda/restauración)
+- Reportes (PDF/XLSX): `/dashboard/reportes/*` y `/dashboard/reportes/generar/{template}/{formato?}`
+- Administración de Reportes: `/dashboard/reportes-admin/*`
+- Tipo de cambio: `/dashboard/api/exchange-rate`
+- Mapa de Venezuela (JSON público): `/geo/ve.json`
 
-## License
+## Integración de Reportes (Jasper)
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- Requiere Java 8 (JRE/JDK). Validación disponible en `/test-jasper-command`.
+- Plantillas `.jrxml` y recursos bajo `storage/app/reports` y `app/Reports/templates`.
+- Servicios: `App\Services\JasperService` para orquestar generación.
+
+## Estructura destacada
+
+- `app/Http/Controllers/dashboard/*`: controladores del panel (Personas, Proveedores, Reportes, etc.)
+- `resources/views/dashboard/*`: vistas Blade (Material/Bootstrap), modales y tablas (DataTables)
+- `public/data/venezuela.json`: catálogo de Estados → Municipios → Parroquias
+- `app/Services/*`: servicios (Jasper, ExchangeRate, Notification)
+- `database/migrations/*`: esquema (usuarios, permisos, campos de dirección, etc.)
+- `database/seeders/*`: datos de ejemplo (usuarios, personas, proveedores)
+
+## Seguridad y Roles
+
+- Implementado con `spatie/laravel-permission`.
+- Definición de roles/permissions en seeders y uso en middlewares/controladores.
+
+## Internacionalización
+
+- Idioma base: español (ES).
+- Soporte de textos en `resources/lang`.
+- DataTables con localización (`public/datatables-i18n-es.json`).
+
+## Pruebas
+
+- PHPUnit (11.x). Ejecutar:
+
+```bash
+php artisan test
+```
+
+## Consejos y Troubleshooting
+
+- JasperReports: si falla, verifique `JAVA_PATH` en `.env` y que la versión sea 8.
+- Assets: si no se ven estilos, ejecute `npm run build` o `npm run dev` y asegure que Vite esté enlazado en la plantilla `layouts/material.blade.php`.
+- Migraciones: ante cambios de esquema, ejecute `php artisan migrate` y, si es entorno local, repare con `php artisan migrate:fresh --seed`.
+
+## Capturas de pantalla
+
+- Para mantener el README ligero, sube capturas a `docs/screenshots/` y enlázalas aquí.
+- Sugerencias de capturas:
+	- Dashboard principal (estadísticas/atajos)
+	- Listado y modales de Personas (crear/editar, ubicación VE)
+	- Listado y modales de Proveedores (crear/editar/ver)
+	- Bitácora (tabla y modal de detalle)
+	- Reportes (pantallas de generación y descarga)
+- Ejemplo de inclusión (reemplaza por tus archivos):
+	- ![Dashboard](docs/screenshots/dashboard.png)
+	- ![Personas](docs/screenshots/personas_list.png)
+	- ![Detalle Bitácora](docs/screenshots/bitacora_modal.png)
+
+## Roadmap (próximos módulos)
+
+- Recepciones
+	- CRUD de recepciones con estados (pendiente, recibido, verificado)
+	- Adjuntos y notas, relación con proveedores y órdenes
+	- Reporte de recepción (PDF/XLSX)
+- Órdenes de Compra (OC)
+	- Flujo de creación, aprobación y estado
+	- Exportación PDF/CSV y envío a proveedor
+	- Integración con recepciones y bitácora
+- Inventario (Materias Primas y Repuestos)
+	- Catálogo, existencias, movimientos y kardex
+	- Alertas por mínimos y rotación
+- Reportes ampliados
+	- Personas/Proveedores (segmentación y métricas)
+	- Compras/Recepciones/Inventario
+- Notificaciones
+	- Email y mensajería (soportado por `NotificationService`)
+	- Avisos de aprobaciones/recepciones/alertas
+- Roles y permisos avanzados
+	- Perfiles más granulados y auditoría detallada
+
+---
+
+Este README resume el estado actual de la rama `main` y las capacidades principales del sistema.
