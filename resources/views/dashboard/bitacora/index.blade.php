@@ -11,6 +11,12 @@
     #tablaBitacora td:nth-child(6) { white-space: nowrap; }
     #tablaBitacora td:nth-child(7) { width: 90px; text-align: center; }
     #tablaBitacora .badge { letter-spacing: 0.3px; }
+
+    code {
+    font-size: .875em;
+    color: var(--bs-table-hover-color);
+    word-wrap: break-word
+}
 </style>
 @endpush
 
@@ -235,7 +241,9 @@ document.addEventListener('DOMContentLoaded', function() {
             .removeClass()
             .addClass('badge bg-success');
 
-        const fecha = data.fecha ? new Date(data.fecha).toLocaleString('es-ES', { dateStyle: 'short', timeStyle: 'short' }) : '-';
+        const fecha = data.fecha
+            ? new Date(data.fecha).toLocaleString('es-ES', { dateStyle: 'short', timeStyle: 'short', hour12: true })
+            : '-';
         $('#modalBitacoraFecha').text(fecha);
         $('#modalBitacoraDetalle').text(data.detalle || '-');
         $('#modalBitacoraAntes').text(fmtJson(data.datos_anteriores));
