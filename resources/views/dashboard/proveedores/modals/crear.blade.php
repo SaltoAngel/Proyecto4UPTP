@@ -10,7 +10,7 @@
                 <div class="modal-body">
                     <div class="row mb-3">
                         <div class="col-md-12">
-                            <label class="form-label fw-bold">Persona <span class="text-danger">*</span></label>
+                            <label class="form-label fw-bold">Persona / Contacto <span class="text-danger">*</span></label>
                             <select name="persona_id" class="form-select" required>
                                 <option value="">Seleccione persona</option>
                                 @foreach($personas as $persona)
@@ -18,9 +18,10 @@
                                         $docType = strtoupper($persona->tipo_documento);
                                         $tipoPersona = $docType === 'J' ? 'Jurídico' : 'Natural';
                                     @endphp
-                                    <option value="{{ $persona->id }}">{{ $docType }}-{{ $persona->documento }} - {{ $persona->nombre_completo }}</option>
+                                    <option value="{{ $persona->id }}">{{ $docType }} ({{ $tipoPersona }}) - {{ $persona->nombre_completo }} | {{ $persona->telefono ?? 'Sin teléfono' }} | {{ $persona->email ?? 'Sin correo' }}</option>
                                 @endforeach
                             </select>
+                            <small class="text-muted d-block mt-1">El contacto es la persona seleccionada. Usa instrucciones si necesitas detalles adicionales.</small>
                             <span class="validation-feedback validation-error" style="display: none;"></span>
                         </div>
                     </div>
@@ -56,24 +57,6 @@
                         <div class="d-flex flex-wrap gap-2" id="productosChips"></div>
                         <div id="productosHiddenInputs" class="d-none"></div>
                         <span class="validation-feedback validation-error" style="display: none;"></span>
-                    </div>
-
-                    <div class="row mb-3">
-                        <div class="col-md-4">
-                            <label class="form-label">Contacto comercial</label>
-                            <input type="text" name="contacto_comercial" class="form-control">
-                            <span class="validation-feedback validation-error" style="display: none;"></span>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Teléfono comercial</label>
-                            <input type="text" name="telefono_comercial" class="form-control">
-                            <span class="validation-feedback validation-error" style="display: none;"></span>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Email comercial</label>
-                            <input type="email" name="email_comercial" class="form-control">
-                            <span class="validation-feedback validation-error" style="display: none;"></span>
-                        </div>
                     </div>
 
                     {{-- <div class="row mb-3">
@@ -123,24 +106,11 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Elementos del formulario
     const personaSelect = form.querySelector('select[name="persona_id"]');
-    const emailComercial = form.querySelector('input[name="email_comercial"]');
-    const telefonoComercial = form.querySelector('input[name="telefono_comercial"]');
-    const contactoComercial = form.querySelector('input[name="contacto_comercial"]');
     const productoInput = document.getElementById('productoInput');
     const addProductoBtn = document.getElementById('addProductoBtn');
     const productosChips = document.getElementById('productosChips');
     const productosHiddenInputs = document.getElementById('productosHiddenInputs');
-    
-    // Funciones de validación
-    function isValidEmail(email) {
-        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return re.test(email);
-    }
-    
-    function isValidPhone(phone) {
-        const re = /^[\d\s\-\+\(\)]{7,15}$/;
-        return re.test(phone.replace(/\s/g, ''));
-    }
+
     
     function showFieldError(field, message) {
         const feedback = field.parentNode.querySelector('.validation-feedback');
@@ -220,39 +190,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    emailComercial.addEventListener('input', function() {
-        const email = this.value.trim();
-        if (!email) {
-            clearFieldError(this);
-        } else if (!isValidEmail(email)) {
-            showFieldError(this, 'Ingrese un email válido');
-        } else {
-            showFieldSuccess(this);
-        }
-    });
-    
-    telefonoComercial.addEventListener('input', function() {
-        const phone = this.value.trim();
-        if (!phone) {
-            clearFieldError(this);
-        } else if (!isValidPhone(phone)) {
-            showFieldError(this, 'Ingrese un teléfono válido');
-        } else {
-            showFieldSuccess(this);
-        }
-    });
-    
-    contactoComercial.addEventListener('input', function() {
-        const contacto = this.value.trim();
-        if (contacto && contacto.length < 2) {
-            showFieldError(this, 'El nombre debe tener al menos 2 caracteres');
-        } else if (contacto) {
-            showFieldSuccess(this);
-        } else {
-            clearFieldError(this);
-        }
-    });
-    
     // Validación del formulario
     function validateForm() {
         let isValid = true;
@@ -262,19 +199,6 @@ document.addEventListener('DOMContentLoaded', function() {
             showFieldError(personaSelect, 'Debe seleccionar una persona');
             isValid = false;
         }
-        
-        // Validar email si se ingresó
-        if (emailComercial.value && !isValidEmail(emailComercial.value)) {
-            showFieldError(emailComercial, 'Ingrese un email válido');
-            isValid = false;
-        }
-        
-        // Validar teléfono si se ingresó
-        if (telefonoComercial.value && !isValidPhone(telefonoComercial.value)) {
-            showFieldError(telefonoComercial, 'Ingrese un teléfono válido');
-            isValid = false;
-        }
-        
         return isValid;
     }
     

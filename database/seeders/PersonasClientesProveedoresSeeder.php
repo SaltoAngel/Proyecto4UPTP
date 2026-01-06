@@ -19,7 +19,7 @@ class PersonasClientesProveedoresSeeder extends Seeder
             'razon_social' => 'Comercial La Estrella C.A.',
             'nombre_comercial' => 'La Estrella',
             'tipo_documento' => 'J',
-            'documento' => 'J-12345678-1',
+            'documento' => '12345678-1',
             'direccion' => 'Av. Principal de Centro, Local 12',
             'estado' => 'Distrito Capital',
             'ciudad' => 'Caracas',
@@ -89,7 +89,7 @@ class PersonasClientesProveedoresSeeder extends Seeder
             'razon_social' => 'Agroinsumos Los Andes, C.A.',
             'nombre_comercial' => 'Agro Andes',
             'tipo_documento' => 'J',
-            'documento' => 'J-11223344-5',
+            'documento' => '11223344-5',
             'direccion' => 'Zona Industrial La Variante, Galpón 5',
             'estado' => 'Lara',
             'ciudad' => 'Barquisimeto',
@@ -121,11 +121,12 @@ class PersonasClientesProveedoresSeeder extends Seeder
             'persona_id' => $mixtoPersonaId,
             'codigo_proveedor' => 'PROV-J-0001',
             'categoria' => 'Materia prima',
-            'productos_servicios' => 'Fertilizantes, semillas certificadas, repuestos agrícolas',
+            'productos_servicios' => json_encode([
+                'Fertilizantes',
+                'Semillas certificadas',
+                'Repuestos agrícolas'
+            ]),
             'especializacion' => 'Insumos para cultivos andinos',
-            'contacto_comercial' => 'María Fernanda Díaz',
-            'telefono_comercial' => '0412-7003345',
-            'email_comercial' => 'ventas@agroandes.com',
             'calificacion' => 5,
             'observaciones_calificacion' => 'Proveedor confiable y puntual.',
             'fecha_ultima_evaluacion' => $now->toDateString(),
@@ -136,5 +137,17 @@ class PersonasClientesProveedoresSeeder extends Seeder
             'created_at' => $now,
             'updated_at' => $now,
         ]);
+
+        // Asociar múltiples categorías al proveedor mixto si existen tipos cargados
+        $tipoIds = DB::table('tipos_proveedores')->pluck('id')->take(2);
+        if ($tipoIds->isNotEmpty()) {
+            $rows = $tipoIds->map(fn($id) => [
+                'proveedor_id' => 1, // primer proveedor insertado arriba
+                'tipo_proveedor_id' => $id,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ])->toArray();
+            DB::table('proveedores_tipos')->insert($rows);
+        }
     }
 }

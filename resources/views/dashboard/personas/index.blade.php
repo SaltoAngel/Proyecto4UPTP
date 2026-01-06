@@ -82,7 +82,7 @@
                             @endif
                         </td>
                         <td>
-                            <span class="badge bg-{{ $persona->tipo == 'natural' ? 'primary' : 'warning' }}">
+                            <span class="badge bg-{{ $persona->tipo == 'natural' ? 'info' : 'warning' }}">
                                 {{ $persona->tipo == 'natural' ? 'Natural' : 'Jurídica' }}
                             </span>
                         </td>
@@ -146,11 +146,6 @@
 @include('dashboard.personas.modals.editar')
 @endsection
 
-<style>
-    .form-check:not(.form-switch) .form-check-input[type=checkbox]:checked {
-    background: #62e91e
-}
-</style>
 @push('scripts')
 <script>
 $(document).ready(function() {

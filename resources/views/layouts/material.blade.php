@@ -64,6 +64,14 @@
             color: #344767 !important;
             border: 1px solid #d2d6da !important;
         }
+        /* Forzar que la X de cierre siempre se vea */
+        .modal-header .btn-close {
+            opacity: 1 !important;
+            filter: none !important;
+            mix-blend-mode: normal !important;
+            background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23ffffff' viewBox='0 0 16 16'%3e%3cpath d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat !important;
+            color: #fff !important;
+        }
         .modal .form-control:disabled, .modal .form-select:disabled, .modal textarea:disabled {
             background-color: #e9ecef !important;
             opacity: 1;
@@ -92,6 +100,54 @@
         }
         .form-control::placeholder, textarea::placeholder { color: #9ca3af !important; opacity: 1; }
         .input-group-text { background-color: #f8f9fa; color: #344767; border: 1px solid #d2d6da; }
+        /* Override paleta primaria a tonos verdes */
+        .btn-primary {
+            color: #fff !important;
+            background-color: #198754 !important;
+            border-color: #198754 !important;
+            box-shadow: none;
+        }
+        .btn-primary:hover {
+            background-color: #157347 !important;
+            border-color: #146c43 !important;
+            color: #fff !important;
+        }
+        .btn-primary:focus, .btn-primary:active, .btn-primary.active, .show > .btn-primary.dropdown-toggle {
+            background-color: #146c43 !important;
+            border-color: #146c43 !important;
+            color: #fff !important;
+            box-shadow: 0 0 0 0.2rem rgba(25, 135, 84, 0.3) !important;
+        }
+        .btn-primary:disabled, .btn-primary.disabled {
+            background-color: #b4dfc5 !important;
+            border-color: #b4dfc5 !important;
+            color: #fff !important;
+        }
+        .bg-gradient-primary, .bg-primary {
+            background: linear-gradient(195deg, #1f9e68 0%, #198754 100%) !important;
+        }
+        .text-primary { color: #198754 !important; }
+        /* Responsivo sidebar + contenido */
+        @media (min-width: 992px) {
+            #sidenav-main { width: 260px; max-height: 100vh; overflow-y: auto; }
+            .main-content { padding-left: 280px; }
+        }
+        @media (max-width: 991.98px) {
+            #sidenav-main { width: 100%; max-width: 320px; max-height: 100vh; overflow-y: auto; }
+            .main-content { padding-left: 0; }
+            .sidenav .nav-link { padding: 10px 12px; }
+        }
+
+        @media (min-width: 1200px) {
+        .sidenav.fixed-start + .main-content,
+        .g-sidenav-hidden .navbar-vertical:hover.fixed-start + .main-content {
+            margin-left: 0 !important;
+        }
+        .sidenav.fixed-end + .main-content,
+        .g-sidenav-hidden .navbar-vertical:hover.fixed-end + .main-content {
+            margin-right: 0 !important;
+        }
+}
     </style>
     @stack('styles')
 </head>
@@ -99,6 +155,10 @@
     @include('partials.sidebar')
 
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+        <!-- Botón hamburguesa visible solo en móviles -->
+        <button class="btn btn-link text-secondary d-lg-none position-fixed" id="btn-toggle-sidenav" aria-label="Abrir menú" style="top: 12px; left: 12px; z-index: 1030;">
+            <i class="material-icons">menu</i>
+        </button>
         @include('partials.header')
 
         <div class="container-fluid py-4">
@@ -121,6 +181,23 @@
     <script src="{{ asset('material/js/material-dashboard.min.js') }}"></script>
     @include('partials.skeleton')
     @stack('scripts')
+
+    <script>
+        // Toggle del sidebar en móviles
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleBtn = document.getElementById('btn-toggle-sidenav');
+            const sidenav = document.getElementById('sidenav-main');
+            if (!toggleBtn || !sidenav) return;
+            toggleBtn.addEventListener('click', () => {
+                const isOpen = sidenav.classList.contains('show');
+                if (isOpen) {
+                    sidenav.classList.remove('show');
+                } else {
+                    sidenav.classList.add('show');
+                }
+            });
+        });
+    </script>
 
     <!-- Session Alerts Script -->
     <script>
