@@ -86,10 +86,10 @@
                             </td>
                             <td>
                                 <div class="btn-group btn-group-sm acciones-proveedor" data-restore-url="{{ route('dashboard.proveedores.restore', $proveedor->id) }}">
-                                    <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#verProveedorModal" data-proveedor='@json($proveedor)'>
+                                        <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#verProveedorModal" data-proveedor='@json($proveedor, JSON_HEX_APOS | JSON_HEX_QUOT)'>
                                             <i class="material-icons">visibility</i>
                                     </button>
-                                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editarProveedorModal" data-proveedor='@json($proveedor)'>
+                                        <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editarProveedorModal" data-proveedor='@json($proveedor, JSON_HEX_APOS | JSON_HEX_QUOT)'>
                                             <i class="material-icons">edit</i>
                                     </button>
                                     @if($estaDeshabilitado)
@@ -170,11 +170,11 @@ $(document).ready(function() {
         function agregarChip(id, nombre) {
             // Evitar duplicados
             if ($seleccionadas.find(`.chip[data-id="${id}"]`).length) return;
-            const $chip = $(`<span class="badge bg-primary chip" data-id="${id}" data-nombre="${nombre}" style="cursor:pointer">${nombre} ×</span>`);
+            const $chip = $(`<span class="badge bg-success chip" data-id="${id}" data-nombre="${nombre}" style="cursor:pointer">${nombre} ×</span>`);
             $chip.on('click', function() {
                 // Al quitar, vuelve a la lista disponible
                 $chip.remove();
-                const $btn = $(`<button type="button" class="btn btn-sm btn-outline-primary categoria-item" data-id="${id}" data-nombre="${nombre}">${nombre}</button>`);
+                const $btn = $(`<button type="button" class="btn btn-sm btn-outline-success categoria-item" data-id="${id}" data-nombre="${nombre}">${nombre}</button>`);
                 $btn.on('click', function() {
                     agregarChip(id, nombre);
                     $(this).remove();
@@ -310,23 +310,65 @@ $(document).ready(function() {
     // Inicializar selectores al abrir modales
     initCategoriaSelector('#crearSelectorCategorias');
 
+    // Evitar problemas de stacking/transform: mover modales al body
+    ['#crearProveedorModal', '#verProveedorModal', '#editarProveedorModal'].forEach(id => {
+        const $modal = $(id);
+        if ($modal.length && $modal.parent()[0] !== document.body) {
+            console.log('Reubicando modal en body:', id);
+            $modal.appendTo('body');
+        }
+    });
+
+    function getProveedorFromEvent(event) {
+        const raw = $(event.relatedTarget).data('proveedor');
+        if (!raw) return {};
+        if (typeof raw === 'object') return raw;
+        try {
+            return JSON.parse(raw);
+        } catch (err) {
+            console.error('No se pudo parsear proveedor', err, raw);
+            return {};
+        }
+    }
+
+    function formatDateYMD(value) {
+        if (!value) return '';
+        const date = new Date(value);
+        return Number.isNaN(date.getTime()) ? '' : date.toISOString().slice(0, 10);
+    }
+
     $('#verProveedorModal').on('show.bs.modal', function(event) {
-        const proveedorData = $(event.relatedTarget).data('proveedor');
-        const proveedor = typeof proveedorData === 'string' ? JSON.parse(proveedorData) : proveedorData;
+        const proveedor = getProveedorFromEvent(event);
         const modal = $(this);
         const persona = proveedor.persona || {};
         const tipos = proveedor.tipos_proveedores || proveedor.tiposProveedores || [];
+        const productosRaw = proveedor.productos_servicios;
+        const productosList = Array.isArray(productosRaw)
+            ? productosRaw
+            : (typeof productosRaw === 'string' && productosRaw.trim()
+                ? productosRaw.split(',').map(p => p.trim()).filter(Boolean)
+                : []);
 
         modal.find('#verCodigo').text(proveedor.codigo_proveedor || 'No asignado');
         modal.find('#verNombre').text(persona.nombre_completo || 'Sin persona asociada');
+        modal.find('#verPersonaNombre').text(persona.nombre_completo || 'Sin persona asociada');
         modal.find('#verDocumento').text((persona.tipo_documento || '-') + '-' + (persona.documento || '-'));
         modal.find('#verCategoria').text(tipos.map(t => t.nombre_tipo).join(', ') || proveedor.categoria || '—');
-        modal.find('#verProductos').text(proveedor.productos_servicios || '—');
+        modal.find('#verProductos').html(productosList.length
+            ? productosList.map(p => `<span class="badge bg-light text-dark border me-1">${p}</span>`).join(' ')
+            : '—');
         modal.find('#verEspecializacion').text(proveedor.especializacion || '—');
-        modal.find('#verContacto').text(proveedor.contacto_comercial || '—');
-        modal.find('#verTelefono').text(proveedor.telefono_comercial || '—');
-        modal.find('#verEmail').text(proveedor.email_comercial || '—');
-        modal.find('#verCalificacion').text(proveedor.calificacion ?? '—');
+        modal.find('#verTelefono').text(persona.telefono || '—');
+        modal.find('#verEmail').text(persona.email || '—');
+        const calificacionNum = Number(proveedor.calificacion ?? 0);
+        const calif = Number.isFinite(calificacionNum) ? Math.max(0, Math.min(5, calificacionNum)) : 0;
+        const filled = Math.round(calif);
+        const starsHtml = Array.from({ length: 5 }, (_, i) => i < filled
+            ? '<i class="material-icons" style="font-size:18px;">star</i>'
+            : '<i class="material-icons text-muted" style="font-size:18px;">star_border</i>'
+        ).join('');
+        modal.find('#verCalificacionStars').html(starsHtml);
+        modal.find('#verCalificacionValor').text(filled ? `${filled}/5` : '—');
         modal.find('#verEstado').text(proveedor.estado || '—');
         modal.find('#verBanco').text(proveedor.banco || '—');
         modal.find('#verTipoCuenta').text(proveedor.tipo_cuenta || '—');
@@ -334,75 +376,93 @@ $(document).ready(function() {
     });
 
     $('#editarProveedorModal').on('show.bs.modal', function(event) {
-        const proveedorData = $(event.relatedTarget).data('proveedor');
-        const proveedor = typeof proveedorData === 'string' ? JSON.parse(proveedorData) : proveedorData;
-        const tipos = proveedor.tipos_proveedores || proveedor.tiposProveedores || [];
-        const modal = $(this);
-        modal.find('form').attr('action', '/dashboard/proveedores/' + proveedor.id);
-        modal.find('#editPersona').val(proveedor.persona_id);
-        modal.find('#editProductos').val(proveedor.productos_servicios);
-        modal.find('#editEspecializacion').val(proveedor.especializacion);
-        modal.find('#editContacto').val(proveedor.contacto_comercial);
-        modal.find('#editTelefono').val(proveedor.telefono_comercial);
-        modal.find('#editEmail').val(proveedor.email_comercial);
-        // Inicializar selector personalizado y preseleccionar
-        initCategoriaSelector('#editarSelectorCategorias');
-        const $editarContainer = $('#editarSelectorCategorias');
-        const $disponibles = $editarContainer.find('.categorias-disponibles');
-        const $seleccionadas = $editarContainer.find('.categorias-seleccionadas');
+        try {
+            console.log('Editar modal: show.bs.modal triggered');
+            const proveedor = getProveedorFromEvent(event);
+            console.log('Proveedor parsed:', proveedor);
+            const tipos = proveedor.tipos_proveedores || proveedor.tiposProveedores || [];
+            const modal = $(this);
+            console.log('Tipos preseleccion:', tipos);
+            modal.find('form').attr('action', '/dashboard/proveedores/' + proveedor.id);
+            modal.find('#editPersona').val(proveedor.persona_id);
+            // Inicializar selector personalizado y preseleccionar
+            initCategoriaSelector('#editarSelectorCategorias');
+            const $editarContainer = $('#editarSelectorCategorias');
+            const $disponibles = $editarContainer.find('.categorias-disponibles');
+            const $seleccionadas = $editarContainer.find('.categorias-seleccionadas');
         const preseleccion = Array.isArray(tipos) ? tipos.map(t => ({ id: t.id, nombre: t.nombre_tipo })) : [];
-        preseleccion.forEach(({id, nombre}) => {
-            // Si existe el botón disponible con ese id, simular click para moverlo a chips
-            const $btn = $disponibles.find(`.categoria-item[data-id="${id}"]`);
-            if ($btn.length) {
-                $btn.trigger('click');
-            } else {
-                // Si no está en disponibles (ya chip), crear chip
-                if (!$seleccionadas.find(`.chip[data-id="${id}"]`).length) {
-                    const $chip = $(`<span class="badge bg-primary chip" data-id="${id}" data-nombre="${nombre}" style="cursor:pointer">${nombre} ×</span>`);
+                const actualizarHiddenYResumen = () => {
+                    const $cont = $editarContainer;
+                    const $chips = $cont.find('.chip');
+                    const $target = $($cont.data('target-input'));
+                    const $summary = $($cont.data('target-summary'));
+                    const nombres = [];
+                    $target.empty();
+                    $chips.each(function(){
+                        const id = $(this).data('id');
+                        const nombre = $(this).data('nombre');
+                        nombres.push(nombre);
+                        $target.append(`<input type="hidden" name="tipos_proveedores[]" value="${id}">`);
+                    });
+                    const conteo = nombres.reduce((acc, nombre) => {
+                        acc[nombre] = (acc[nombre] || 0) + 1;
+                        return acc;
+                    }, {});
+                    const resumen = Object.entries(conteo).map(([nombre, count]) => `(${count} ${nombre})`).join(' ');
+                    $summary.val(resumen);
+                };
+
+                const ensureChip = (id, nombre) => {
+                    if ($seleccionadas.find(`.chip[data-id="${id}"]`).length) return;
+                    const $chip = $(`<span class="badge bg-success chip" data-id="${id}" data-nombre="${nombre}" style="cursor:pointer">${nombre} ×</span>`);
                     $chip.on('click', function() {
                         $chip.remove();
-                        const $btnNuevo = $(`<button type="button" class="btn btn-sm btn-outline-primary categoria-item" data-id="${id}" data-nombre="${nombre}">${nombre}</button>`);
+                        const $btnNuevo = $(`<button type="button" class="btn btn-sm btn-outline-success categoria-item" data-id="${id}" data-nombre="${nombre}">${nombre}</button>`);
                         $btnNuevo.on('click', function() {
-                            agregarChip(id, nombre);
+                            ensureChip(id, nombre);
                             $(this).remove();
                         });
                         $disponibles.append($btnNuevo);
                         actualizarHiddenYResumen();
                     });
                     $seleccionadas.append($chip);
-                }
+                    actualizarHiddenYResumen();
+                };
+
+                preseleccion.forEach(({id, nombre}) => {
+                    const $btn = $disponibles.find(`.categoria-item[data-id="${id}"]`);
+                    if ($btn.length) {
+                        $btn.trigger('click');
+                    } else {
+                        ensureChip(id, nombre);
+                    }
+                });
+                actualizarHiddenYResumen();
+        const productosRaw = proveedor.productos_servicios;
+        const productosList = Array.isArray(productosRaw)
+            ? productosRaw
+            : (typeof productosRaw === 'string' && productosRaw.trim()
+                ? productosRaw.split(',').map(p => p.trim()).filter(Boolean)
+                : []);
+            console.log('Productos list edit:', productosList);
+            if (window.setEditProductos) {
+                window.setEditProductos(productosList);
             }
-        });
-        // Actualizar hidden y resumen con la preselección
-        $seleccionadas.closest('#editarSelectorCategorias').each(function(){
-            const $cont = $(this);
-            const $chips = $cont.find('.chip');
-            const $target = $($cont.data('target-input'));
-            const $summary = $($cont.data('target-summary'));
-            const nombres = [];
-            $target.empty();
-            $chips.each(function(){
-                const id = $(this).data('id');
-                const nombre = $(this).data('nombre');
-                nombres.push(nombre);
-                $target.append(`<input type="hidden" name="tipos_proveedores[]" value="${id}">`);
-            });
-            const conteo = nombres.reduce((acc, nombre) => {
-                acc[nombre] = (acc[nombre] || 0) + 1;
-                return acc;
-            }, {});
-            const resumen = Object.entries(conteo).map(([nombre, count]) => `(${count} ${nombre})`).join(' ');
-            $summary.val(resumen);
-        });
-        modal.find('#editCalificacion').val(proveedor.calificacion);
-        modal.find('#editObservaciones').val(proveedor.observaciones_calificacion);
-        modal.find('#editEstado').val(proveedor.estado);
-        modal.find('#editFechaRegistro').val(proveedor.fecha_registro);
-        modal.find('#editFechaUltimaCompra').val(proveedor.fecha_ultima_compra);
-        modal.find('#editBanco').val(proveedor.banco);
-        modal.find('#editTipoCuenta').val(proveedor.tipo_cuenta);
-        modal.find('#editNumeroCuenta').val(proveedor.numero_cuenta);
+            console.log('Modal edit populated');
+        } catch (error) {
+            console.error('Error al abrir modal de edición', error);
+            Swal.fire({ icon: 'error', title: 'No se pudo cargar el proveedor', text: 'Revisa la consola para más detalles.' });
+            event.preventDefault();
+            event.stopImmediatePropagation();
+        }
+    });
+
+    $('#editarProveedorModal').on('shown.bs.modal', function() {
+        console.log('Editar modal: shown.bs.modal (visible). Clases:', $(this).attr('class'), 'display:', $(this).css('display'));
+    });
+
+    $('#editarProveedorModal').on('hidden.bs.modal', function() {
+        console.log('Editar modal: hidden.bs.modal');
     });
 
     $('#formCrearProveedor').on('submit', function(e) {

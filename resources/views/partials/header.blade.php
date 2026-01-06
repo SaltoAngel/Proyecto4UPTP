@@ -7,10 +7,17 @@
 --}}
 <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" data-scroll="false">
   <div class="container-fluid py-1 px-3">
-    <nav aria-label="breadcrumb">
-      <h6 class="font-weight-bolder mb-0">@yield('title', 'Dashboard')</h6>
-    </nav>
-    <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+    <div class="d-flex align-items-center w-100">
+      <nav aria-label="breadcrumb" class="flex-grow-1">
+        <h6 class="font-weight-bolder mb-0">@yield('title', 'Dashboard')</h6>
+      </nav>
+      <!-- Toggler del menú superior (notificaciones/usuario) -->
+      <button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu" aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+
+    <div class="collapse navbar-collapse mt-2 mt-lg-0" id="navbarMenu">
       <ul class="navbar-nav ms-auto align-items-center">
         <!-- Notificaciones: dropdown con placeholder -->
         <li class="nav-item dropdown me-3">

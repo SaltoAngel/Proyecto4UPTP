@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header bg-success text-white">
-                <h5 class="modal-title"><i class="material-icons me-2">local_shipping</i>Registrar Proveedor</h5>
+                <h5 class="modal-title text-white"><i class="material-icons me-2">local_shipping</i>Registrar Proveedor</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <form id="formCrearProveedor" method="POST" action="{{ route('dashboard.proveedores.store') }}">
@@ -10,61 +10,56 @@
                 <div class="modal-body">
                     <div class="row mb-3">
                         <div class="col-md-12">
-                            <label class="form-label fw-bold">Persona <span class="text-danger">*</span></label>
+                            <label class="form-label fw-bold">Persona / Contacto <span class="text-danger">*</span></label>
                             <select name="persona_id" class="form-select" required>
                                 <option value="">Seleccione persona</option>
                                 @foreach($personas as $persona)
-                                    <option value="{{ $persona->id }}">{{ $persona->codigo }} - {{ $persona->nombre_completo }}</option>
+                                    @php
+                                        $docType = strtoupper($persona->tipo_documento);
+                                        $tipoPersona = $docType === 'J' ? 'Jurídico' : 'Natural';
+                                    @endphp
+                                    <option value="{{ $persona->id }}">{{ $docType }} ({{ $tipoPersona }}) - {{ $persona->nombre_completo }} | {{ $persona->telefono ?? 'Sin teléfono' }} | {{ $persona->email ?? 'Sin correo' }}</option>
                                 @endforeach
                             </select>
+                            <small class="text-muted d-block mt-1">El contacto es la persona seleccionada. Usa instrucciones si necesitas detalles adicionales.</small>
                             <span class="validation-feedback validation-error" style="display: none;"></span>
                         </div>
                     </div>
 
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label class="form-label">Categorías (múltiples)</label>
+                            <label class="form-label fw-bold">Categorías (múltiples)</label> <span class="text-danger">*</span></label>
                             <div class="border rounded p-2" id="crearSelectorCategorias" data-target-input="#crearTiposSeleccionados" data-target-summary="#crearResumenCategorias">
                                 <div class="d-flex flex-wrap gap-1 mb-2 categorias-seleccionadas"></div>
                                 <div class="d-flex flex-wrap gap-1 categorias-disponibles">
                                     @foreach($tiposProveedores as $tipo)
-                                        <button type="button" class="btn btn-sm btn-outline-primary categoria-item" data-id="{{ $tipo->id }}" data-nombre="{{ $tipo->nombre_tipo }}">{{ $tipo->nombre_tipo }}</button>
+                                        <button type="button" class="btn btn-sm btn-outline-success categoria-item" data-id="{{ $tipo->id }}" data-nombre="{{ $tipo->nombre_tipo }}">{{ $tipo->nombre_tipo }}</button>
                                     @endforeach
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        {{-- <div class="col-md-6">
                             <label class="form-label">Especialización</label>
                             <input type="text" name="especializacion" class="form-control">
                             <span class="validation-feedback validation-error" style="display: none;"></span>
-                        </div>
+                        </div> --}}
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Productos / Servicios</label>
-                        <textarea name="productos_servicios" class="form-control" rows="2"></textarea>
+                    <div class="mb-3" id="productosWrapper">
+                        <label class="form-label fw-bold">Productos / Servicios</label> <span class="text-danger">*</span>
+                        <div class="d-flex gap-2 mb-2">
+                            <input type="text" id="productoInput" class="form-control" placeholder="Escribe y presiona Enter" autocomplete="off">
+                            <button type="button" class="btn btn-success" id="addProductoBtn">
+                                <i class="material-icons align-middle" style="font-size:18px">add</i>
+                                Añadir
+                            </button>
+                        </div>
+                        <div class="d-flex flex-wrap gap-2" id="productosChips"></div>
+                        <div id="productosHiddenInputs" class="d-none"></div>
                         <span class="validation-feedback validation-error" style="display: none;"></span>
                     </div>
 
-                    <div class="row mb-3">
-                        <div class="col-md-4">
-                            <label class="form-label">Contacto comercial</label>
-                            <input type="text" name="contacto_comercial" class="form-control">
-                            <span class="validation-feedback validation-error" style="display: none;"></span>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Teléfono comercial</label>
-                            <input type="text" name="telefono_comercial" class="form-control">
-                            <span class="validation-feedback validation-error" style="display: none;"></span>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Email comercial</label>
-                            <input type="email" name="email_comercial" class="form-control">
-                            <span class="validation-feedback validation-error" style="display: none;"></span>
-                        </div>
-                    </div>
-
-                    <div class="row mb-3">
+                    {{-- <div class="row mb-3">
                         <div class="col-md-6">
                             <label class="form-label">Calificación (1-5)</label>
                             <select name="calificacion" class="form-select">
@@ -88,7 +83,7 @@
                     <div class="mb-3">
                         <label class="form-label">Observaciones de calificación</label>
                         <textarea name="observaciones_calificacion" class="form-control" rows="2"></textarea>
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="material-icons me-2">close</i>Cancelar</button>
@@ -111,20 +106,11 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Elementos del formulario
     const personaSelect = form.querySelector('select[name="persona_id"]');
-    const emailComercial = form.querySelector('input[name="email_comercial"]');
-    const telefonoComercial = form.querySelector('input[name="telefono_comercial"]');
-    const contactoComercial = form.querySelector('input[name="contacto_comercial"]');
-    
-    // Funciones de validación
-    function isValidEmail(email) {
-        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return re.test(email);
-    }
-    
-    function isValidPhone(phone) {
-        const re = /^[\d\s\-\+\(\)]{7,15}$/;
-        return re.test(phone.replace(/\s/g, ''));
-    }
+    const productoInput = document.getElementById('productoInput');
+    const addProductoBtn = document.getElementById('addProductoBtn');
+    const productosChips = document.getElementById('productosChips');
+    const productosHiddenInputs = document.getElementById('productosHiddenInputs');
+
     
     function showFieldError(field, message) {
         const feedback = field.parentNode.querySelector('.validation-feedback');
@@ -153,6 +139,47 @@ document.addEventListener('DOMContentLoaded', function() {
             feedback.style.display = 'none';
         }
     }
+
+    // Gestión de productos/servicios como lista (chips)
+    const addProducto = (value) => {
+        const val = (value ?? '').trim();
+        if (!val) return;
+        if (!productosHiddenInputs || !productosChips) return;
+
+        const key = val.toLowerCase();
+        if (productosHiddenInputs.querySelector(`input[data-key="${key}"]`)) {
+            if (productoInput) productoInput.value = '';
+            return;
+        }
+
+        const chip = document.createElement('span');
+        chip.className = 'badge bg-light text-dark border d-flex align-items-center gap-1 px-2 py-2';
+        chip.dataset.key = key;
+        chip.innerHTML = `<span>${val}</span><button type="button" class="btn btn-sm btn-link text-danger p-0" aria-label="Quitar">&times;</button>`;
+
+        const hidden = document.createElement('input');
+        hidden.type = 'hidden';
+        hidden.name = 'productos_servicios[]';
+        hidden.value = val;
+        hidden.dataset.key = key;
+
+        chip.querySelector('button').addEventListener('click', () => {
+            chip.remove();
+            hidden.remove();
+        });
+
+        productosChips.appendChild(chip);
+        productosHiddenInputs.appendChild(hidden);
+        if (productoInput) productoInput.value = '';
+    };
+
+    addProductoBtn?.addEventListener('click', () => addProducto(productoInput?.value));
+    productoInput?.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ',') {
+            e.preventDefault();
+            addProducto(productoInput.value);
+        }
+    });
     
     // Validaciones en tiempo real
     personaSelect.addEventListener('change', function() {
@@ -160,39 +187,6 @@ document.addEventListener('DOMContentLoaded', function() {
             showFieldSuccess(this);
         } else {
             showFieldError(this, 'Debe seleccionar una persona');
-        }
-    });
-    
-    emailComercial.addEventListener('input', function() {
-        const email = this.value.trim();
-        if (!email) {
-            clearFieldError(this);
-        } else if (!isValidEmail(email)) {
-            showFieldError(this, 'Ingrese un email válido');
-        } else {
-            showFieldSuccess(this);
-        }
-    });
-    
-    telefonoComercial.addEventListener('input', function() {
-        const phone = this.value.trim();
-        if (!phone) {
-            clearFieldError(this);
-        } else if (!isValidPhone(phone)) {
-            showFieldError(this, 'Ingrese un teléfono válido');
-        } else {
-            showFieldSuccess(this);
-        }
-    });
-    
-    contactoComercial.addEventListener('input', function() {
-        const contacto = this.value.trim();
-        if (contacto && contacto.length < 2) {
-            showFieldError(this, 'El nombre debe tener al menos 2 caracteres');
-        } else if (contacto) {
-            showFieldSuccess(this);
-        } else {
-            clearFieldError(this);
         }
     });
     
@@ -205,25 +199,15 @@ document.addEventListener('DOMContentLoaded', function() {
             showFieldError(personaSelect, 'Debe seleccionar una persona');
             isValid = false;
         }
-        
-        // Validar email si se ingresó
-        if (emailComercial.value && !isValidEmail(emailComercial.value)) {
-            showFieldError(emailComercial, 'Ingrese un email válido');
-            isValid = false;
-        }
-        
-        // Validar teléfono si se ingresó
-        if (telefonoComercial.value && !isValidPhone(telefonoComercial.value)) {
-            showFieldError(telefonoComercial, 'Ingrese un teléfono válido');
-            isValid = false;
-        }
-        
         return isValid;
     }
     
     // Manejar envío del formulario
     form.addEventListener('submit', function(e) {
         e.preventDefault();
+
+        // Agregar el valor pendiente (si quedó en el input) antes de validar
+        addProducto(productoInput?.value);
         
         if (!validateForm()) {
             Swal.fire({
@@ -327,6 +311,9 @@ document.addEventListener('DOMContentLoaded', function() {
         form.querySelectorAll('.validation-feedback').forEach(feedback => {
             feedback.style.display = 'none';
         });
+        if (productosChips) productosChips.innerHTML = '';
+        if (productosHiddenInputs) productosHiddenInputs.innerHTML = '';
+        if (productoInput) productoInput.value = '';
     });
 });
 </script>
