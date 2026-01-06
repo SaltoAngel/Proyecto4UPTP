@@ -15,7 +15,6 @@
                             <span class="badge bg-dark"><i class="material-icons me-1">qr_code_2</i><span id="modalCodigo">-</span></span>
                             <span id="modalEstadoRegistro" class="badge bg-secondary">-</span>
                             <span class="badge bg-light text-dark"><i class="material-icons me-1">badge</i><span id="modalTipo">-</span></span>
-                            <span class="badge bg-light text-dark"><i class="material-icons me-1">access_time</i><span id="modalFechaActualizacion" class="small">-</span></span>
                         </div>
                     </div>
 
@@ -51,7 +50,6 @@
                                 <div class="mt-3">
                                     <div class="text-muted small"><i class="material-icons me-1">badge</i>Tipo Documento</div>
                                     <div class="d-flex align-items-center gap-2">
-                                        <div id="modalTipoDocumento" class="text-muted"></div>
                                         <span class="badge bg-light text-dark" id="modalTipoDocLeyenda">-</span>
                                     </div>
                                     <div class="text-muted small mt-2"><i class="material-icons me-1">numbers</i>N° Documento</div>
@@ -112,7 +110,7 @@
                                         <div id="modalFechaActualizacion"></div>
                                     </div>
                                     <div class="col-md-4 mb-2">
-                                        <div><i class="material-icons me-1">event_busy</i>Fecha Eliminación</div>
+                                        <div><i class="material-icons me-1">event_busy</i>Fecha Deshabilitación</div>
                                         <div id="modalFechaEliminacion"></div>
                                     </div>
                                 </div>

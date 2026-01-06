@@ -55,6 +55,7 @@ class UsuariosSeeder extends Seeder
             
             // Generar documento único
             $documento = (20000000 + $i);
+            $documentoFormateado = number_format($documento, 0, '', '.');
             
             // Crear persona con la NUEVA estructura
             $personaData = [
@@ -65,7 +66,7 @@ class UsuariosSeeder extends Seeder
                 'razon_social' => null, // Para persona natural, puede ser null
                 'nombre_comercial' => null,
                 'tipo_documento' => 'V',
-                'documento' => $documento,
+                'documento' => $documentoFormateado,
                 'estado' => 'Portuguesa',
                 'municipio' => 'Araure',
                 'parroquia' => 'Araure',
@@ -145,8 +146,7 @@ class UsuariosSeeder extends Seeder
                     'created_at' => now()->subMonths(2),
                     'updated_at' => now(),
                 ]);
-                
-                $this->command->info("Usuario creado: {$u['email']}");
+            
             }
             
             // Asignar rol con Spatie Permission
@@ -156,8 +156,6 @@ class UsuariosSeeder extends Seeder
             }
         }
         
-        $this->command->info('✅ Seeder de usuarios ejecutado exitosamente.');
-        $this->command->info('📧 Usuarios creados: ' . count($usuarios));
-        $this->command->info('🔑 Contraseña por defecto para todos: 12345678');
+
     }
 }

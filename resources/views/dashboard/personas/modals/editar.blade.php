@@ -112,7 +112,7 @@
                                 <i class="material-icons me-1">phone</i>Teléfono Principal<span class="text-danger"> *</span>
                             </label> 
                             <div class="input-group">
-                                <select class="form-select" id="editTelefonoPrefijo" aria-label="Prefijo venezolano">
+                                <select class="form-select" id="editTelefonoPrefijo" aria-label="Prefijo venezolano" style="max-width: 55px;">
                                     <option value="0412">0412</option>
                                     <option value="0414">0414</option>
                                     <option value="0416">0416</option>
@@ -141,7 +141,7 @@
                             </div>
                             <div id="editTelAltWrapper" class="d-none">
                                 <div class="input-group mb-1">
-                                    <select class="form-select" id="editTelefonoAlternativoPrefijo" aria-label="Prefijo alternativo">
+                                    <select class="form-select" id="editTelefonoAlternativoPrefijo" aria-label="Prefijo alternativo" style="max-width: 55px;">
                                         <option value="0412">0412</option>
                                         <option value="0414">0414</option>
                                         <option value="0416">0416</option>
@@ -228,14 +228,14 @@
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="editNumeroPisoApto" class="form-label">
-                                <i class="material-icons me-1">home</i>Número / Piso / Apto
+                                <i class="material-icons me-1">home</i>Número / Piso / Apto <span class="text-danger"> *</span>
                             </label>
                             <input type="text" class="form-control" id="editNumeroPisoApto" name="numero_piso_apto" maxlength="40" autocomplete="off">
                             <div class="form-text text-danger small d-none" id="editNumeroPisoApto-error"></div>
                         </div>
                         <div class="col-md-6">
                             <label for="editUrbanizacionSector" class="form-label">
-                                <i class="material-icons me-1">holiday_village</i>Urbanización / Sector
+                                <i class="material-icons me-1">holiday_village</i>Urbanización / Sector <span class="text-danger"> *</span>
                             </label>
                             <input type="text" class="form-control" id="editUrbanizacionSector" name="urbanizacion_sector" maxlength="120" autocomplete="off">
                             <div class="form-text text-danger small d-none" id="editUrbanizacionSector-error"></div>
@@ -481,6 +481,15 @@ document.addEventListener('DOMContentLoaded', async function() {
     const onlyLetters = (val) => /^[a-zA-ZÀ-ÿ\s.'-]+$/.test(val);
     const onlyAlnum = (val) => /^[a-zA-Z0-9À-ÿ\s.'-]+$/.test(val);
     const onlyDigits = (val) => /^\d+$/.test(val);
+    const digitsOnly = (val = '') => String(val || '').replace(/\D/g, '');
+    const formatDocumento = (input) => {
+        if (!input) return;
+        input.addEventListener('input', () => {
+            const digits = digitsOnly(input.value).slice(0, input.maxLength || 20);
+            const formatted = digits.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            input.value = formatted;
+        });
+    };
     const validEmail = (val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
 
     const validateNombre = () => {
@@ -514,10 +523,9 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     const validateDocumento = () => {
         if (!docInput) return;
-        const v = docInput.value.trim();
-        if (!v) return showError(docInput, 'Ingresa el documento');
-        if (!onlyDigits(v)) return showError(docInput, 'Solo números');
-        if (v.length < 6 || v.length > docInput.maxLength) return showError(docInput, `Entre 6 y ${docInput.maxLength} dígitos`);
+        const digits = digitsOnly(docInput.value);
+        if (!digits) return showError(docInput, 'Ingresa el documento');
+        if (digits.length < 6 || digits.length > docInput.maxLength) return showError(docInput, `Entre 6 y ${docInput.maxLength} dígitos`);
         showSuccess(docInput);
     };
 
@@ -611,7 +619,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     blockInvalidChars(apellidosInput, /[a-zA-ZÀ-ÿ\s.'-]/g);
     blockInvalidChars(razonInput, /[a-zA-Z0-9À-ÿ\s.'-]/g);
     blockInvalidChars(comercialInput, /[a-zA-Z0-9À-ÿ\s.'-]/g);
-    blockInvalidChars(docInput, /[0-9]/g);
+    formatDocumento(docInput);
     blockInvalidChars(telInput, /[0-9]/g);
     blockInvalidChars(telAltInput, /[0-9]/g);
     blockInvalidChars(nombreViaInput, /[a-zA-Z0-9À-ÿ\s.'-]/g);
@@ -704,6 +712,10 @@ document.addEventListener('DOMContentLoaded', async function() {
             return;
         }
 
+        if (docInput) {
+            docInput.value = digitsOnly(docInput.value);
+        }
+
         if (telInput && telPrefijo) {
             telInput.value = `${telPrefijo.value}${telInput.value}`;
         }
@@ -736,7 +748,10 @@ document.addEventListener('DOMContentLoaded', async function() {
         if (razonInput) razonInput.value = persona.razon_social || '';
         if (comercialInput) comercialInput.value = persona.nombre_comercial || '';
         if (tipoDocSelect) tipoDocSelect.value = persona.tipo_documento || '';
-        if (docInput) docInput.value = (persona.documento || '').replace(/\D/g, '').slice(0, docInput.maxLength);
+        if (docInput) {
+            const digits = digitsOnly(persona.documento || '').slice(0, docInput.maxLength);
+            docInput.value = digits.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        }
         if (emailInput) emailInput.value = persona.email || '';
         if (tipoViaSelect) tipoViaSelect.value = persona.tipo_via || '';
         if (nombreViaInput) nombreViaInput.value = persona.nombre_via || '';
