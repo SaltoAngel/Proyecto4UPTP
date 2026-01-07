@@ -258,6 +258,7 @@
         .timeline-content p {
             overflow-wrap: break-word;
             word-wrap: break-word;
+            text-align: justify;
         }
         
         .timeline-year {
@@ -325,6 +326,83 @@
         .value-card p {
             overflow-wrap: break-word;
             word-wrap: break-word;
+        }
+        
+        /* SECCIÓN DE MISIÓN Y VISIÓN */
+        .mission-vision-section {
+            padding: 80px 0;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+        
+        .mission-vision-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        
+        .mission-box, .vision-box {
+            flex: 1;
+            min-width: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 50px 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .mission-box:hover, .vision-box:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .mission-box h3, .vision-box h3 {
+            font-size: 2.2rem;
+            margin-bottom: 25px;
+            color: white;
+            text-align: center;
+            position: relative;
+            padding-bottom: 15px;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+        }
+        
+        .mission-box h3:after, .vision-box h3:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: var(--accent-color);
+            border-radius: 2px;
+        }
+        
+        .mission-box p, .vision-box p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            text-align: justify;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+        }
+        
+        .mission-icon, .vision-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            font-size: 2.5rem;
+            color: white;
         }
         
         /* Equipo */
@@ -417,34 +495,6 @@
         .member-social a:hover {
             background-color: var(--primary-color);
             color: white;
-        }
-        
-        /* Estadísticas */
-        .stats-section {
-            padding: 80px 0;
-            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
-            color: white;
-            text-align: center;
-        }
-        
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px;
-        }
-        
-        .stat-item h3 {
-            font-size: 3rem;
-            margin-bottom: 10px;
-            overflow-wrap: break-word;
-            word-wrap: break-word;
-        }
-        
-        .stat-item p {
-            font-size: 1.1rem;
-            opacity: 0.9;
-            overflow-wrap: break-word;
-            word-wrap: break-word;
         }
         
         /* Certificaciones */
@@ -621,8 +671,8 @@
             
             .history-section,
             .values-section,
+            .mission-vision-section,
             .team-section,
-            .stats-section,
             .certifications,
             .cta {
                 padding: 70px 0;
@@ -644,6 +694,18 @@
             
             .value-card {
                 padding: 30px 25px;
+            }
+            
+            .mission-box, .vision-box {
+                padding: 40px 30px;
+            }
+            
+            .mission-box h3, .vision-box h3 {
+                font-size: 2rem;
+            }
+            
+            .mission-box p, .vision-box p {
+                font-size: 1.15rem;
             }
             
             .cta h2 {
@@ -678,14 +740,14 @@
                 margin-right: 0;
             }
             
+            .mission-vision-container {
+                gap: 30px;
+            }
+            
             .values-grid,
             .team-grid {
                 grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
                 gap: 25px;
-            }
-            
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
             }
             
             .cert-grid {
@@ -761,8 +823,8 @@
             
             .history-section,
             .values-section,
+            .mission-vision-section,
             .team-section,
-            .stats-section,
             .certifications,
             .cta {
                 padding: 60px 0;
@@ -803,6 +865,22 @@
                 font-size: 1.3rem;
             }
             
+            .mission-vision-container {
+                flex-direction: column;
+            }
+            
+            .mission-box, .vision-box {
+                min-width: 100%;
+            }
+            
+            .mission-box h3, .vision-box h3 {
+                font-size: 1.8rem;
+            }
+            
+            .mission-box p, .vision-box p {
+                font-size: 1.1rem;
+            }
+            
             .values-grid,
             .team-grid {
                 grid-template-columns: 1fr;
@@ -821,15 +899,6 @@
             
             .member-image {
                 height: 220px;
-            }
-            
-            .stats-grid {
-                grid-template-columns: 1fr;
-                gap: 25px;
-            }
-            
-            .stat-item h3 {
-                font-size: 2.5rem;
             }
             
             .cert-grid {
@@ -885,8 +954,8 @@
             
             .history-section,
             .values-section,
+            .mission-vision-section,
             .team-section,
-            .stats-section,
             .certifications,
             .cta {
                 padding: 50px 0;
@@ -923,6 +992,26 @@
                 font-size: 0.95rem;
             }
             
+            .mission-box, .vision-box {
+                padding: 30px 25px;
+            }
+            
+            .mission-box h3, .vision-box h3 {
+                font-size: 1.6rem;
+                margin-bottom: 20px;
+            }
+            
+            .mission-box p, .vision-box p {
+                font-size: 1rem;
+            }
+            
+            .mission-icon, .vision-icon {
+                width: 70px;
+                height: 70px;
+                font-size: 2rem;
+                margin-bottom: 20px;
+            }
+            
             .value-card h3 {
                 font-size: 1.3rem;
             }
@@ -933,14 +1022,6 @@
             
             .member-info p {
                 font-size: 0.95rem;
-            }
-            
-            .stat-item h3 {
-                font-size: 2rem;
-            }
-            
-            .stat-item p {
-                font-size: 1rem;
             }
             
             .cta h2 {
@@ -1004,6 +1085,18 @@
             
             .timeline-content p {
                 font-size: 0.9rem;
+            }
+            
+            .mission-box, .vision-box {
+                padding: 25px 20px;
+            }
+            
+            .mission-box h3, .vision-box h3 {
+                font-size: 1.5rem;
+            }
+            
+            .mission-box p, .vision-box p {
+                font-size: 0.95rem;
             }
             
             .value-icon {
@@ -1089,6 +1182,24 @@
                 width: 100%;
             }
             
+            .mission-box, .vision-box {
+                padding: 20px 15px;
+            }
+            
+            .mission-box h3, .vision-box h3 {
+                font-size: 1.4rem;
+            }
+            
+            .mission-box p, .vision-box p {
+                font-size: 0.9rem;
+            }
+            
+            .mission-icon, .vision-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 1.8rem;
+            }
+            
             .value-card {
                 padding: 20px 15px;
             }
@@ -1109,10 +1220,6 @@
             
             .member-image {
                 height: 180px;
-            }
-            
-            .stat-item h3 {
-                font-size: 1.8rem;
             }
             
             .cert-grid {
@@ -1151,13 +1258,21 @@
             
             .history-section,
             .values-section,
-            .team-section,
-            .stats-section {
+            .mission-vision-section,
+            .team-section {
                 padding: 40px 0;
             }
             
             .timeline-item {
                 margin-bottom: 30px;
+            }
+            
+            .mission-vision-container {
+                flex-direction: row;
+            }
+            
+            .mission-box, .vision-box {
+                min-width: 45%;
             }
             
             .values-grid,
@@ -1197,6 +1312,7 @@
                 <ul class="nav-links">
                     <li><a href="index2.html" >Inicio</a></li>
                     <li><a href="servicios.html">Servicios</a></li>
+                    <li><a href="productos.html">Productos</a></li>
                     <li><a href="nosotros.html"class="active">Nosotros</a></li>
                     <li><a href="contacto.html">Contacto</a></li>
                 </ul>
@@ -1232,50 +1348,26 @@
             
             <div class="history-timeline">
                 <div class="timeline-item">
-                    <div class="timeline-year">1990</div>
+                    <div class="timeline-year">2024</div>
                     <div class="timeline-content">
                         <h3>Fundación</h3>
-                        <p>Nacimos como una pequeña empresa familiar en el Valle del Sol, con la visión de proveer alimentos de calidad para animales de granja en nuestra región.</p>
+                        <p>Nacimos como una pequeña empresa familiar el 26 de octubre del año 2024 desde la iniciativa de dos hermanos apoyados por su padre. Lo que comenzaría como un sueño compartido, pronto se transformó en un proyecto lleno de dedicación y visión.</p>
                     </div>
                 </div>
                 
                 <div class="timeline-item">
-                    <div class="timeline-year">1998</div>
+                    <div class="timeline-year">2024</div>
                     <div class="timeline-content">
-                        <h3>Primera expansión</h3>
-                        <p>Ampliamos nuestras instalaciones y comenzamos a distribuir a nivel regional, incorporando nuevas líneas de productos para diferentes especies animales.</p>
+                        <h3>Inversión</h3>
+                        <p>iniciamos con una venta de 5 a 10 sacos semanales, alcanzando en poco tiempo una incrementación de 150 a 250 sacos semanales, siendo el equivalente mensual de una gandola. Este crecimiento fue impulsado por la calidad constante de nuestro alimento y la fidelidad de una clientela que, mediante recomendación, amplió de forma organica nuestra base de consumidores.</p>
                     </div>
                 </div>
                 
                 <div class="timeline-item">
-                    <div class="timeline-year">2005</div>
+                    <div class="timeline-year">2025</div>
                     <div class="timeline-content">
-                        <h3>Certificación de calidad</h3>
-                        <p>Obtuvimos nuestra primera certificación internacional de calidad, lo que nos permitió expandirnos a mercados más exigentes y mejorar nuestros procesos.</p>
-                    </div>
-                </div>
-                
-                <div class="timeline-item">
-                    <div class="timeline-year">2012</div>
-                    <div class="timeline-content">
-                        <h3>Tecnología e innovación</h3>
-                        <p>Invertimos en tecnología de punta para nuestros procesos de producción y desarrollamos nuestro departamento de investigación y desarrollo.</p>
-                    </div>
-                </div>
-                
-                <div class="timeline-item">
-                    <div class="timeline-year">2020</div>
-                    <div class="timeline-content">
-                        <h3>Cobertura nacional</h3>
-                        <p>Completamos nuestra red de distribución a nivel nacional, llegando a todas las regiones del país con productos de máxima calidad.</p>
-                    </div>
-                </div>
-                
-                <div class="timeline-item">
-                    <div class="timeline-year">2023</div>
-                    <div class="timeline-content">
-                        <h3>Compromiso sostenible</h3>
-                        <p>Implementamos nuestro programa de sostenibilidad, reduciendo nuestra huella ambiental y mejorando las prácticas de bienestar animal.</p>
+                        <h3>Inicio de ventas</h3>
+                        <p>Al comienzo se inicio con la venta de 5 a 10 sacos semanal y poco a poco se fueron incrementando las ventas de 150 a 250 sacos semanales siendo este el equivalente a una gandola de alimento mensual. Gracias al vender un alimento de calida y por nuestra clientela fiel que nos recomendaba a más gente. </p>
                     </div>
                 </div>
             </div>
@@ -1326,33 +1418,24 @@
         </div>
     </section>
 
-    <!-- Estadísticas -->
-    <section class="stats-section">
+    <!-- SECCIÓN DE MISIÓN Y VISIÓN -->
+    <section class="mission-vision-section">
         <div class="container">
-            <div class="section-title" style="color: white;">
-                <h2>En números</h2>
-                <p>Resultados que respaldan nuestra experiencia y compromiso</p>
-            </div>
-            
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <h3>30+</h3>
-                    <p>Años de experiencia</p>
+            <div class="mission-vision-container">
+                <div class="mission-box">
+                    <div class="mission-icon">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <h3>Misión</h3>
+                    <p>Producir y distribuir alimentos balanceados de la más alta calidad para animales de granja, contribuyendo al crecimiento y desarrollo del sector agropecuario nacional. Nos comprometemos a ofrecer soluciones nutricionales innovadoras que maximicen el potencial de nuestros clientes, garantizando el bienestar animal y promoviendo prácticas sostenibles en toda nuestra cadena de valor.</p>
                 </div>
                 
-                <div class="stat-item">
-                    <h3>500+</h3>
-                    <p>Clientes satisfechos</p>
-                </div>
-                
-                <div class="stat-item">
-                    <h3>50+</h3>
-                    <p>Productos especializados</p>
-                </div>
-                
-                <div class="stat-item">
-                    <h3>24/7</h3>
-                    <p>Soporte al cliente</p>
+                <div class="vision-box">
+                    <div class="vision-icon">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <h3>Visión</h3>
+                    <p>Ser la empresa líder en nutrición animal a nivel nacional, reconocida por nuestra excelencia, innovación y compromiso con el desarrollo sostenible del sector agropecuario. Aspiramos a expandir nuestra presencia internacionalmente, manteniendo siempre los más altos estándares de calidad y servicio, mientras contribuimos a la seguridad alimentaria y al progreso de las comunidades donde operamos.</p>
                 </div>
             </div>
         </div>
@@ -1413,37 +1496,6 @@
             </div>
         </div>
     </section>
-
-    <!-- Certificaciones 
-    <section class="certifications">
-        <div class="container">
-            <div class="section-title">
-                <h2>Certificaciones y Reconocimientos</h2>
-                <p>Avales que respaldan nuestra calidad y compromiso con la excelencia</p>
-            </div>
-            
-            <div class="cert-grid">
-                <div class="cert-item">
-                    <i class="fas fa-award" style="font-size: 4rem; color: var(--primary-color);"></i>
-                </div>
-                <div class="cert-item">
-                    <i class="fas fa-certificate" style="font-size: 4rem; color: var(--primary-color);"></i>
-                </div>
-                <div class="cert-item">
-                    <i class="fas fa-shield-alt" style="font-size: 4rem; color: var(--primary-color);"></i>
-                </div>
-                <div class="cert-item">
-                    <i class="fas fa-leaf" style="font-size: 4rem; color: var(--primary-color);"></i>
-                </div>
-                <div class="cert-item">
-                    <i class="fas fa-globe-americas" style="font-size: 4rem; color: var(--primary-color);"></i>
-                </div>
-                <div class="cert-item">
-                    <i class="fas fa-star" style="font-size: 4rem; color: var(--primary-color);"></i>
-                </div>
-            </div>
-        </div>
-    </section>-->
 
     <!-- CTA Section -->
     <section class="cta">
@@ -1579,39 +1631,8 @@
             });
         });
         
-        // Animación de contadores
-        const statItems = document.querySelectorAll('.stat-item h3');
-        const statsSection = document.querySelector('.stats-section');
-        
-        function animateCounters() {
-            statItems.forEach(item => {
-                const target = parseInt(item.textContent);
-                let current = 0;
-                const increment = target / 100;
-                const timer = setInterval(() => {
-                    current += increment;
-                    if(current >= target) {
-                        current = target;
-                        clearInterval(timer);
-                    }
-                    item.textContent = Math.floor(current) + (item.textContent.includes('+') ? '+' : '');
-                }, 20);
-            });
-        }
-        
-        // Observador para animar contadores cuando sean visibles
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if(entry.isIntersecting) {
-                    animateCounters();
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.5 });
-        
-        if(statsSection) {
-            observer.observe(statsSection);
-        }
+        // Eliminé la animación de contadores que ya no existe
+        // La sección de estadísticas fue reemplazada por Misión y Visión
     </script>
 </body>
 </html>
