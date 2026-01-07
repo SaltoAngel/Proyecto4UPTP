@@ -539,11 +539,22 @@
                         'Accept': 'application/json'
                     }
                 })
-                .then(response => response.json())
-                .then(data => {
+                .then(async (response) => {
+                    const contentType = response.headers.get('content-type') || '';
+                    let data = null;
+                    if (contentType.includes('application/json')) {
+                        try { data = await response.json(); } catch (_) { data = null; }
+                    }
+
                     setLoading(false);
                     
-                    if (data.success || data.status) {
+                    // Éxito si:
+                    // - Respuesta JSON con success/status
+                    // - O respuesta no JSON pero HTTP ok/redirect (Laravel redirige con session('status'))
+                    const isJsonSuccess = data && (data.success || data.status || data.message);
+                    const isHttpSuccess = response.ok || response.status === 302 || response.redirected;
+
+                    if (isJsonSuccess || isHttpSuccess) {
                         Swal.fire({
                             icon: 'success',
                             title: '¡Enlace enviado!',
@@ -558,9 +569,11 @@
                     } else {
                         let errorMessage = 'No pudimos enviar el enlace';
                         
-                        if (data.errors && data.errors.email) {
+                        if (response.status === 429) {
+                            errorMessage = 'Has realizado demasiados intentos. Inténtalo nuevamente en unos minutos.';
+                        } else if (data && data.errors && data.errors.email) {
                             errorMessage = 'Verifica que el correo esté registrado en el sistema';
-                        } else if (data.message) {
+                        } else if (data && data.message) {
                             errorMessage = data.message;
                         }
                         
