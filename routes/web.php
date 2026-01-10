@@ -11,14 +11,21 @@ use App\Http\Controllers\dashboard\SettingsController;
 use App\Http\Controllers\dashboard\DashboardController;
 use App\Http\Controllers\dashboard\RecepcionesController;
 use App\Http\Controllers\dashboard\OrdenesCompraController;
+//rutas del home
+use App\Http\Controllers\h_homeController;
+use App\Http\Controllers\h_ServiciosController;
+use App\Http\Controllers\serviciosController;
+use App\Http\Controllers\ProductosController;
+use App\Http\Controllers\NosotrosController;
+use App\Http\Controllers\ContactoController;
 
-Route::get('/', function () {
-    return Auth::check() ? redirect('/dashboard') : view('welcome');
-});
-
+Route::get('/', [h_homeController::class, 'index'])->name('Homepage.index');
+Route::get('/servicios', [serviciosController::class, 'index'])->name('servicios');
+Route::get('/productos', [ProductosController::class, 'index'])->name('productos');
+Route::get('/nosotros', [NosotrosController::class, 'index'])->name('nosotros');
+Route::get('/contacto', [ContactoController::class, 'index'])->name('contacto');
+Route::post('/contacto', [ContactoController::class, 'enviar'])->name('contacto.enviar');
 Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 // Dashboard principal (Material)
 Route::get('/dashboard', [DashboardController::class, 'index'])
