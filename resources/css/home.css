@@ -367,6 +367,7 @@
             margin: 0 auto;
             overflow-wrap: break-word;
             word-wrap: break-word;
+            text-align: justify;
         }
         
         .services-grid {
