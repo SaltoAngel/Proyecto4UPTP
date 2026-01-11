@@ -59,6 +59,9 @@ Route::middleware([\App\Http\Middleware\Authenticate::class])
         ]);
 
         // CRUD básico
+        Route::get('/test-roles', function() {
+        return view('dashboard.roles.index');
+        });
         Route::resource('roles', \App\Http\Controllers\Dashboard\RoleController::class);
         // Rutas adicionales para permisos
         Route::get('roles/{role}/assign-permissions', [\App\Http\Controllers\Dashboard\RoleController::class, 'assignPermissions'])
