@@ -11,6 +11,7 @@ use App\Http\Controllers\dashboard\SettingsController;
 use App\Http\Controllers\dashboard\DashboardController;
 use App\Http\Controllers\dashboard\RecepcionesController;
 use App\Http\Controllers\dashboard\OrdenesCompraController;
+use App\Http\Controllers\dashboard\RoleController;
 
 Route::get('/', function () {
     return Auth::check() ? redirect('/dashboard') : view('welcome');
@@ -37,6 +38,7 @@ Route::get('/geo/ve.json', function () {
     ]);
 })->name('geo.ve');
 
+
 // Panel Administrativo
 Route::middleware([\App\Http\Middleware\Authenticate::class])
     ->prefix('dashboard')
@@ -55,6 +57,18 @@ Route::middleware([\App\Http\Middleware\Authenticate::class])
         Route::resource('proveedores', ProveedoresController::class)->parameters([
             'proveedores' => 'proveedor'
         ]);
+
+        // Gestión de Roles
+        Route::prefix('dashboard')->name('dashboard.')->group(function () {
+        // CRUD básico
+        Route::resource('roles', \App\Http\Controllers\Dashboard\RoleController::class);
+        // Rutas adicionales para permisos
+        Route::get('roles/{role}/assign-permissions', [\App\Http\Controllers\Dashboard\RoleController::class, 'assignPermissions'])
+        ->name('roles.assign-permissions');
+        Route::post('roles/{role}/update-permissions', [\App\Http\Controllers\Dashboard\RoleController::class, 'updatePermissions'])
+        ->name('roles.update-permissions');
+        });
+
         Route::post('proveedores/buscar', [ProveedoresController::class, 'buscar'])->name('proveedores.buscar');
         Route::post('proveedores/{id}/restore', [ProveedoresController::class, 'restore'])->name('proveedores.restore');
 

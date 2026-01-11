@@ -47,7 +47,13 @@ class SpatieRolesPermissionsSeeder extends Seeder
             // Reportes
             'view reports',
             'generate reports',
-            
+
+            // Permisos para gestión de roles
+            'view roles',
+            'create roles',
+            'edit roles',
+            'delete roles',
+
             // Configuración
             'manage settings',
         ];
@@ -68,6 +74,13 @@ class SpatieRolesPermissionsSeeder extends Seeder
         ]);
         $superAdmin->givePermissionTo(Permission::all());
 
+        // 1. ADMIN - Acceso total al sistema
+        $admin = Role::firstOrCreate([
+            'name' => 'administrador',
+            'guard_name' => 'web'
+        ]);
+        $admin->givePermissionTo(Permission::all());
+
         // 2. SUPERVISOR - Gestión completa de operaciones
         $supervisor = Role::firstOrCreate([
             'name' => 'supervisor',
@@ -82,7 +95,7 @@ class SpatieRolesPermissionsSeeder extends Seeder
             'view reports', 'generate reports',
         ]);
 
-        // 3. COORDINADOR - Coordinación de recursos
+        // 3. COORDINADOR
         $coordinador = Role::firstOrCreate([
             'name' => 'coordinador',
             'guard_name' => 'web'
@@ -105,19 +118,6 @@ class SpatieRolesPermissionsSeeder extends Seeder
             'view materia_prima', 'create materia_prima', 'edit materia_prima',
             'view proveedores',
         ]);
-
-        // 5. CLIENT - Acceso limitado de consulta
-        $client = Role::firstOrCreate([
-            'name' => 'client',
-            'guard_name' => 'web'
-        ]);
-        $client->givePermissionTo([
-            'view dashboard',
-            'view proveedores',
-            'view materia_prima',
-            'view repuestos',
-        ]);
-
         // ========== ASIGNAR ROLES A USUARIOS ==========
         
         // Asignar superadmin al primer usuario
@@ -129,6 +129,13 @@ class SpatieRolesPermissionsSeeder extends Seeder
         if ($adminUser) {
             $adminUser->assignRole('superadmin');
             $this->command->info("✅ Rol superadmin asignado a: {$adminUser->email}");
+        }
+
+        // Asignar administrador
+        $administrador = User::whereIn('email', ['administrador@uptp.com'])->get();
+        foreach ($administrador as $administradorUser) {
+            $administradorUser->assignRole('administrador');
+            $this->command->info("✅ Rol administrador asignado a: {$administradorUser->email}");
         }
 
         // Asignar supervisores
@@ -152,8 +159,8 @@ class SpatieRolesPermissionsSeeder extends Seeder
             $this->command->info("✅ Rol nutricionista asignado a: {$nutricionistaUser->email}");
         }
 
-        $this->command->info('✅ Roles y permisos de Spatie creados correctamente.');
-        $this->command->info('📊 Resumen:');
+        $this->command->info('Roles y permisos de Spatie creados correctamente.');
+        $this->command->info('Resumen:');
         $this->command->info('   - ' . Role::count() . ' roles creados');
         $this->command->info('   - ' . Permission::count() . ' permisos creados');
     }
