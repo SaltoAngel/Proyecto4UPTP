@@ -15,8 +15,8 @@
     <section class="contact-section">
         <div class="container">
             <div class="section-title">
-                <h2>Ponte en Contacto</h2>
-                <p>Tenemos múltiples canales para atenderte y responder tus preguntas sobre nuestros productos y servicios</p>
+                <h2>Ponte en contacto</h2>
+                <p>Desde aquí podremos atenderte y responder tus preguntas sobre nuestros productos y servicios</p>
             </div>
             
             <div class="contact-container">
@@ -68,7 +68,7 @@
                 <div class="contact-form-container" id="formulario">
                     <div class="form-header">
                         <h3>Envíanos un mensaje</h3>
-                        <p>Completa el formulario y nos pondremos en contacto contigo en menos de 24 horas.</p>
+                        <p>Completa el formulario y nos pondremos en contacto.</p>
                     </div>
                     
                     <form class="contact-form" id="contactForm" action="{{ route('contacto.enviar') }}" method="POST">
