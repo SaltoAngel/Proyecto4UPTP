@@ -58,8 +58,6 @@ Route::middleware([\App\Http\Middleware\Authenticate::class])
             'proveedores' => 'proveedor'
         ]);
 
-        // Gestión de Roles
-        Route::prefix('dashboard')->name('dashboard.')->group(function () {
         // CRUD básico
         Route::resource('roles', \App\Http\Controllers\Dashboard\RoleController::class);
         // Rutas adicionales para permisos
@@ -67,7 +65,6 @@ Route::middleware([\App\Http\Middleware\Authenticate::class])
         ->name('roles.assign-permissions');
         Route::post('roles/{role}/update-permissions', [\App\Http\Controllers\Dashboard\RoleController::class, 'updatePermissions'])
         ->name('roles.update-permissions');
-        });
 
         Route::post('proveedores/buscar', [ProveedoresController::class, 'buscar'])->name('proveedores.buscar');
         Route::post('proveedores/{id}/restore', [ProveedoresController::class, 'restore'])->name('proveedores.restore');
