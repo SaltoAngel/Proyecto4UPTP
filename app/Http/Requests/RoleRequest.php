@@ -3,41 +3,32 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
+use App\Models\Role;
 
-class RoleRequest extends FormRequest
+class RolePermissionRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return auth()->check() && auth()->user()->can('create roles');
+        $roleId = $this->route('role');
+
+        // Si es 0 (nuevo), se permite si tiene permiso de editar roles
+        if ($roleId == 0) {
+            return auth()->check() && auth()->user()->can('edit roles');
+        }
+
+        // Si existe, buscamos el modelo para verificar si está protegido
+        $role = Role::withTrashed()->find($roleId);
+        
+        return auth()->check() && 
+               auth()->user()->can('edit roles') && 
+               ($role && !$role->isProtectedRole());
     }
 
     public function rules(): array
     {
         return [
-            'name' => [
-                'required',
-                'string',
-                'max:100',
-                'regex:/^[a-z]',
-                Rule::unique('roles', 'name')->where('guard_name', 'web')
-            ]
+            'permissions' => 'required|array|min:1',
+            'permissions.*' => 'required|integer|exists:permissions,id'
         ];
-    }
-
-    public function messages(): array
-    {
-        return [
-            'name.required' => 'El nombre del rol es obligatorio.',
-            'name.regex' => 'Este campo no admite caracteres especiales, ni numéricos',
-            'name.unique' => 'Ya existe un rol con este nombre.',
-        ];
-    }
-
-    protected function prepareForValidation(): void
-    {
-        $this->merge([
-            'name' => strtolower(trim($this->name))
-        ]);
     }
 }
