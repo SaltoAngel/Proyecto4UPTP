@@ -18,6 +18,12 @@ class SpatieRolesPermissionsSeeder extends Seeder
         $permissions = [
             // Dashboard
             'view dashboard',
+
+            // Personas
+            'view personas',
+            'create personas',
+            'edit personas',
+            'delete personas',
             
             // Proveedores
             'view proveedores',
