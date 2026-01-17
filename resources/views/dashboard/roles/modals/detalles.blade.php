@@ -19,7 +19,7 @@
                             </div>
                             <div class="col-4 text-end">
                                 @if(!$role->isProtectedRole())
-                                <a href="{{ route('dashboard.roles.assign-permissions', $role) }}" 
+                                <a href="{{ route('dashboard.roles.asignar_permiso', $role) }}" 
                                    class="btn btn-sm btn-warning mb-0">
                                     <i class="material-icons text-sm">key</i> Editar Permisos
                                 </a>

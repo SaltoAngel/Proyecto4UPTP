@@ -80,7 +80,7 @@
                                 <div class="card-body p-3">
                                     <h6 class="mb-2">Opciones disponibles:</h6>
                                     <div class="list-group list-group-flush">
-                                        <a href="{{ route('dashboard.roles.assign-permissions', $role) }}" 
+                                        <a href="{{ route('dashboard.roles.modals.asignarpermiso', $role) }}" 
                                            class="list-group-item list-group-item-action border-0 px-0 py-2">
                                             <div class="d-flex align-items-center">
                                                 <i class="material-icons text-primary me-3">key</i>
