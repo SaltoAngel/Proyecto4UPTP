@@ -58,15 +58,18 @@ Route::middleware([\App\Http\Middleware\Authenticate::class])
             'proveedores' => 'proveedor'
         ]);
 
-        // CRUD básico
-        Route::get('/test-roles', function() {
+    // RUTAS DE ROLES Y PERMISOS
+    Route::get('/test-roles', function () {
         return view('dashboard.roles.index');
-        });
-        Route::resource('roles', \App\Http\Controllers\Dashboard\RoleController::class);
-        // Rutas adicionales para permisos
-        Route::get('roles/{role}/assign-permissions', [\App\Http\Controllers\Dashboard\RoleController::class, 'assignPermissions'])
+    });
+
+    //Ruta para volver a habilitar el rol
+    Route::post('roles/{id}/restore', [\App\Http\Controllers\Dashboard\RoleController::class, 'restore'])
+        ->name('roles.restore');
+    Route::resource('roles', \App\Http\Controllers\Dashboard\RoleController::class);
+    Route::get('roles/{role}/assign-permissions', [\App\Http\Controllers\Dashboard\RoleController::class, 'assignPermissions'])
         ->name('roles.assign-permissions');
-        Route::post('roles/{role}/update-permissions', [\App\Http\Controllers\Dashboard\RoleController::class, 'updatePermissions'])
+    Route::post('roles/{role}/update-permissions', [\App\Http\Controllers\Dashboard\RoleController::class, 'updatePermissions'])
         ->name('roles.update-permissions');
 
         Route::post('proveedores/buscar', [ProveedoresController::class, 'buscar'])->name('proveedores.buscar');
