@@ -69,6 +69,10 @@ Route::middleware([\App\Http\Middleware\Authenticate::class])
             'proveedores' => 'proveedor'
         ]);
 
+        // Animales (tipos por especie + requerimientos)
+        Route::resource('animales', \App\Http\Controllers\dashboard\AnimalesController::class)
+            ->only(['index', 'store']);
+
     // RUTAS DE ROLES Y PERMISOS
     Route::get('/test-roles', function () {
         return view('dashboard.roles.index');

@@ -95,13 +95,13 @@ class DictionaryController extends Controller
         $headerStyle = [
             'bold' => true, 
             'color' => '000000',
-            'size' => 11,
+            'size' => 10,
             'name' => 'Arial'
         ];
         
         // Estilo para texto normal
         $normalStyle = [
-            'size' => 11,
+            'size' => 10,
             'name' => 'Arial'
         ];
         
@@ -110,7 +110,7 @@ class DictionaryController extends Controller
             'bold' => true,
             'color' => '006600',
             'bgColor' => 'c1f0c8',
-            'size' => 11
+            'size' => 10
         ];
         
         // Estilo para FK
@@ -118,7 +118,7 @@ class DictionaryController extends Controller
             'bold' => true,
             'color' => '0000CC',
             'bgColor' => 'c1f0c8',
-            'size' => 11
+            'size' => 10
         ];
         
         // Estilo para tabla
