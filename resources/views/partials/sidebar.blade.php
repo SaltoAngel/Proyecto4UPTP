@@ -248,6 +248,9 @@
                 <span class="nav-link-text">Debug</span>
             </a>
         </li>
+        <a href="{{ url('/generate-dictionary') }}" class="btn btn-primary">
+            <i class="fas fa-file-word"></i> Generar Diccionario Word
+        </a>
     </ul>
     </div>
 </aside>

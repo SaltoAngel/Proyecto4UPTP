@@ -12,7 +12,7 @@ use App\Http\Controllers\dashboard\DashboardController;
 use App\Http\Controllers\dashboard\RecepcionesController;
 use App\Http\Controllers\dashboard\OrdenesCompraController;
 use App\Http\Controllers\dashboard\RoleController;
-
+use App\Http\Controllers\DictionaryController;
 
 //rutas del home
 use App\Http\Controllers\h_homeController;
@@ -36,6 +36,7 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware([\App\Http\Middleware\Authenticate::class])
     ->name('dashboard');
 
+    Route::get('/generate-dictionary', [DictionaryController::class, 'generateWord']);
 
 
 // GeoJSON público para el mapa de Venezuela
@@ -201,5 +202,7 @@ Route::get('/test-jasper-command', function() {
             'trace' => $e->getTraceAsString()
         ], 500);
     }
+
+    
 });
 
