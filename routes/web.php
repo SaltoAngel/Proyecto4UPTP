@@ -11,6 +11,7 @@ use App\Http\Controllers\dashboard\SettingsController;
 use App\Http\Controllers\dashboard\DashboardController;
 use App\Http\Controllers\dashboard\RecepcionesController;
 use App\Http\Controllers\dashboard\OrdenesCompraController;
+use App\Http\Controllers\dashboard\RoleController;
 //rutas del home
 use App\Http\Controllers\h_homeController;
 use App\Http\Controllers\h_ServiciosController;
@@ -25,6 +26,12 @@ Route::get('/productos', [ProductosController::class, 'index'])->name('productos
 Route::get('/nosotros', [NosotrosController::class, 'index'])->name('nosotros');
 Route::get('/contacto', [ContactoController::class, 'index'])->name('contacto');
 Route::post('/contacto', [ContactoController::class, 'enviar'])->name('contacto.enviar');
+
+
+Route::get('/', function () {
+    return Auth::check() ? redirect('/dashboard') : view('welcome');
+});
+
 Auth::routes();
 
 // Dashboard principal (Material)
@@ -44,6 +51,7 @@ Route::get('/geo/ve.json', function () {
     ]);
 })->name('geo.ve');
 
+
 // Panel Administrativo
 Route::middleware([\App\Http\Middleware\Authenticate::class])
     ->prefix('dashboard')
@@ -62,6 +70,21 @@ Route::middleware([\App\Http\Middleware\Authenticate::class])
         Route::resource('proveedores', ProveedoresController::class)->parameters([
             'proveedores' => 'proveedor'
         ]);
+
+    // RUTAS DE ROLES Y PERMISOS
+    Route::get('/test-roles', function () {
+        return view('dashboard.roles.index');
+    });
+
+    //Ruta para volver a habilitar el rol
+    Route::post('roles/{id}/restore', [\App\Http\Controllers\Dashboard\RoleController::class, 'restore'])
+        ->name('roles.restore');
+    Route::resource('roles', \App\Http\Controllers\Dashboard\RoleController::class);
+    Route::get('roles/{role}/assign-permissions', [\App\Http\Controllers\Dashboard\RoleController::class, 'assignPermissions'])
+        ->name('roles.assign-permissions');
+    Route::post('roles/{role}/update-permissions', [\App\Http\Controllers\Dashboard\RoleController::class, 'updatePermissions'])
+        ->name('roles.update-permissions');
+
         Route::post('proveedores/buscar', [ProveedoresController::class, 'buscar'])->name('proveedores.buscar');
         Route::post('proveedores/{id}/restore', [ProveedoresController::class, 'restore'])->name('proveedores.restore');
 
