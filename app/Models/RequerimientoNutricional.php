@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Mineral;
+use App\Models\Vitamina;
 
 class RequerimientoNutricional extends Model
 {
@@ -47,6 +49,20 @@ class RequerimientoNutricional extends Model
     public function aminoacidos()
     {
         return $this->belongsToMany(Aminoacido::class, 'requerimiento_aminoacido', 'requerimiento_id', 'aminoacido_id')
+            ->withPivot(['valor_min', 'valor_max', 'valor_recomendado', 'unidad'])
+            ->withTimestamps();
+    }
+
+    public function minerales()
+    {
+        return $this->belongsToMany(Mineral::class, 'requerimiento_mineral', 'requerimiento_id', 'mineral_id')
+            ->withPivot(['valor_min', 'valor_max', 'valor_recomendado', 'unidad'])
+            ->withTimestamps();
+    }
+
+    public function vitaminas()
+    {
+        return $this->belongsToMany(Vitamina::class, 'requerimiento_vitamina', 'requerimiento_id', 'vitamina_id')
             ->withPivot(['valor_min', 'valor_max', 'valor_recomendado', 'unidad'])
             ->withTimestamps();
     }

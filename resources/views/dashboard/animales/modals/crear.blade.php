@@ -1,5 +1,5 @@
 <div class="modal fade" id="crearAnimalModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal-dialog modal-xl" style="max-height: 90vh;">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Registrar Animal</h5>
@@ -7,7 +7,7 @@
             </div>
             <form id="formCrearAnimal" action="{{ route('dashboard.animales.store') }}" method="POST">
                 @csrf
-                <div class="modal-body">
+                <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
                     <div class="row g-3">
                         <div class="col-12">
                             <h6 class="text-uppercase text-muted">Datos básicos</h6>
@@ -133,6 +133,88 @@
                                                         <input type="number" step="0.000001" min="0" max="100" name="aminoacidos[{{ $a->id }}][valor_recomendado]" class="form-control text-end">
                                                         <span class="input-group-text">%</span>
                                                         <input type="hidden" name="aminoacidos[{{ $a->id }}][unidad]" value="%">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="col-12 mt-3">
+                            <h6 class="text-uppercase text-muted">Minerales</h6>
+                            <hr class="mt-1">
+                            <div class="table-responsive" style="max-height: 280px;">
+                                <table class="table table-sm align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th>Mineral</th>
+                                            <th class="text-center" style="width:140px;">Mín</th>
+                                            <th class="text-center" style="width:140px;">Máx</th>
+                                            <th class="text-center" style="width:180px;">Recomendado</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($minerales as $m)
+                                            <tr>
+                                                <td>
+                                                    {{ $m->nombre }}
+                                                    @if($m->simbolo)
+                                                        <small class="text-muted">({{ $m->simbolo }})</small>
+                                                    @endif
+                                                    @if($m->esencial)
+                                                        <span class="badge bg-info ms-1">Esencial</span>
+                                                    @endif
+                                                </td>
+                                                <td><input type="number" step="0.000001" min="0" name="minerales[{{ $m->id }}][valor_min]" class="form-control form-control-sm text-end"></td>
+                                                <td><input type="number" step="0.000001" min="0" name="minerales[{{ $m->id }}][valor_max]" class="form-control form-control-sm text-end"></td>
+                                                <td>
+                                                    <div class="input-group input-group-sm">
+                                                        <input type="number" step="0.000001" min="0" name="minerales[{{ $m->id }}][valor_recomendado]" class="form-control text-end">
+                                                        <span class="input-group-text">{{ $m->unidad ?? 'mg/kg' }}</span>
+                                                        <input type="hidden" name="minerales[{{ $m->id }}][unidad]" value="{{ $m->unidad ?? 'mg/kg' }}">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="col-12 mt-3">
+                            <h6 class="text-uppercase text-muted">Vitaminas</h6>
+                            <hr class="mt-1">
+                            <div class="table-responsive" style="max-height: 280px;">
+                                <table class="table table-sm align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th>Vitamina</th>
+                                            <th class="text-center" style="width:140px;">Mín</th>
+                                            <th class="text-center" style="width:140px;">Máx</th>
+                                            <th class="text-center" style="width:180px;">Recomendado</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($vitaminas as $v)
+                                            <tr>
+                                                <td>
+                                                    {{ $v->nombre }}
+                                                    @if($v->tipo)
+                                                        <small class="text-muted">({{ $v->tipo }})</small>
+                                                    @endif
+                                                    @if($v->esencial)
+                                                        <span class="badge bg-info ms-1">Esencial</span>
+                                                    @endif
+                                                </td>
+                                                <td><input type="number" step="0.000001" min="0" name="vitaminas[{{ $v->id }}][valor_min]" class="form-control form-control-sm text-end"></td>
+                                                <td><input type="number" step="0.000001" min="0" name="vitaminas[{{ $v->id }}][valor_max]" class="form-control form-control-sm text-end"></td>
+                                                <td>
+                                                    <div class="input-group input-group-sm">
+                                                        <input type="number" step="0.000001" min="0" name="vitaminas[{{ $v->id }}][valor_recomendado]" class="form-control text-end">
+                                                        <span class="input-group-text">{{ $v->unidad ?? 'UI/kg' }}</span>
+                                                        <input type="hidden" name="vitaminas[{{ $v->id }}][unidad]" value="{{ $v->unidad ?? 'UI/kg' }}">
                                                     </div>
                                                 </td>
                                             </tr>

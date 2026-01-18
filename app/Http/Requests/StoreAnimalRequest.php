@@ -54,6 +54,18 @@ class StoreAnimalRequest extends FormRequest
             'aminoacidos.*.valor_max' => ['nullable', 'numeric', 'between:0,100'],
             'aminoacidos.*.valor_recomendado' => ['nullable', 'numeric', 'between:0,100'],
             'aminoacidos.*.unidad' => ['nullable', 'string', 'max:20'],
+
+            'minerales' => ['nullable', 'array'],
+            'minerales.*.valor_min' => ['nullable', 'numeric', 'min:0'],
+            'minerales.*.valor_max' => ['nullable', 'numeric', 'min:0'],
+            'minerales.*.valor_recomendado' => ['nullable', 'numeric', 'min:0'],
+            'minerales.*.unidad' => ['nullable', 'string', 'max:20'],
+
+            'vitaminas' => ['nullable', 'array'],
+            'vitaminas.*.valor_min' => ['nullable', 'numeric', 'min:0'],
+            'vitaminas.*.valor_max' => ['nullable', 'numeric', 'min:0'],
+            'vitaminas.*.valor_recomendado' => ['nullable', 'numeric', 'min:0'],
+            'vitaminas.*.unidad' => ['nullable', 'string', 'max:20'],
         ];
     }
 

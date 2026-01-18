@@ -8,6 +8,8 @@ use App\Models\Aminoacido;
 use App\Models\Especie;
 use App\Models\RequerimientoNutricional;
 use App\Models\TipoAnimal;
+use App\Models\Mineral;
+use App\Models\Vitamina;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -17,12 +19,15 @@ class AnimalesController extends Controller
     {
         $especies = Especie::where('activo', true)->orderBy('nombre')->get(['id', 'nombre']);
         $aminoacidos = Aminoacido::orderBy('orden')->orderBy('nombre')->get(['id', 'nombre', 'abreviatura', 'esencial']);
+        $minerales = Mineral::orderBy('orden')->orderBy('nombre')->get(['id', 'nombre', 'unidad', 'simbolo', 'esencial']);
+        $vitaminas = Vitamina::orderBy('orden')->orderBy('nombre')->get(['id', 'nombre', 'unidad', 'tipo', 'esencial']);
 
+        // DataTables paginará en frontend, traemos todos los registros
         $tipos = TipoAnimal::with('especie')
             ->orderByDesc('id')
-            ->paginate(10);
+            ->get();
 
-        return view('dashboard.animales.index', compact('especies', 'aminoacidos', 'tipos'));
+        return view('dashboard.animales.index', compact('especies', 'aminoacidos', 'minerales', 'vitaminas', 'tipos'));
     }
 
     public function store(StoreAnimalRequest $request)
@@ -77,6 +82,32 @@ class AnimalesController extends Controller
             }
             if (!empty($pivotData)) {
                 $requerimiento->aminoacidos()->sync($pivotData);
+            }
+
+            $mineralesPivot = [];
+            foreach (($validated['minerales'] ?? []) as $mineralId => $vals) {
+                $mineralesPivot[$mineralId] = [
+                    'valor_min' => $vals['valor_min'] ?? null,
+                    'valor_max' => $vals['valor_max'] ?? null,
+                    'valor_recomendado' => $vals['valor_recomendado'] ?? null,
+                    'unidad' => $vals['unidad'] ?? 'mg/kg',
+                ];
+            }
+            if (!empty($mineralesPivot)) {
+                $requerimiento->minerales()->sync($mineralesPivot);
+            }
+
+            $vitaminasPivot = [];
+            foreach (($validated['vitaminas'] ?? []) as $vitaminaId => $vals) {
+                $vitaminasPivot[$vitaminaId] = [
+                    'valor_min' => $vals['valor_min'] ?? null,
+                    'valor_max' => $vals['valor_max'] ?? null,
+                    'valor_recomendado' => $vals['valor_recomendado'] ?? null,
+                    'unidad' => $vals['unidad'] ?? 'UI/kg',
+                ];
+            }
+            if (!empty($vitaminasPivot)) {
+                $requerimiento->vitaminas()->sync($vitaminasPivot);
             }
 
             DB::commit();
