@@ -12,6 +12,8 @@ use App\Http\Controllers\dashboard\DashboardController;
 use App\Http\Controllers\dashboard\RecepcionesController;
 use App\Http\Controllers\dashboard\OrdenesCompraController;
 use App\Http\Controllers\dashboard\RoleController;
+
+
 //rutas del home
 use App\Http\Controllers\h_homeController;
 use App\Http\Controllers\h_ServiciosController;
@@ -26,11 +28,6 @@ Route::get('/productos', [ProductosController::class, 'index'])->name('productos
 Route::get('/nosotros', [NosotrosController::class, 'index'])->name('nosotros');
 Route::get('/contacto', [ContactoController::class, 'index'])->name('contacto');
 Route::post('/contacto', [ContactoController::class, 'enviar'])->name('contacto.enviar');
-
-
-Route::get('/', function () {
-    return Auth::check() ? redirect('/dashboard') : view('welcome');
-});
 
 Auth::routes();
 
