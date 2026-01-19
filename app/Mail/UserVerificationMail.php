@@ -10,17 +10,17 @@ class UserVerificationMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $verificationCode;
+    public $code; // Cambia el nombre de la propiedad
 
-    public function __construct($verificationCode)
+    public function __construct($code)
     {
-        $this->verificationCode = $verificationCode;
+        $this->code = $code; // Cambia aquí también
     }
 
     public function build()
     {
         return $this->subject('Código de Verificación - Sistema')
                     ->view('emails.user-verification')
-                    ->with(['code' => $this->verificationCode]);
+                    ->with(['code' => $this->code]); // Aquí está bien
     }
 }

@@ -9,7 +9,7 @@
             <div class="card">
                 <div class="card-header pb-0">
                     <div class="d-flex align-items-center">
-                        <a href="{{ route('users.index') }}" class="btn btn-link text-dark p-0 me-3">
+                        <a href="{{ route('users.user') }}" class="btn btn-link text-dark p-0 me-3">
                             <i class="material-icons opacity-10">arrow_back</i>
                         </a>
                         <div>
@@ -133,7 +133,7 @@
                         <!-- Botones -->
                         <div class="row mt-4">
                             <div class="col-12 d-flex justify-content-end">
-                                <a href="{{ route('users.index') }}" class="btn btn-outline-secondary me-2">
+                                <a href="{{ route('users.user') }}" class="btn btn-outline-secondary me-2">
                                     <i class="material-icons opacity-10 me-1">cancel</i> Cancelar
                                 </a>
                                 <button type="submit" class="btn btn-primary">
