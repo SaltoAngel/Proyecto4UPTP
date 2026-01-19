@@ -72,7 +72,7 @@
                 </div>
             </div>
             
-            <!-- Servicios adicionales en grid -->
+            <!-- Servicios adicionales en grid 
             <div class="section-title" style="margin-top: 80px;">
                 <h2>Servicios Complementarios</h2>
                 <p>Soluciones adicionales para el manejo integral de tu operación agropecuaria</p>
@@ -102,7 +102,7 @@
                         <p>Asesoría integral para la planificación, organización y mejora continua de las operaciones en granjas productivas.</p>
                     </div>
                 </div>
-            </div>
+            </div>-->
         </div>
     </section>
 

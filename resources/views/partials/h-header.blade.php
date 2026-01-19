@@ -15,7 +15,7 @@
             </ul>
             
             <div class="nav-buttons">
-                <a href="#" class="btn btn-primary">Agendar pedidos</a>
+                <!-- <a href="#" class="btn btn-primary">Agendar pedidos</a>-->
                 <a href="{{ route('login') }}" class="btn btn-secondary">Iniciar sesión</a>
             </div>
             
