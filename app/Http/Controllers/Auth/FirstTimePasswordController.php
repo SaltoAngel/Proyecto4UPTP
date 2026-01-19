@@ -1,4 +1,3 @@
-// app/Http/Controllers/Auth/FirstTimePasswordController.php
 <?php
 
 namespace App\Http\Controllers\Auth;
