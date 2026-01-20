@@ -124,7 +124,7 @@
     <ul class="navbar-nav">
         <li class="nav-item">
             <a class="nav-link text-white {{ request()->routeIs('dashboard.animales.*') ? 'active' : '' }}" 
-               href="#">
+               href="{{ route('dashboard.animales.index') }}">
                 <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                     <i class="material-icons opacity-10">egg</i>
                 </div>
@@ -255,6 +255,9 @@
                 <span class="nav-link-text">Debug</span>
             </a>
         </li>
+        <a href="{{ url('/generate-dictionary') }}" class="btn btn-primary">
+            <i class="fas fa-file-word"></i> Generar Diccionario Word
+        </a>
     </ul>
     </div>
 </aside>

@@ -21,6 +21,8 @@ use App\Http\Controllers\dashboard\SettingsController;
 use App\Http\Controllers\dashboard\RecepcionesController;
 use App\Http\Controllers\dashboard\OrdenesCompraController;
 use App\Http\Controllers\dashboard\RoleController;
+use App\Http\Controllers\DictionaryController;
+
 
 // Importa los middlewares directamente por sus clases
 use App\Http\Middleware\Authenticate;
@@ -33,6 +35,16 @@ Route::get('/productos', [ProductosController::class, 'index'])->name('productos
 Route::get('/nosotros', [NosotrosController::class, 'index'])->name('nosotros');
 Route::get('/contacto', [ContactoController::class, 'index'])->name('contacto');
 Route::post('/contacto', [ContactoController::class, 'enviar'])->name('contacto.enviar');
+
+Auth::routes();
+
+// Dashboard principal (Material)
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware([\App\Http\Middleware\Authenticate::class])
+    ->name('dashboard');
+
+    Route::get('/generate-dictionary', [DictionaryController::class, 'generateWord']);
+
 
 // GeoJSON público para el mapa de Venezuela
 Route::get('/geo/ve.json', function () {
@@ -134,14 +146,20 @@ Route::middleware([Authenticate::class, CheckStatus::class])
             'proveedores' => 'proveedor'
         ]);
 
-            // RUTAS DE ROLES Y PERMISOS
-            //NOTA: DANIEL NO BORRES LA PRIMERA RUTA O TODO SE ROMPE
-        Route::get('/test-roles', function () {
-            return view('dashboard.roles.index');
-        });
-        Route::post('roles/{id}/restore', [\App\Http\Controllers\Dashboard\RoleController::class, 'restore'])
-            ->name('roles.restore');
-        Route::resource('roles', \App\Http\Controllers\Dashboard\RoleController::class)->except(['create', 'edit']);
+        // Animales (tipos por especie + requerimientos)
+        Route::resource('animales', \App\Http\Controllers\dashboard\AnimalesController::class)
+            ->only(['index', 'store']);
+
+    // RUTAS DE ROLES Y PERMISOS
+    Route::get('/test-roles', function () {
+        return view('dashboard.roles.index');
+    });
+
+    //Ruta para volver a habilitar el rol
+    Route::post('roles/{id}/restore', [\App\Http\Controllers\Dashboard\RoleController::class, 'restore'])
+        ->name('roles.restore');
+    Route::resource('roles', \App\Http\Controllers\Dashboard\RoleController::class);
+
 
         Route::post('proveedores/buscar', [ProveedoresController::class, 'buscar'])->name('proveedores.buscar');
         Route::post('proveedores/{id}/restore', [ProveedoresController::class, 'restore'])->name('proveedores.restore');
@@ -263,4 +281,7 @@ Route::get('/test-jasper-command', function() {
             'trace' => $e->getTraceAsString()
         ], 500);
     }
+
+    
 });
+
