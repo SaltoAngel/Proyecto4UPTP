@@ -17,30 +17,39 @@ class UsuariosSeeder extends Seeder
                 'name' => 'Daniel Perez', 
                 'email' => 'danielelpro19@gmail.com', 
                 'role' => 'superadmin',
+                'status' => 'activo',
                 'telefono' => '04121234567'
             ],
             [
                 'name' => 'Mariexi Oviedo', 
                 'email' => 'mariexioviedo@gmail.com', 
                 'role' => 'superadmin',
+                'status' => 'activo',
                 'telefono' => '04121234568'
             ],
             [
                 'name' => 'Elyanni Túa', 
                 'email' => 'elyannitua@gmail.com', 
                 'role' => 'superadmin',
+                'status' => 'activo',
                 'telefono' => '04121234569'
             ],
             [
                 'name' => 'Gabriela Rivero', 
                 'email' => 'grivero115@gmail.com', 
                 'role' => 'superadmin',
+                'status' => 'activo',
                 'telefono' => '04121234570'
             ],
             [
                 'name' => 'Maria Falcon', 
                 'email' => 'mfrosendo07@gmail.com', 
+<<<<<<< HEAD
                 'role' => 'supervisor',
+=======
+                'role' => 'superadmin',
+                'status' => 'activo',
+>>>>>>> 7f1cbc9054015bb882842b9746e54a87134339c0
                 'telefono' => '04121234571'
             ],
         ];
