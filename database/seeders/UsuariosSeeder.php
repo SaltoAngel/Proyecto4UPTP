@@ -40,7 +40,7 @@ class UsuariosSeeder extends Seeder
             [
                 'name' => 'Maria Falcon', 
                 'email' => 'mfrosendo07@gmail.com', 
-                'role' => 'superadmin',
+                'role' => 'supervisor',
                 'telefono' => '04121234571'
             ],
         ];
