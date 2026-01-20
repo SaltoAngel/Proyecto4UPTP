@@ -31,10 +31,11 @@
                         </div>
                     </div>
 
-                    <form method="POST" action="{{ route('auth.first_time') }}" id="passwordForm">
+                    {{-- CAMBIO AQUÍ: Corregido de auth.first_time a password.first_time --}}
+                    <form method="POST" action="{{ route('password.first_time') }}" id="passwordForm">
                         @csrf
 
-                        <!-- Contraseña Actual (Cédula) -->
+                        <!-- Contraseña Actual (Contraseña Temporal) -->
                         <div class="form-group">
                             <label for="current_password" class="form-label">Contraseña Actual *</label>
                             <div class="input-group input-group-outline">
@@ -42,7 +43,8 @@
                                        class="form-control @error('current_password') is-invalid @enderror" 
                                        id="current_password" 
                                        name="current_password" 
-                                       required>
+                                       required
+                                       placeholder="Ingrese su contraseña actual">
                                 <span class="input-group-text">
                                     <button type="button" 
                                             class="btn btn-link text-secondary p-0" 
@@ -54,9 +56,9 @@
                             @error('current_password')
                                 <div class="text-danger text-sm mt-1">{{ $message }}</div>
                             @enderror
+                            {{-- CAMBIO AQUÍ: Mensaje actualizado --}}
                             <small class="text-muted">
-                                Su contraseña actual es su número de cédula sin puntos ni guiones.
-                                <br><strong>Ejemplo:</strong> V12345678
+                                Ingrese la contraseña temporal que se le asignó al crear su usuario.
                             </small>
                         </div>
 
@@ -68,7 +70,8 @@
                                        class="form-control @error('password') is-invalid @enderror" 
                                        id="password" 
                                        name="password" 
-                                       required>
+                                       required
+                                       placeholder="Mínimo 8 caracteres con mayúsculas y números">
                                 <span class="input-group-text">
                                     <button type="button" 
                                             class="btn btn-link text-secondary p-0" 
@@ -94,7 +97,8 @@
                                        class="form-control" 
                                        id="password_confirmation" 
                                        name="password_confirmation" 
-                                       required>
+                                       required
+                                       placeholder="Repita la nueva contraseña">
                                 <span class="input-group-text">
                                     <button type="button" 
                                             class="btn btn-link text-secondary p-0" 

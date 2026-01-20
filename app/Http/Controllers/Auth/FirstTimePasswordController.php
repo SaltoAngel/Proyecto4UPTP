@@ -27,7 +27,6 @@ class FirstTimePasswordController extends Controller
                 'required',
                 'confirmed',
                 Password::min(8)
-                    ->letters()
                     ->mixedCase()
                     ->numbers()
             ],
@@ -35,13 +34,16 @@ class FirstTimePasswordController extends Controller
 
         $user = Auth::user();
 
-        // Verificar que la contraseña actual sea la cédula
-        $documento = str_replace(['.', '-'], '', $user->persona->documento);
-        
+        // Verificar que el usuario esté en estado pendiente
+        if ($user->status !== 'pendiente') {
+            return redirect()->route('dashboard')->with('info', 'Ya ha cambiado su contraseña anteriormente.');
+        }
+
+        // Verificar la contraseña ACTUAL (la que se estableció al crear el usuario)
         if (!Hash::check($request->current_password, $user->password)) {
             return back()->withErrors([
                 'current_password' => 'La contraseña actual no es correcta.'
-            ]);
+            ])->withInput();
         }
 
         // Actualizar contraseña
@@ -50,8 +52,6 @@ class FirstTimePasswordController extends Controller
             'status' => 'activo',
         ]);
 
-        Auth::login($user);
-
-        return redirect()->route('dashboard')->with('success', 'Contraseña actualizada exitosamente. Bienvenido al sistema!');
+        return redirect()->route('dashboard')->with('success', 'Contraseña actualizada exitosamente. ¡Bienvenido al sistema!');
     }
 }

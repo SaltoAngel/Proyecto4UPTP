@@ -21,6 +21,7 @@ class UserController extends Controller
         $perPage = $request->input('per_page', 10);
         $search = $request->input('search', '');
         $estado = $request->input('estado', '');
+        $rol = $request->input('rol', '');
 
         $users = User::with(['persona', 'roles'])
             ->when($search, function ($query, $search) {
@@ -36,10 +37,18 @@ class UserController extends Controller
             ->when($estado, function ($query, $estado) {
                 return $query->where('status', $estado);
             })
+            ->when($rol, function ($query, $rol) {
+                return $query->whereHas('roles', function ($q) use ($rol) {
+                    $q->where('name', $rol); // Filtrar por nombre del rol
+                });
+            })
             ->orderBy('created_at', 'desc')
             ->paginate($perPage);
 
-        return view('users.user', compact('users'));
+        // Pasar roles para el filtro
+        $roles = Role::all();
+
+        return view('users.user', compact('users', 'roles'));
     }
 
     public function create()
@@ -175,74 +184,77 @@ class UserController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $request->validate([
-            'persona_id' => 'required|exists:personas,id',
-            'email' => 'required|email|unique:users,email',
-            'password' => [
-                'required',
-                'confirmed',
-                Password::min(8)
-                    ->mixedCase()
-                    ->numbers()
-            ],
-            'role_id' => 'required|exists:roles,id',
-            'verification_code' => 'required|size:8',
+{
+    $request->validate([
+        'persona_id' => 'required|exists:personas,id',
+        'email' => 'required|email|unique:users,email',
+        'password' => [
+            'required',
+            'confirmed',
+            'string',
+            'min:1'
+        ],
+        'role_name' => 'required|exists:roles,name', // <-- Añadir validación para role_name
+        'verification_code' => 'required|size:8',
+    ]);
+
+    try {
+        DB::beginTransaction();
+
+        $persona = Personas::findOrFail($request->persona_id);
+
+        if ($persona->email !== $request->email) {
+            return back()->withErrors(['email' => 'El email no coincide.'])->withInput();
+        }
+
+        // Verificar que el código fue validado
+        if (!Cache::get('email_verified_' . $request->email . '_' . $request->persona_id)) {
+            return back()->withErrors(['verification_code' => 'Debe validar el código primero.'])->withInput();
+        }
+
+        // Verificar el código
+        $storedCode = Cache::get('verification_code_' . $request->email);
+        $storedPersonaId = Cache::get('verification_persona_' . $request->email);
+        
+        if (!$storedCode || $storedCode !== $request->verification_code) {
+            return back()->withErrors(['verification_code' => 'Código inválido.'])->withInput();
+        }
+
+        if ($storedPersonaId != $request->persona_id) {
+            return back()->withErrors(['verification_code' => 'El código no corresponde a esta persona.'])->withInput();
+        }
+
+        // IMPORTANTE: La contraseña debe ser la cédula (documento)
+        $password = $persona->documento;
+
+        // Crear nuevo usuario
+        $user = User::create([
+            'email' => $persona->email,
+            'password' => Hash::make($password),
+            'persona_id' => $persona->id,
+            'status' => 'pendiente',
         ]);
 
-        try {
-            DB::beginTransaction();
-
-            $persona = Personas::findOrFail($request->persona_id);
-
-            if ($persona->email !== $request->email) {
-                return back()->withErrors(['email' => 'El email no coincide.'])->withInput();
-            }
-
-            // Verificar que el código fue validado
-            if (!Cache::get('email_verified_' . $request->email . '_' . $request->persona_id)) {
-                return back()->withErrors(['verification_code' => 'Debe validar el código primero.'])->withInput();
-            }
-
-            // Verificar el código
-            $storedCode = Cache::get('verification_code_' . $request->email);
-            $storedPersonaId = Cache::get('verification_persona_' . $request->email);
-            
-            if (!$storedCode || $storedCode !== $request->verification_code) {
-                return back()->withErrors(['verification_code' => 'Código inválido.'])->withInput();
-            }
-
-            if ($storedPersonaId != $request->persona_id) {
-                return back()->withErrors(['verification_code' => 'El código no corresponde a esta persona.'])->withInput();
-            }
-
-            // Crear nuevo usuario
-            $user = User::create([
-                'email' => $persona->email,
-                'password' => Hash::make($request->password),
-                'persona_id' => $persona->id,
-                'status' => 'pendiente',
-            ]);
-
-            // Asignar rol usando Spatie
-            $role = Role::find($request->role_id);
-            $user->assignRole($role->name);
-
-            // Limpiar caché
-            Cache::forget('verification_code_' . $request->email);
-            Cache::forget('verification_persona_' . $request->email);
-            Cache::forget('email_verified_' . $request->email . '_' . $request->persona_id);
-
-            DB::commit();
-
-            return redirect()->route('users.user')->with('success', 'Usuario creado exitosamente.');
-
-        } catch (\Exception $e) {
-            DB::rollBack();
-            \Log::error('Error al crear usuario: ' . $e->getMessage());
-            return back()->withErrors(['error' => 'Error: ' . $e->getMessage()])->withInput();
+        // **CORREGIDO: Asignar rol por NOMBRE (Spatie) usando role_name**
+        if ($request->has('role_name') && $request->role_name) {
+            $user->assignRole($request->role_name); // <-- Usar assignRole con el nombre del rol
         }
+
+        // Limpiar caché
+        Cache::forget('verification_code_' . $request->email);
+        Cache::forget('verification_persona_' . $request->email);
+        Cache::forget('email_verified_' . $request->email . '_' . $request->persona_id);
+
+        DB::commit();
+
+        return redirect()->route('users.user')->with('success', 'Usuario creado exitosamente. La contraseña inicial es la cédula de la persona.');
+
+    } catch (\Exception $e) {
+        DB::rollBack();
+        \Log::error('Error al crear usuario: ' . $e->getMessage());
+        return back()->withErrors(['error' => 'Error: ' . $e->getMessage()])->withInput();
     }
+}
 
     public function show($id)
     {
@@ -263,7 +275,7 @@ class UserController extends Controller
         $user = User::findOrFail($id);
 
         $request->validate([
-            'role_id' => 'required|exists:roles,id',
+            'role' => 'required|exists:roles,name', // Cambiar a role (nombre)
             'status' => 'required|in:pendiente,activo,inactivo',
         ]);
 
@@ -271,8 +283,8 @@ class UserController extends Controller
             'status' => $request->status,
         ]);
 
-        $newRole = Role::find($request->role_id);
-        $user->syncRoles([$newRole->name]);
+        // Sincronizar rol por NOMBRE (Spatie)
+        $user->syncRoles([$request->role]);
 
         return redirect()->route('users.user')->with('success', 'Usuario actualizado exitosamente.');
     }

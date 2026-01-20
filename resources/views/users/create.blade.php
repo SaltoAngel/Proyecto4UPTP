@@ -129,7 +129,8 @@
                                                name="verification_code" 
                                                placeholder="Ingrese el código de 8 dígitos"
                                                maxlength="8"
-                                               value="{{ old('verification_code') }}">
+                                               value="{{ old('verification_code') }}"
+                                               required>
                                         <span class="input-group-text">
                                             <button type="button" 
                                                     class="btn btn-link text-secondary p-0" 
@@ -151,7 +152,7 @@
                             </div>
                         </div>
 
-                        <!-- Contraseña y Confirmar Contraseña -->
+                        <!-- Contraseña y Confirmar Contraseña (Autocompletadas con la cédula) -->
                         <div class="row mt-3">
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -163,25 +164,13 @@
                                                name="password" 
                                                value="{{ old('password') }}" 
                                                required
-                                               minlength="8">
+                                               readonly
+                                               placeholder="Se autocompletará con la cédula">
                                     </div>
                                     @error('password')
                                         <div class="text-danger text-sm mt-1">{{ $message }}</div>
                                     @enderror
-                                    <div class="mt-2">
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" id="lengthCheck" disabled>
-                                            <label class="form-check-label" for="lengthCheck">Mínimo 8 caracteres</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" id="uppercaseCheck" disabled>
-                                            <label class="form-check-label" for="uppercaseCheck">Al menos una mayúscula</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" id="numberCheck" disabled>
-                                            <label class="form-check-label" for="numberCheck">Al menos un número</label>
-                                        </div>
-                                    </div>
+                                    <small class="text-muted">La contraseña será la cédula de la persona seleccionada.</small>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -192,7 +181,9 @@
                                                class="form-control @error('password_confirmation') is-invalid @enderror" 
                                                id="password_confirmation" 
                                                name="password_confirmation" 
-                                               required>
+                                               required
+                                               readonly
+                                               placeholder="Se autocompletará con la cédula">
                                     </div>
                                     @error('password_confirmation')
                                         <div class="text-danger text-sm mt-1">{{ $message }}</div>
@@ -212,7 +203,9 @@
                                         <div>
                                             <h6 class="alert-heading">Información del Usuario</h6>
                                             <p class="mb-1">
-                                                <strong>Nota:</strong> La contraseña debe cumplir con los requisitos de seguridad.
+                                                <strong>Nota:</strong> La contraseña inicial será la cédula de la persona.
+                                                El usuario deberá iniciar sesión con su cédula como contraseña y luego cambiar 
+                                                su contraseña en su primer acceso al sistema.
                                             </p>
                                             <p class="mb-0 text-sm">
                                                 <i class="material-icons opacity-10 me-1" style="font-size: 16px">hourglass_empty</i>
@@ -225,27 +218,28 @@
                             </div>
                         </div>
 
-                        <!-- Rol -->
+                        <!-- Rol (Usando Spatie - guardamos el NAME del rol, no el ID) -->
                         <div class="row mt-3">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="role_id" class="form-label">Rol *</label>
+                                    <label for="role_name" class="form-label">Rol *</label>
                                     <div class="input-group input-group-outline">
-                                        <select class="form-control @error('role_id') is-invalid @enderror" 
-                                                id="role_id" 
-                                                name="role_id" 
+                                        <select class="form-control @error('role_name') is-invalid @enderror" 
+                                                id="role_name" 
+                                                name="role_name" 
                                                 required>
                                             <option value="">– Seleccione un rol –</option>
                                             @foreach($roles as $role)
-                                                <option value="{{ $role->id }}" {{ old('role_id') == $role->id ? 'selected' : '' }}>
+                                                <option value="{{ $role->name }}" {{ old('role_name') == $role->name ? 'selected' : '' }}>
                                                     {{ $role->name }}
                                                 </option>
                                             @endforeach
                                         </select>
                                     </div>
-                                    @error('role_id')
+                                    @error('role_name')
                                         <div class="text-danger text-sm mt-1">{{ $message }}</div>
                                     @enderror
+                                    <input type="hidden" name="role_id" value="0"> <!-- Campo oculto para compatibilidad -->
                                 </div>
                             </div>
                         </div>
@@ -273,10 +267,15 @@
 <script>
 // Variable para controlar si el código fue validado
 let isCodeValidated = false;
+let currentDocumento = '';
+let isCodeSent = false; // Nueva variable para controlar si se envió el código
 
 function loadPersonaData(personaId) {
     if (!personaId) {
         $('#email').val('');
+        $('#password').val('');
+        $('#password_confirmation').val('');
+        currentDocumento = '';
         $('#sendCodeBtn').prop('disabled', true);
         $('#verificationCodeGroup').hide();
         resetForm();
@@ -285,8 +284,12 @@ function loadPersonaData(personaId) {
 
     const selectedOption = $(`#persona_id option[value="${personaId}"]`);
     const email = selectedOption.data('email');
+    const documento = selectedOption.data('documento');
     
     $('#email').val(email || '');
+    $('#password').val(documento || '');
+    $('#password_confirmation').val(documento || '');
+    currentDocumento = documento || '';
     $('#sendCodeBtn').prop('disabled', !email);
     resetForm();
 }
@@ -299,7 +302,7 @@ function sendVerificationCode() {
         Swal.fire({
             icon: 'warning',
             title: 'Datos incompletos',
-            text: 'Primero debe seleccionar una persona.'
+            text: 'Primero debe seleccionar una persona con email válido.'
         });
         return;
     }
@@ -322,6 +325,7 @@ function sendVerificationCode() {
             $('#verificationCodeGroup').show();
             $('#verification_code').focus();
             isCodeValidated = false;
+            isCodeSent = true; // Marcar que se envió el código
             $('#submitBtn').prop('disabled', true);
             
             Swal.fire({
@@ -383,6 +387,7 @@ function validateCode() {
             isCodeValidated = true;
             btn.html('<i class="material-icons opacity-10">check_circle</i> Código Validado');
             btn.removeClass('btn-success').addClass('btn-outline-success');
+            btn.prop('disabled', true);
             checkFormCompletion();
             
             Swal.fire({
@@ -418,10 +423,9 @@ function resendCode() {
 
 function resetForm() {
     isCodeValidated = false;
+    isCodeSent = false;
     $('#verificationCodeGroup').hide();
     $('#verification_code').val('');
-    $('#password').val('');
-    $('#password_confirmation').val('');
     $('#validateCodeBtn')
         .prop('disabled', false)
         .html('<i class="material-icons opacity-10 me-1">check_circle</i> Validar Código')
@@ -430,109 +434,71 @@ function resetForm() {
     $('#submitBtn').prop('disabled', true);
 }
 
-// Función para verificar el estado de validación
-function checkVerificationStatus() {
-    const email = document.getElementById('email').value;
-    const personaId = document.getElementById('persona_id').value;
-    
-    if (!email || !personaId) return;
-    
-    fetch('/check-verification-status', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-        },
-        body: JSON.stringify({ 
-            email: email,
-            persona_id: personaId
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.verified) {
-            // Habilitar botón de guardar
-            document.getElementById('submitBtn').disabled = false;
-            document.getElementById('submitBtn').classList.remove('disabled');
-            
-            // Mostrar mensaje de verificación exitosa
-            const statusElement = document.getElementById('verificationStatus');
-            if (statusElement) {
-                statusElement.innerHTML = '<span class="text-success">✓ CÓDIGO VALIDADO</span>';
-                statusElement.style.display = 'block';
-            }
-        }
-    })
-    .catch(error => console.error('Error:', error));
-}
-
-// Verificar cada 3 segundos después de validar el código
-let verificationCheckInterval = null;
-
-function startVerificationCheck() {
-    if (verificationCheckInterval) {
-        clearInterval(verificationCheckInterval);
-    }
-    verificationCheckInterval = setInterval(checkVerificationStatus, 3000);
-}
-
-// Iniciar la verificación cuando se valide el código
-document.getElementById('validateCodeBtn').addEventListener('click', function() {
-    // Después de validar el código exitosamente
-    startVerificationCheck();
-});
-
-// También verificar al cargar la página
-document.addEventListener('DOMContentLoaded', function() {
-    checkVerificationStatus();
-});
-
-function validatePassword(password) {
-    const hasMinLength = password.length >= 8;
-    const hasUppercase = /[A-Z]/.test(password);
-    const hasNumber = /[0-9]/.test(password);
-    
-    $('#lengthCheck').prop('checked', hasMinLength);
-    $('#uppercaseCheck').prop('checked', hasUppercase);
-    $('#numberCheck').prop('checked', hasNumber);
-    
-    return hasMinLength && hasUppercase && hasNumber;
-}
-
 function checkFormCompletion() {
     const personaId = $('#persona_id').val();
     const email = $('#email').val();
     const password = $('#password').val();
     const passwordConfirm = $('#password_confirmation').val();
-    const roleId = $('#role_id').val();
-    const isCodeGroupVisible = $('#verificationCodeGroup').is(':visible');
+    const roleName = $('#role_name').val();
+    const verificationCode = $('#verification_code').val();
     
-    let isValid = personaId && email && roleId && validatePassword(password);
+    // Verificar que todos los campos obligatorios estén completos
+    let allFieldsComplete = personaId && 
+                           email && 
+                           password && 
+                           passwordConfirm && 
+                           roleName;
     
-    // Validar confirmación de contraseña
-    if (password && passwordConfirm && password !== passwordConfirm) {
-        isValid = false;
+    // Verificar que las contraseñas coincidan
+    const passwordsMatch = password === passwordConfirm;
+    
+    // NUEVA LÓGICA: Siempre se requiere validar el código
+    // El botón solo se habilita si:
+    // 1. Todos los campos están completos
+    // 2. Las contraseñas coinciden
+    // 3. El código fue enviado Y validado
+    let codeValid = false;
+    if (isCodeSent) {
+        codeValid = isCodeValidated;
     }
     
-    // Si se envió el código, debe estar validado
-    if (isCodeGroupVisible && !isCodeValidated) {
-        isValid = false;
+    // Si no se ha enviado el código, mostrar alerta
+    if (!isCodeSent && allFieldsComplete) {
+        // No habilitar el botón, pero mostrar mensaje
+        $('#submitBtn').prop('disabled', true);
+        return false;
     }
     
-    $('#submitBtn').prop('disabled', !isValid);
+    // Habilitar botón solo si TODAS las condiciones se cumplen
+    const shouldEnableButton = allFieldsComplete && passwordsMatch && codeValid;
+    
+    $('#submitBtn').prop('disabled', !shouldEnableButton);
+    return shouldEnableButton;
 }
 
 $(document).ready(function() {
-    // Validación de contraseña en tiempo real
-    $('#password').on('input', function() {
-        validatePassword($(this).val());
+    // Escuchar cambios en los campos clave
+    $('#role_name, #persona_id, #email').on('change', function() {
+        checkFormCompletion();
+        // Si hay cambios y ya se envió código, resetear validación
+        if (isCodeSent && !$(this).is('#email')) {
+            resetForm();
+        }
+    });
+    
+    // Si el usuario intenta modificar manualmente las contraseñas, 
+    // volver a sincronizarlas con la cédula
+    $('#password, #password_confirmation').on('input', function() {
+        if (currentDocumento) {
+            $('#password').val(currentDocumento);
+            $('#password_confirmation').val(currentDocumento);
+        }
         checkFormCompletion();
     });
     
-    $('#password_confirmation').on('input', checkFormCompletion);
-    $('#role_id, #persona_id').on('change', checkFormCompletion);
+    // Cuando el código de verificación cambia
     $('#verification_code').on('input', function() {
-        // Resetear validación si el código cambia
+        // Si ya estaba validado y el usuario cambia el código, resetear validación
         if (isCodeValidated) {
             isCodeValidated = false;
             $('#validateCodeBtn')
@@ -540,37 +506,82 @@ $(document).ready(function() {
                 .html('<i class="material-icons opacity-10 me-1">check_circle</i> Validar Código')
                 .removeClass('btn-outline-success')
                 .addClass('btn-success');
-            checkFormCompletion();
         }
+        checkFormCompletion();
     });
     
-    // Validar formulario antes de enviar
+    // Interceptar el envío del formulario para validar
     $('#userForm').on('submit', function(e) {
-        const isCodeGroupVisible = $('#verificationCodeGroup').is(':visible');
+        e.preventDefault();
         
-        if (isCodeGroupVisible && !isCodeValidated) {
-            e.preventDefault();
+        // Verificar campos obligatorios
+        const personaId = $('#persona_id').val();
+        const email = $('#email').val();
+        const password = $('#password').val();
+        const passwordConfirm = $('#password_confirmation').val();
+        const roleName = $('#role_name').val();
+        
+        // Validar campos vacíos
+        if (!personaId || !email || !password || !passwordConfirm || !roleName) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Campos incompletos',
+                text: 'Por favor complete todos los campos obligatorios.',
+                confirmButtonText: 'Entendido'
+            });
+            return false;
+        }
+        
+        // Validar que se haya enviado y validado el código
+        if (!isCodeSent) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Código no enviado',
+                text: 'Debe enviar y validar el código de verificación antes de guardar.',
+                confirmButtonText: 'Entendido'
+            });
+            return false;
+        }
+        
+        if (!isCodeValidated) {
             Swal.fire({
                 icon: 'error',
                 title: 'Código no validado',
-                text: 'Por favor valide el código de verificación antes de continuar.',
+                text: 'Por favor valide el código de verificación antes de guardar.',
                 confirmButtonText: 'Entendido'
             });
-            return;
+            return false;
         }
         
-        const password = $('#password').val();
-        const passwordConfirm = $('#password_confirmation').val();
-        
+        // Validar que las contraseñas coincidan
         if (password !== passwordConfirm) {
-            e.preventDefault();
             Swal.fire({
                 icon: 'error',
                 title: 'Contraseñas no coinciden',
                 text: 'Las contraseñas ingresadas no coinciden.',
                 confirmButtonText: 'Entendido'
             });
+            return false;
         }
+        
+        // Mostrar confirmación
+        Swal.fire({
+            title: '¿Crear usuario?',
+            html: `El usuario será creado con:<br>
+                   <strong>Contraseña inicial:</strong> ${currentDocumento || 'Cédula de la persona'}<br>
+                   <small class="text-muted">El usuario deberá cambiar su contraseña en su primer acceso.</small>`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, crear usuario',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Desactivar el botón para evitar doble envío
+                $('#submitBtn').prop('disabled', true).html('<i class="material-icons opacity-10 me-1">hourglass_empty</i> Guardando...');
+                // Enviar formulario
+                $(this).off('submit').submit();
+            }
+        });
     });
     
     // Cargar datos si hay valores antiguos
@@ -580,10 +591,13 @@ $(document).ready(function() {
     
     @if(session('verification_sent'))
         $('#verificationCodeGroup').show();
-        // Si ya se envió el código, permitir validarlo
+        isCodeSent = true;
         isCodeValidated = false;
-        $('#submitBtn').prop('disabled', true);
+        checkFormCompletion();
     @endif
+    
+    // Verificar estado inicial
+    checkFormCompletion();
 });
 </script>
 @endpush
@@ -622,6 +636,10 @@ $(document).ready(function() {
     }
     .form-check-input:disabled {
         background-color: #e9ecef;
+    }
+    input[readonly] {
+        background-color: #f8f9fa;
+        cursor: not-allowed;
     }
 </style>
 @endpush

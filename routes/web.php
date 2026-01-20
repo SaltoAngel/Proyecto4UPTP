@@ -91,19 +91,20 @@ Route::middleware([Authenticate::class, CheckStatus::class])->group(function () 
     // Dashboard principal - SOLO UNA DEFINICIÓN
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     
-    // Gestión de usuarios - CON RUTAS DE VERIFICACIÓN
+    // Gestión de usuarios - CON RUTAS DE VERIFICACIÓN COMPLETAS
     Route::prefix('usuarios')->name('users.')->group(function () {
         Route::get('/', [UserController::class, 'user'])->name('user');
         Route::get('/crear', [UserController::class, 'create'])->name('create');
         Route::post('/', [UserController::class, 'store'])->name('store');
         
-        // RUTAS NUEVAS PARA VERIFICACIÓN DE CÓDIGO
+        // RUTAS DE VERIFICACIÓN DE CÓDIGO
         Route::post('/enviar-codigo-verificacion', [UserController::class, 'sendVerificationCode'])->name('send-verification-code');
         Route::post('/validar-codigo-verificacion', [UserController::class, 'validateVerificationCode'])->name('validate-verification-code');
-
-        //rutas para verificar el estado de verificación y reenviar código
-        Route::post('/check-verification-status', [UserController::class, 'checkVerificationStatus'])->name('verification.status');
-        Route::post('/resend-verification-code', [UserController::class, 'resendVerificationCode'])->name('verification.resend');
+        
+        // RUTAS ADICIONALES PARA VERIFICACIÓN (NUEVAS)
+        Route::post('/check-verification-status', [UserController::class, 'checkVerificationStatus'])->name('check-verification-status');
+        Route::post('/resend-verification-code', [UserController::class, 'resendVerificationCode'])->name('resend-verification-code');
+        Route::post('/cancel-verification', [UserController::class, 'cancelVerification'])->name('cancel-verification');
         
         Route::get('/{user}', [UserController::class, 'show'])->name('show');
         Route::get('/{user}/editar', [UserController::class, 'edit'])->name('edit');
