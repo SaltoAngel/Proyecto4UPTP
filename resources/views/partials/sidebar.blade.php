@@ -95,16 +95,6 @@
             </a>
         </li>
 
-             {{-- NUEVO: Roles y Permisos --}}
-        <li class="nav-item">
-            <a class="nav-link text-white {{ request()->routeIs('dashboard.roles.*') ? 'active' : '' }}" 
-               href="{{ route('dashboard.roles.index') }}">
-                <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                    <i class="material-icons opacity-10">local_shipping</i>
-                </div>
-                <span class="nav-link-text">Roles</span>
-            </a>
-        </li>
 
         <li class="nav-item">
             <a class="nav-link text-white {{ request()->routeIs('users.user.*') ? 'active' : '' }}" 

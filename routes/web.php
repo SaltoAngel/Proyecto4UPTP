@@ -133,20 +133,6 @@ Route::middleware([Authenticate::class, CheckStatus::class])
             'proveedores' => 'proveedor'
         ]);
 
-         // Animales (tipos por especie + requerimientos)
-        Route::resource('animales', \App\Http\Controllers\dashboard\AnimalesController::class)
-            ->only(['index', 'store']);
-
-    // RUTAS DE ROLES Y PERMISOS
-    Route::get('/test-roles', function () {
-        return view('dashboard.roles.index');
-    });
-
-    //Ruta para volver a habilitar el rol
-    Route::post('roles/{id}/restore', [\App\Http\Controllers\Dashboard\RoleController::class, 'restore'])
-        ->name('roles.restore');
-    Route::resource('roles', \App\Http\Controllers\Dashboard\RoleController::class);
-
 
         Route::post('proveedores/buscar', [ProveedoresController::class, 'buscar'])->name('proveedores.buscar');
         Route::post('proveedores/{id}/restore', [ProveedoresController::class, 'restore'])->name('proveedores.restore');
