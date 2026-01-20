@@ -159,6 +159,19 @@
         .g-sidenav-hidden .navbar-vertical:hover.fixed-end + .main-content {
             margin-right: 0 !important;
         }
+
+        /* Oculta sidebar cuando un modal está abierto (mejora foco en diálogos) */
+            /* Transiciones suaves para sidebar y contenido */
+            #sidenav-main { transition: transform .25s ease, opacity .25s ease; }
+            .g-sidenav-show .main-content { transition: margin-left .25s ease; }
+
+            /* Oculta sidebar con deslizamiento cuando un modal está abierto */
+            body.modal-open #sidenav-main {
+                transform: translateX(-110%);
+                opacity: 0;
+                visibility: hidden;
+            }
+            body.modal-open .main-content { margin-left: 0 !important; }
 }
     </style>
     @stack('styles')
