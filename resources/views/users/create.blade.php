@@ -239,7 +239,6 @@
                                     @error('role_name')
                                         <div class="text-danger text-sm mt-1">{{ $message }}</div>
                                     @enderror
-                                    <input type="hidden" name="role_id" value="0"> <!-- Campo oculto para compatibilidad -->
                                 </div>
                             </div>
                         </div>
