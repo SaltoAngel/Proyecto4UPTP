@@ -58,19 +58,14 @@ Route::middleware([\App\Http\Middleware\Authenticate::class])
             'proveedores' => 'proveedor'
         ]);
 
-    // RUTAS DE ROLES Y PERMISOS
-    Route::get('/test-roles', function () {
-        return view('dashboard.roles.index');
-    });
-
-    //Ruta para volver a habilitar el rol
-    Route::post('roles/{id}/restore', [\App\Http\Controllers\Dashboard\RoleController::class, 'restore'])
-        ->name('roles.restore');
-    Route::resource('roles', \App\Http\Controllers\Dashboard\RoleController::class);
-    Route::get('roles/{role}/assign-permissions', [\App\Http\Controllers\Dashboard\RoleController::class, 'assignPermissions'])
-        ->name('roles.assign-permissions');
-    Route::post('roles/{role}/update-permissions', [\App\Http\Controllers\Dashboard\RoleController::class, 'updatePermissions'])
-        ->name('roles.update-permissions');
+            // RUTAS DE ROLES Y PERMISOS
+            //NOTA: DANIEL NO BORRES LA PRIMERA RUTA O TODO SE ROMPE
+        Route::get('/test-roles', function () {
+            return view('dashboard.roles.index');
+        });
+        Route::post('roles/{id}/restore', [\App\Http\Controllers\Dashboard\RoleController::class, 'restore'])
+            ->name('roles.restore');
+        Route::resource('roles', \App\Http\Controllers\Dashboard\RoleController::class)->except(['create', 'edit']);
 
         Route::post('proveedores/buscar', [ProveedoresController::class, 'buscar'])->name('proveedores.buscar');
         Route::post('proveedores/{id}/restore', [ProveedoresController::class, 'restore'])->name('proveedores.restore');
