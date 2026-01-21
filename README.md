@@ -17,8 +17,7 @@ Plataforma web para administración de Personas, Proveedores, Bitácora de cambi
 ## Tecnologías y Lenguajes
 
 - Backend: PHP 8.2, Laravel 12, Eloquent ORM, Form Requests, Middlewares.
-- Frontend: Bootstrap 5.3, Material theme, Vite 7, Tailwind 4 (base), Sass, jQuery DataTables, Chart.js + D3/TopoJSON para mapas.
-- Livewire 3 para componentes interactivos (cuando aplique).
+- Frontend: Bootstrap 5.3, Material theme, Vite 7, Sass, jQuery DataTables, Chart.js + D3/TopoJSON para mapas.
 - Reportes: JasperReports vía `geekcom/phpjasper`, `jasperphp/jasperphp` (requiere Java 8).
 - Autorización: `spatie/laravel-permission`.
 
@@ -26,8 +25,7 @@ Plataforma web para administración de Personas, Proveedores, Bitácora de cambi
 
 - PHP 8.2+
 - Composer
-- Node.js 18+ y npm
-- Base de datos (MySQL/MariaDB recomendada)
+- Base de datos (PostgreSQL)
 - Java 8 para JasperReports (configurable por `JAVA_PATH` en `.env`)
 
 ## Instalación rápida
@@ -126,10 +124,6 @@ php artisan test
 	- Listado y modales de Proveedores (crear/editar/ver)
 	- Bitácora (tabla y modal de detalle)
 	- Reportes (pantallas de generación y descarga)
-- Ejemplo de inclusión (reemplaza por tus archivos):
-	- ![Dashboard](docs/screenshots/dashboard.png)
-	- ![Personas](docs/screenshots/personas_list.png)
-	- ![Detalle Bitácora](docs/screenshots/bitacora_modal.png)
 
 ## Roadmap (próximos módulos)
 
