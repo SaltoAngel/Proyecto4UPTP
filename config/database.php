@@ -85,28 +85,30 @@ return [
 
         'pgsql' => [
             'driver' => 'pgsql',
-            
-            // ✅ FORZAR valores de Railway (elimina env() temporalmente)
-            'host' => env('DB_HOST', 'postgres.railway.internal'), // Cambia default
+            'url' => env('DATABASE_URL'),
+            'host' => env('DB_HOST', 'postgres.railway.internal'),
             'port' => env('DB_PORT', '5432'),
             'database' => env('DB_DATABASE', 'railway'),
             'username' => env('DB_USERNAME', 'postgres'),
-            'password' => env('DB_PASSWORD', 'ifPDlDtvZdDByYwFmGexerxhaJSJFkKG'),
-            
-            // ✅ SSL OBLIGATORIO
+            'password' => env('DB_PASSWORD', ''),
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
             'search_path' => 'public',
-            'sslmode' => 'require', // ← FORZAR, no usar env()
-            // ✅ Opciones de conexión
+            'sslmode' => env('DB_SSLMODE', 'require'),
+            
+            // ✅ OPCIONES SEGURAS (sin PDO::ATTR_SSL_CA)
             'options' => [
-                PDO::ATTR_SSL_VERIFY_PEER => false,
-                PDO::ATTR_SSL_VERIFY_CERT => false,
                 PDO::ATTR_TIMEOUT => 30,
-                PDO::ATTR_PERSISTENT => false,
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             ],
+        ],
+
+    ],
+
+        'migrations' => 'migrations',
+    
+    ];
             
             // ✅ Timeouts aumentados
             'timeout' => 30,
