@@ -2,15 +2,10 @@
 
 use Illuminate\Support\Str;
 
-<?php
-// config/database.php - VERSIÓN CORREGIDA PARA RAILWAY
-
 return [
-
     'default' => env('DB_CONNECTION', 'pgsql'),
 
     'connections' => [
-
         'pgsql' => [
             'driver' => 'pgsql',
             'url' => env('DATABASE_URL'),
@@ -24,18 +19,14 @@ return [
             'prefix_indexes' => true,
             'search_path' => 'public',
             'sslmode' => env('DB_SSLMODE', 'require'),
-            
-            // ✅ OPCIONES SEGURAS (sin PDO::ATTR_SSL_CA)
             'options' => [
                 PDO::ATTR_TIMEOUT => 30,
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             ],
         ],
-
     ],
 
     'migrations' => 'migrations',
-
 ];
 
     /*
