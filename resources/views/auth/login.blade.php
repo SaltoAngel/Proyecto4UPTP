@@ -1014,6 +1014,8 @@
                 </div>
             </div>
         </section>
+
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         
         <!-- Sección del formulario -->
         <section class="form-section">
