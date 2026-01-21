@@ -9,7 +9,7 @@
             <div class="card">
                 <div class="card-header pb-0">
                     <div class="d-flex align-items-center">
-                        <a href="{{ route('users.index') }}" class="btn btn-link text-dark p-0 me-3">
+                        <a href="{{ route('users.user') }}" class="btn btn-link text-dark p-0 me-3">
                             <i class="material-icons opacity-10">arrow_back</i>
                         </a>
                         <div>
@@ -22,6 +22,29 @@
                     </div>
                 </div>
                 <div class="card-body">
+                    @if(session('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <span class="alert-icon"><i class="material-icons opacity-10">check_circle</i></span>
+                        <span class="alert-text">{{ session('success') }}</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    @endif
+
+                    @if($errors->any())
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <span class="alert-icon"><i class="material-icons opacity-10">error</i></span>
+                        <span class="alert-text">
+                            <strong>Por favor corrija los siguientes errores:</strong>
+                            <ul class="mb-0">
+                                @foreach($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    @endif
+
                     <form method="POST" action="{{ route('users.update', $user->id) }}">
                         @csrf
                         @method('PUT')
@@ -34,7 +57,7 @@
                                     <div class="input-group input-group-outline">
                                         <input type="text" 
                                                class="form-control" 
-                                               value="{{ $user->persona->nombres }} {{ $user->persona->apellidos }} - {{ $user->persona->documento }}"
+                                               value="{{ optional($user->persona)->nombre_completo ?? (optional($user->persona)->nombres . ' ' . optional($user->persona)->apellidos) }} - {{ optional($user->persona)->documento ?? 'N/A' }}"
                                                readonly>
                                     </div>
                                     <small class="text-muted">La persona no puede ser modificada</small>
@@ -65,9 +88,9 @@
                                                 id="status" 
                                                 name="status" 
                                                 required>
-                                            <option value="pendiente" {{ $user->status == 'pendiente' ? 'selected' : '' }}>Pendiente</option>
-                                            <option value="activo" {{ $user->status == 'activo' ? 'selected' : '' }}>Activo</option>
-                                            <option value="inactivo" {{ $user->status == 'inactivo' ? 'selected' : '' }}>Inactivo</option>
+                                            <option value="pendiente" {{ old('status', $user->status) == 'pendiente' ? 'selected' : '' }}>Pendiente</option>
+                                            <option value="activo" {{ old('status', $user->status) == 'activo' ? 'selected' : '' }}>Activo</option>
+                                            <option value="inactivo" {{ old('status', $user->status) == 'inactivo' ? 'selected' : '' }}>Inactivo</option>
                                         </select>
                                     </div>
                                     @error('status')
@@ -76,24 +99,28 @@
                                 </div>
                             </div>
 
-                            <!-- Rol -->
+                            <!-- Rol - CAMBIA role_id POR role Y USA NOMBRES -->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="role_id" class="form-label">Rol *</label>
+                                    <label for="role" class="form-label">Rol *</label>
                                     <div class="input-group input-group-outline">
-                                        <select class="form-control @error('role_id') is-invalid @enderror" 
-                                                id="role_id" 
-                                                name="role_id" 
+                                        <select class="form-control @error('role') is-invalid @enderror" 
+                                                id="role" 
+                                                name="role" 
                                                 required>
                                             <option value="">– Seleccione un rol –</option>
                                             @foreach($roles as $role)
-                                                <option value="{{ $role->id }}" {{ $user->role_id == $role->id ? 'selected' : '' }}>
+                                                @php
+                                                    // Obtener el nombre del rol actual del usuario
+                                                    $currentRoleName = $user->roles->first()?->name;
+                                                @endphp
+                                                <option value="{{ $role->name }}" {{ old('role', $currentRoleName) == $role->name ? 'selected' : '' }}>
                                                     {{ $role->name }}
                                                 </option>
                                             @endforeach
                                         </select>
                                     </div>
-                                    @error('role_id')
+                                    @error('role')
                                         <div class="text-danger text-sm mt-1">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -125,6 +152,16 @@
                                                 </p>
                                             </div>
                                         </div>
+                                        @if($user->roles->isNotEmpty())
+                                        <div class="row mt-3">
+                                            <div class="col-12">
+                                                <p class="text-sm mb-1"><strong>Rol actual:</strong></p>
+                                                @foreach($user->roles as $role)
+                                                    <span class="badge bg-primary">{{ $role->name }}</span>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -133,7 +170,7 @@
                         <!-- Botones -->
                         <div class="row mt-4">
                             <div class="col-12 d-flex justify-content-end">
-                                <a href="{{ route('users.index') }}" class="btn btn-outline-secondary me-2">
+                                <a href="{{ route('users.user') }}" class="btn btn-outline-secondary me-2">
                                     <i class="material-icons opacity-10 me-1">cancel</i> Cancelar
                                 </a>
                                 <button type="submit" class="btn btn-primary">

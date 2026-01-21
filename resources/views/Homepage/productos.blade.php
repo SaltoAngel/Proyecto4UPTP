@@ -52,7 +52,6 @@
                             <p class="product-description">{{ $producto['descripcion_corta'] }}</p>
                             <div class="product-footer">
                                 <div>
-                                    <div class="product-price">${{ number_format($producto['precio'], 2) }}</div>
                                     <div class="product-weight">{{ $producto['peso'] }}</div>
                                 </div>
                                 <div class="product-stock {{ $claseStock }}">{{ $textoStock }}</div>
@@ -121,7 +120,7 @@
                     
                     <div class="modal-footer">
                         <button class="btn btn-secondary" onclick="closeModal()">Cerrar</button>
-                        <a href="{{ route('contacto') }}" class="btn btn-primary">Solicitar Cotización</a>
+                       <!-- <a href="{{ route('contacto') }}" class="btn btn-primary">Solicitar Cotización</a>-->
                     </div>
                 </div>
             </div>

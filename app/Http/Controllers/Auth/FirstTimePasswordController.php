@@ -1,4 +1,3 @@
-// app/Http/Controllers/Auth/FirstTimePasswordController.php
 <?php
 
 namespace App\Http\Controllers\Auth;
@@ -13,11 +12,20 @@ class FirstTimePasswordController extends Controller
 {
     public function showPasswordForm()
     {
-        if (Auth::check() && Auth::user()->status !== 'pendiente') {
+        // Solo usuarios autenticados pueden ver este formulario
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
+        $user = Auth::user();
+        
+        // Si el usuario ya no está pendiente, redirigir al dashboard
+        if ($user->status !== 'pendiente') {
             return redirect()->route('dashboard');
         }
 
-        return view('auth.first_time_password');
+        // Usar un layout diferente (no el del dashboard)
+        return view('auth.first_time_password')->with('layout', 'auth');
     }
 
     public function updatePassword(Request $request)
@@ -28,7 +36,6 @@ class FirstTimePasswordController extends Controller
                 'required',
                 'confirmed',
                 Password::min(8)
-                    ->letters()
                     ->mixedCase()
                     ->numbers()
             ],
@@ -36,13 +43,16 @@ class FirstTimePasswordController extends Controller
 
         $user = Auth::user();
 
-        // Verificar que la contraseña actual sea la cédula
-        $documento = str_replace(['.', '-'], '', $user->persona->documento);
-        
+        // Verificar que el usuario esté en estado pendiente
+        if ($user->status !== 'pendiente') {
+            return redirect()->route('dashboard')->with('info', 'Ya ha cambiado su contraseña anteriormente.');
+        }
+
+        // Verificar la contraseña ACTUAL (la que se estableció al crear el usuario)
         if (!Hash::check($request->current_password, $user->password)) {
             return back()->withErrors([
                 'current_password' => 'La contraseña actual no es correcta.'
-            ]);
+            ])->withInput();
         }
 
         // Actualizar contraseña
@@ -51,8 +61,11 @@ class FirstTimePasswordController extends Controller
             'status' => 'activo',
         ]);
 
-        Auth::login($user);
+        // Cerrar sesión para que inicie con la nueva contraseña
+        Auth::logout();
 
-        return redirect()->route('dashboard')->with('success', 'Contraseña actualizada exitosamente. Bienvenido al sistema!');
+        // Redirigir al login con mensaje de éxito
+        return redirect()->route('login')
+            ->with('success', '¡Contraseña actualizada exitosamente! Ahora puede iniciar sesión con su nueva contraseña.');
     }
 }

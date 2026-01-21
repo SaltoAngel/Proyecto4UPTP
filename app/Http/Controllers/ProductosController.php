@@ -31,7 +31,7 @@ class ProductosController extends Controller
                 'descripcion_corta' => "Fórmula especializada para cerdos en etapa de engorde, optimiza el crecimiento.",
                 'precio' => 28.50,
                 'peso' => "50 kg",
-                'imagen' => "https://i.pinimg.com/1200x/cf/ac/44/cfac445d8e744dea69f1232a4115e927.jpg",
+                'imagen' => "https://i.pinimg.com/736x/c8/20/b7/c820b79c61f0c48ad8fb5b069c22a848.jpg",
                 'stock' => 100,
                 'destacado' => true,
                 'categoria_completa' => "Alimento para Cerdos"
@@ -44,7 +44,7 @@ class ProductosController extends Controller
                 'descripcion_corta' => "Nutrición especial para pollitos en sus primeras semanas de vida.",
                 'precio' => 32.75,
                 'peso' => "50 kg",
-                'imagen' => "https://i.pinimg.com/736x/c8/20/b7/c820b79c61f0c48ad8fb5b069c22a848.jpg",
+                'imagen' => "https://i.pinimg.com/736x/51/70/0e/51700e6e8c8d11432f791bb0782ba44f.jpg",
                 'stock' => 80,
                 'destacado' => true,
                 'categoria_completa' => "Alimento para Pollos"
@@ -57,7 +57,7 @@ class ProductosController extends Controller
                 'descripcion_corta' => "Alimento para terneros recién nacidos, con nutrientes esenciales.",
                 'precio' => 35.25,
                 'peso' => "25 kg",
-                'imagen' => "https://i.pinimg.com/1200x/e5/90/a0/e590a077162a027054399c51cd3d939a.jpg",
+                'imagen' => "https://i.pinimg.com/1200x/cf/ac/44/cfac445d8e744dea69f1232a4115e927.jpg",
                 'stock' => 60,
                 'destacado' => false,
                 'categoria_completa' => "Alimento para Terneros"
@@ -70,7 +70,7 @@ class ProductosController extends Controller
                 'descripcion_corta' => "Alimento especializado para gallinas ponedoras de alta producción.",
                 'precio' => 27.80,
                 'peso' => "50 kg",
-                'imagen' => "https://images.unsplash.com/photo-1542838135-2d7f3f6d5b3f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+                'imagen' => "https://images.unsplash.com/photo-1589923188651-268a9765e432?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
                 'stock' => 120,
                 'destacado' => true,
                 'categoria_completa' => "Alimento para Gallinas"
@@ -83,7 +83,7 @@ class ProductosController extends Controller
                 'descripcion_corta' => "Nutrición completa para caballos de trabajo y deporte.",
                 'precio' => 42.90,
                 'peso' => "50 kg",
-                'imagen' => "https://images.unsplash.com/photo-1589923188651-268a9765e432?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+                'imagen' => "https://i.pinimg.com/1200x/e5/90/a0/e590a077162a027054399c51cd3d939a.jpg",
                 'stock' => 40,
                 'destacado' => false,
                 'categoria_completa' => "Alimento para Equinos"
