@@ -2,16 +2,35 @@
 /**
  * Modelo: User
  * Propósito: Representa a los usuarios del sistema (autenticación, estados, verificación).
+ * 
+ * Combina características de ambas versiones:
+ * - Sistema de bitácora y eventos del primer archivo
+ * - Métodos de verificación del segundo archivo
+ * - Sistema de 2FA avanzado (deshabilitado pero disponible)
+ * - Spatie Permission ya maneja roles automáticamente
+ * 
  * Relaciones:
  *  - persona(): belongsTo Personas (datos personales)
+ *  - roles: belongsToMany (manejado por Spatie\Permission)
+ * 
  * Atributos relevantes:
  *  - status, last_login_at, is_verified, verification_code
+ *  - login_count, first_login_completed, next_2fa_attempt
+ * 
  * Scopes:
  *  - scopeActive(), scopeVerified()
+ * 
  * Utilidades:
  *  - getFullNameAttribute(): obtiene nombre completo desde persona
+ *  - isPending(): verifica si el usuario está pendiente
+ *  - isValidVerificationCode(): valida código de verificación (30 min)
+ *  - generateVerificationCode(): genera nuevo código
+ *  - markAsVerified(): marca usuario como verificado
+ * 
  * Nota:
  *  - Métodos 2FA están presentes pero deshabilitados (comentados)
+ *  - Sistema de bitácora activo para auditoría
+ *  - Spatie\Permission maneja roles automáticamente (no necesita relación role())
  */
 
 namespace App\Models;
@@ -35,7 +54,6 @@ class User extends Authenticatable
     protected $fillable = [
         'email',
         'password',
-        'role_id',
         'persona_id',
         'status',
         'last_login_at',
@@ -45,25 +63,37 @@ class User extends Authenticatable
         'login_count',
         'first_login_completed',
         'next_2fa_attempt'
+        // Nota: 'email_verified_at' no está en fillable porque se maneja con markAsVerified()
     ];
 
+    /**
+     * Atributos ocultos en serializaciones (JSON, arrays)
+     */
     protected $hidden = [
         'password',
         'remember_token',
         'verification_code'
     ];
 
+    /**
+     * Casts de atributos para conversión automática de tipos
+     */
     protected $casts = [
         'email_verified_at' => 'datetime',
         'last_login_at' => 'datetime',
         'verification_code_sent_at' => 'datetime',
         'is_verified' => 'boolean',
         'first_login_completed' => 'boolean',
-        'next_2fa_attempt' => 'integer'
+        'next_2fa_attempt' => 'integer',
+        'created_at' => 'datetime', // Agregado del segundo archivo
+        'updated_at' => 'datetime', // Agregado del segundo archivo
     ];
 
+    /**
+     * Valores por defecto para nuevos registros
+     */
     protected $attributes = [
-        'status' => 'activo',
+        'status' => 'pendiente', // Cambiado de 'activo' a 'pendiente' (del segundo archivo)
         'login_count' => 0,
         'first_login_completed' => false,
         'is_verified' => false
@@ -72,7 +102,7 @@ class User extends Authenticatable
     // ===== MÉTODOS DE AUTENTICACIÓN 2FA - DESHABILITADOS =====
     
     /**
-     * Generar código de verificación
+     * Generar código de verificación (versión avanzada)
      */
     // public function generateVerificationCode()
     // {
@@ -88,7 +118,7 @@ class User extends Authenticatable
     // }
 
     /**
-     * Verificar código
+     * Verificar código (versión avanzada - 15 minutos)
      */
     // public function verifyCode($code)
     // {
@@ -201,6 +231,69 @@ class User extends Authenticatable
     
     // ===== FIN MÉTODOS 2FA =====
 
+    // ===== MÉTODOS DEL SEGUNDO ARCHIVO =====
+
+    /**
+     * Verificar si el usuario está pendiente
+     * (Del segundo archivo)
+     * 
+     * @return bool True si el estado es 'pendiente'
+     */
+    public function isPending(): bool
+    {
+        return $this->status === 'pendiente';
+    }
+
+    /**
+     * Verificar si el código de verificación es válido
+     * (Del segundo archivo - validez de 30 minutos)
+     * 
+     * @param string $code Código a verificar
+     * @return bool True si el código es válido y no ha expirado
+     */
+    public function isValidVerificationCode($code): bool
+    {
+        return $this->verification_code === $code && 
+               $this->verification_code_sent_at &&
+               $this->verification_code_sent_at->addMinutes(30)->isFuture();
+    }
+
+    /**
+     * Generar código de verificación
+     * (Del segundo archivo - versión básica)
+     * 
+     * @return string Código de 6 dígitos
+     */
+    public function generateVerificationCode(): string
+    {
+        $code = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+        $this->update([
+            'verification_code' => $code,
+            'verification_code_sent_at' => now(),
+        ]);
+        return $code;
+    }
+
+    /**
+     * Marcar como verificado
+     * (Del segundo archivo)
+     * 
+     * Limpia el código de verificación y marca el email como verificado
+     */
+    public function markAsVerified(): void
+    {
+        $this->update([
+            'verification_code' => null,
+            'verification_code_sent_at' => null,
+            'email_verified_at' => now(),
+            'status' => 'activo', // Cambia estado de 'pendiente' a 'activo' al verificar
+        ]);
+    }
+
+    // ===== FIN MÉTODOS DEL SEGUNDO ARCHIVO =====
+
+    // ===== SCOPES Y MÉTODOS DEL PRIMER ARCHIVO =====
+
     /**
      * Scope para usuarios activos
      */
@@ -226,28 +319,6 @@ class User extends Authenticatable
     }
 
     /**
-     * Relación: el usuario pertenece a una persona (opcionalmente).
-     */
-    public function persona()
-    {
-        return $this->belongsTo(Personas::class, 'persona_id');
-    }
-
-    /**
-     * Accesor: nombre completo desde la persona relacionada.
-     */
-        // Mejorado (con seguridad):
-        public function getFullNameAttribute()
-        {
-            // Verificar que la relación esté cargada y exista
-            if (!$this->relationLoaded('persona')) {
-                $this->load('persona');
-            }
-            
-            return optional($this->persona)->full_name;
-        }
-
-    /**
      * Verificar si el usuario está verificado
      */
     public function isVerified()
@@ -255,6 +326,65 @@ class User extends Authenticatable
         return $this->is_verified;
     }
 
+    // ===== RELACIONES =====
+
+    /**
+     * Relación: el usuario pertenece a una persona
+     * (Del primer archivo - Personas::class)
+     * 
+     * Nota: Se mantiene el nombre Personas::class según el primer archivo
+     */
+    public function persona()
+    {
+        return $this->belongsTo(Personas::class, 'persona_id');
+    }
+
+    /**
+     * NOTA: No se necesita relación role() explícita
+     * Spatie\Permission\Traits\HasRoles ya provee:
+     * - $user->roles (belongsToMany)
+     * - $user->assignRole()
+     * - $user->removeRole()
+     * - $user->hasRole()
+     * - $user->hasAllRoles()
+     * - $user->hasAnyRole()
+     * 
+     * El campo 'role_id' en $fillable se mantiene por compatibilidad,
+     * pero Spatie usa su propia tabla 'model_has_roles'
+     */
+
+    /**
+ * Accesor: nombre del rol (para compatibilidad con vistas)
+ * Reemplaza el uso de $user->role->name
+ */
+public function getRoleNameAttribute()
+{
+    return $this->roles->first()?->name ?? 'Sin rol';
+}
+
+
+    /**
+     * Accesor: nombre completo desde la persona relacionada.
+     * (Del primer archivo - con seguridad mejorada)
+     */
+    public function getFullNameAttribute()
+    {
+        // Verificar que la relación esté cargada y exista
+        if (!$this->relationLoaded('persona')) {
+            $this->load('persona');
+        }
+        
+        return optional($this->persona)->full_name;
+    }
+
+
+
+    // ===== SISTEMA DE BITÁCORA (DEL PRIMER ARCHIVO) =====
+
+    /**
+     * Booted: Configuración de eventos del modelo
+     * Sistema completo de bitácora para auditoría
+     */
     protected static function booted()
     {
         // Sanitiza datos para no registrar credenciales en bitácora
@@ -262,6 +392,7 @@ class User extends Authenticatable
             ->except(['password', 'remember_token', 'verification_code'])
             ->toArray();
 
+        // Evento: Cuando se crea un nuevo usuario
         static::created(function (User $user) use ($filtrar) {
             Bitacora::registrar(
                 'usuarios',
@@ -272,6 +403,7 @@ class User extends Authenticatable
             );
         });
 
+        // Evento: Antes de actualizar un usuario
         static::updating(function (User $user) use ($filtrar) {
             $original = $filtrar($user->getOriginal());
             $changes = $user->getDirty();
@@ -286,6 +418,7 @@ class User extends Authenticatable
             $accion = 'actualizar';
             $detalle = 'Actualizó usuario ID ' . $user->id;
 
+            // Detectar cambios específicos de estado
             if (array_key_exists('status', $changes)) {
                 $nuevo = $changes['status'];
                 $anterior = $original['status'] ?? null;
@@ -310,6 +443,7 @@ class User extends Authenticatable
             );
         });
 
+        // Evento: Cuando se elimina (soft delete) un usuario
         static::deleted(function (User $user) use ($filtrar) {
             Bitacora::registrar(
                 'usuarios',
@@ -320,6 +454,7 @@ class User extends Authenticatable
             );
         });
 
+        // Evento: Cuando se restaura un usuario eliminado
         static::restored(function (User $user) use ($filtrar) {
             Bitacora::registrar(
                 'usuarios',

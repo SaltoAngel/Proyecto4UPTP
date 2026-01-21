@@ -17,30 +17,35 @@ class UsuariosSeeder extends Seeder
                 'name' => 'Daniel Perez', 
                 'email' => 'danielelpro19@gmail.com', 
                 'role' => 'superadmin',
+                'status' => 'activo',
                 'telefono' => '04121234567'
             ],
             [
                 'name' => 'Mariexi Oviedo', 
                 'email' => 'mariexioviedo@gmail.com', 
                 'role' => 'superadmin',
+                'status' => 'activo',
                 'telefono' => '04121234568'
             ],
             [
                 'name' => 'Elyanni Túa', 
                 'email' => 'elyannitua@gmail.com', 
                 'role' => 'superadmin',
+                'status' => 'activo',
                 'telefono' => '04121234569'
             ],
             [
                 'name' => 'Gabriela Rivero', 
                 'email' => 'grivero115@gmail.com', 
                 'role' => 'superadmin',
+                'status' => 'activo',
                 'telefono' => '04121234570'
             ],
             [
                 'name' => 'Maria Falcon', 
                 'email' => 'mfrosendo07@gmail.com', 
-                'role' => 'superadmin',
+                'role' => 'supervisor',
+                'status'=> 'activo',
                 'telefono' => '04121234571'
             ],
         ];
@@ -112,8 +117,6 @@ class UsuariosSeeder extends Seeder
                 ]);
             }
             
-            $roleId = $role->id;
-            
             // Verificar si el usuario ya existe
             $existingUser = DB::table('users')->where('email', $u['email'])->first();
             
@@ -123,7 +126,6 @@ class UsuariosSeeder extends Seeder
                     'email' => $u['email'],
                     'email_verified_at' => now(),
                     'password' => Hash::make('12345678'),
-                    'role_id' => $roleId,
                     'persona_id' => $personaId,
                     'status' => 'activo',
                     'last_login_at' => now()->subDays(rand(1, 30)),
@@ -138,7 +140,6 @@ class UsuariosSeeder extends Seeder
                     'email' => $u['email'],
                     'email_verified_at' => now(),
                     'password' => Hash::make('12345678'),
-                    'role_id' => $roleId,
                     'persona_id' => $personaId,
                     'status' => 'activo',
                     'last_login_at' => now()->subDays(rand(1, 30)),

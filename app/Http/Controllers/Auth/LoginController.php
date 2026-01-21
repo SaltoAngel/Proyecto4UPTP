@@ -61,8 +61,30 @@ class LoginController extends Controller
         $user = Auth::user();
         $request->session()->regenerate();
 
-        // Verificar estado del usuario
-        if ($user->status !== 'activo') {
+        // ============ AQUÍ ESTÁ LA REDIRECCIÓN IMPORTANTE ============
+        // Verificar estado del usuario y redirigir según corresponda
+        if ($user->status === 'pendiente') {
+            // Usuario pendiente: redirigir al formulario de primer acceso
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Debe cambiar su contraseña por primera vez',
+                    'redirect' => route('password.first_time_form'),
+                    'user' => [
+                        'id' => $user->id,
+                        'name' => $user->full_name,
+                        'email' => $user->email,
+                        'role' => $user->role->name ?? null,
+                        'status' => $user->status
+                    ]
+                ]);
+            }
+            
+            // Redirigir al formulario de primer acceso
+            return redirect()->route('password.first_time_form');
+            
+        } elseif ($user->status !== 'activo') {
+            // Usuario con otro estado (bloqueado, inactivo, etc.)
             Auth::logout();
             
             if ($request->expectsJson()) {
@@ -76,7 +98,9 @@ class LoginController extends Controller
                 'email' => 'Tu cuenta está ' . $user->status,
             ]);
         }
+        // ============ FIN DE LA REDIRECCIÓN ============
 
+        // Si llegamos aquí, el usuario está 'activo'
         // Actualizar último login
         $user->update(['last_login_at' => now()]);
 
@@ -107,6 +131,7 @@ class LoginController extends Controller
                     'name' => $user->full_name,
                     'email' => $user->email,
                     'role' => $user->role->name ?? null,
+                    'status' => $user->status
                 ]
             ]);
         }
