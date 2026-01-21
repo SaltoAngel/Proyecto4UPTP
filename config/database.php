@@ -101,7 +101,6 @@ return [
             'sslmode' => 'require', // ← FORZAR, no usar env()
             // ✅ Opciones de conexión
             'options' => [
-                PDO::ATTR_SSL_CA => null,
                 PDO::ATTR_SSL_VERIFY_PEER => false,
                 PDO::ATTR_SSL_VERIFY_CERT => false,
                 PDO::ATTR_TIMEOUT => 30,
