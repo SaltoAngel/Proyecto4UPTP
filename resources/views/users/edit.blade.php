@@ -78,28 +78,8 @@
                             </div>
                         </div>
 
-                        <!-- Estado -->
+                        <!-- Solo Rol - Se eliminó el campo de estado -->
                         <div class="row mt-3">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="status" class="form-label">Estado *</label>
-                                    <div class="input-group input-group-outline">
-                                        <select class="form-control @error('status') is-invalid @enderror" 
-                                                id="status" 
-                                                name="status" 
-                                                required>
-                                            <option value="pendiente" {{ old('status', $user->status) == 'pendiente' ? 'selected' : '' }}>Pendiente</option>
-                                            <option value="activo" {{ old('status', $user->status) == 'activo' ? 'selected' : '' }}>Activo</option>
-                                            <option value="inactivo" {{ old('status', $user->status) == 'inactivo' ? 'selected' : '' }}>Inactivo</option>
-                                        </select>
-                                    </div>
-                                    @error('status')
-                                        <div class="text-danger text-sm mt-1">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <!-- Rol - CAMBIA role_id POR role Y USA NOMBRES -->
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="role" class="form-label">Rol *</label>
@@ -125,6 +105,31 @@
                                     @enderror
                                 </div>
                             </div>
+                            
+                            <!-- Estado (solo visual, no editable) -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Estado Actual</label>
+                                    <div class="input-group input-group-outline">
+                                        @if($user->status == 'activo')
+                                            <span class="badge bg-success py-2 px-3 w-100 text-center" style="font-size: 0.9rem;">
+                                                <i class="material-icons opacity-10 me-1">check_circle</i> Activo
+                                            </span>
+                                        @elseif($user->status == 'pendiente')
+                                            <span class="badge bg-warning py-2 px-3 w-100 text-center" style="font-size: 0.9rem;">
+                                                <i class="material-icons opacity-10 me-1">pending</i> Pendiente
+                                            </span>
+                                        @else
+                                            <span class="badge bg-danger py-2 px-3 w-100 text-center" style="font-size: 0.9rem;">
+                                                <i class="material-icons opacity-10 me-1">block</i> Inactivo
+                                            </span>
+                                        @endif
+                                    </div>
+                                    <small class="text-muted">
+                                        El estado se gestiona desde la tabla principal usando los botones de activar/desactivar
+                                    </small>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Información adicional -->
@@ -137,18 +142,30 @@
                                             Información del Usuario
                                         </h6>
                                         <div class="row">
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
                                                 <p class="text-sm mb-1"><strong>Fecha de creación:</strong></p>
                                                 <p class="text-sm">{{ $user->created_at->format('d/m/Y H:i') }}</p>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
                                                 <p class="text-sm mb-1"><strong>Última actualización:</strong></p>
                                                 <p class="text-sm">{{ $user->updated_at->format('d/m/Y H:i') }}</p>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
                                                 <p class="text-sm mb-1"><strong>Último acceso:</strong></p>
                                                 <p class="text-sm">
                                                     {{ $user->last_login_at ? $user->last_login_at->format('d/m/Y H:i') : 'Nunca' }}
+                                                </p>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <p class="text-sm mb-1"><strong>Estado:</strong></p>
+                                                <p class="text-sm">
+                                                    @if($user->status == 'activo')
+                                                        <span class="badge bg-success">Activo</span>
+                                                    @elseif($user->status == 'pendiente')
+                                                        <span class="badge bg-warning">Pendiente</span>
+                                                    @else
+                                                        <span class="badge bg-danger">Inactivo</span>
+                                                    @endif
                                                 </p>
                                             </div>
                                         </div>
@@ -193,6 +210,9 @@
     }
     .card.bg-gray-100 {
         border: 1px solid #e9ecef;
+    }
+    .badge.py-2 {
+        line-height: 1.5;
     }
 </style>
 @endpush

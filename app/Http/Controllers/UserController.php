@@ -270,24 +270,24 @@ class UserController extends Controller
         return view('users.edit', compact('user', 'roles'));
     }
 
-    public function update(Request $request, $id)
-    {
-        $user = User::findOrFail($id);
+public function update(Request $request, $id)
+{
+    $user = User::findOrFail($id);
 
-        $request->validate([
-            'role' => 'required|exists:roles,name', // Cambiar a role (nombre)
-            'status' => 'required|in:pendiente,activo,inactivo',
-        ]);
+    // Validar solo el rol (ya no el estado)
+    $request->validate([
+        'role' => 'required|exists:roles,name', // Solo validar rol
+        // 'status' => 'required|in:pendiente,activo,inactivo', // <-- Eliminado
+    ]);
 
-        $user->update([
-            'status' => $request->status,
-        ]);
+    // NO actualizar el estado aquí
+    // $user->update(['status' => $request->status]); // <-- Eliminado
 
-        // Sincronizar rol por NOMBRE (Spatie)
-        $user->syncRoles([$request->role]);
+    // Sincronizar rol por NOMBRE (Spatie)
+    $user->syncRoles([$request->role]);
 
-        return redirect()->route('users.user')->with('success', 'Usuario actualizado exitosamente.');
-    }
+    return redirect()->route('users.user')->with('success', 'Usuario actualizado exitosamente.');
+}
 
     public function destroy($id)
     {
