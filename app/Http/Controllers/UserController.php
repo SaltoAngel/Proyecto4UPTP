@@ -342,4 +342,24 @@ class UserController extends Controller
             ], 500);
         }
     }
+
+    public function activate(User $user)
+{
+    $user->update(['status' => 'activo']);
+    
+    return response()->json([
+        'success' => true,
+        'message' => 'Usuario activado correctamente'
+    ]);
+}
+
+public function deactivate(User $user)
+{
+    $user->update(['status' => 'inactivo']);
+    
+    return response()->json([
+        'success' => true,
+        'message' => 'Usuario desactivado correctamente'
+    ]);
+}
 }

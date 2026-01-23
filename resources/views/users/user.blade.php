@@ -91,18 +91,18 @@
                         </td>
                         <td>
                             @if($user->status == 'activo')
-                                <span class="badge bg-success">Activo</span>
+                                <span class="badge bg-success estado-usuario">Activo</span>
                             @elseif($user->status == 'pendiente')
-                                <span class="badge bg-warning">Pendiente</span>
+                                <span class="badge bg-warning estado-usuario">Pendiente</span>
                             @else
-                                <span class="badge bg-danger">Inactivo</span>
+                                <span class="badge bg-danger estado-usuario">Inactivo</span>
                             @endif
                         </td>
                         <td>
                             {{ $user->last_login_at ? $user->last_login_at->format('d/m/Y H:i') : 'Nunca' }}
                         </td>
                         <td>
-                            <div class="btn-group btn-group-sm acciones-usuario">
+                            <div class="btn-group btn-group-sm acciones-usuario" data-user-id="{{ $user->id }}">
                                 <a href="{{ route('users.show', $user->id) }}" 
                                    class="btn btn-info" 
                                    data-bs-toggle="tooltip" 
@@ -115,17 +115,39 @@
                                    title="Editar">
                                     <i class="material-icons">edit</i>
                                 </a>
-                                <form action="{{ route('users.destroy', $user->id) }}" method="POST" class="d-inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" 
-                                            class="btn btn-danger" 
+                                
+                                {{-- Botones de activar/desactivar para todos los estados --}}
+                                @if($user->status == 'activo')
+                                    <button type="button" 
+                                            class="btn btn-danger btn-desactivar-usuario" 
                                             data-bs-toggle="tooltip" 
-                                            title="Eliminar"
-                                            onclick="return confirm('¿Está seguro de eliminar este usuario?')">
-                                        <i class="material-icons">delete</i>
+                                            title="Desactivar usuario"
+                                            data-id="{{ $user->id }}"
+                                            data-status="{{ $user->status }}"
+                                            data-url="{{ route('users.deactivate', $user->id) }}">
+                                        <i class="material-icons">block</i>
                                     </button>
-                                </form>
+                                @elseif($user->status == 'inactivo')
+                                    <button type="button" 
+                                            class="btn btn-success btn-activar-usuario" 
+                                            data-bs-toggle="tooltip" 
+                                            title="Activar usuario"
+                                            data-id="{{ $user->id }}"
+                                            data-status="{{ $user->status }}"
+                                            data-url="{{ route('users.activate', $user->id) }}">
+                                        <i class="material-icons">check_circle</i>
+                                    </button>
+                                @elseif($user->status == 'pendiente')
+                                    <button type="button" 
+                                            class="btn btn-danger btn-desactivar-usuario" 
+                                            data-bs-toggle="tooltip" 
+                                            title="Desactivar usuario"
+                                            data-id="{{ $user->id }}"
+                                            data-status="{{ $user->status }}"
+                                            data-url="{{ route('users.deactivate', $user->id) }}">
+                                        <i class="material-icons">block</i>
+                                    </button>
+                                @endif
                             </div>
                         </td>
                     </tr>
@@ -175,6 +197,180 @@ $(document).ready(function() {
         let i = 1;
         tabla.cells(null, 0, { search: 'applied', order: 'applied' }).every(function() {
             this.data(i++);
+        });
+    });
+
+    // Asegurar token CSRF en todas las peticiones AJAX
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    // Desactivar usuario
+    $(document).on('click', '.btn-desactivar-usuario', function(e) {
+        e.preventDefault();
+        const boton = $(this);
+        const url = boton.data('url');
+        const id = boton.data('id');
+        const status = boton.data('status'); // Obtener el estado actual
+        const fila = boton.closest('tr');
+        
+        // Si el usuario está en estado "pendiente", mostrar mensaje especial
+        if (status === 'pendiente') {
+            Swal.fire({
+                title: 'Usuario pendiente',
+                html: 'Este usuario no puede ser desactivado porque:<br>' +
+                      '• <strong>No ha cambiado su contraseña por primera vez</strong><br>' +
+                      '• <strong>No ha iniciado sesión en el sistema</strong><br><br>' +
+                      'Solo podrá ser desactivado cuando complete su primer inicio de sesión ' +
+                      'y cambie su contraseña, cambiando su estado a "Activo".',
+                icon: 'warning',
+                showCancelButton: false,
+                confirmButtonText: 'Entendido',
+                confirmButtonColor: '#3085d6'
+            });
+            return;
+        }
+
+        // Para usuarios activos, mostrar confirmación normal
+        Swal.fire({
+            title: 'Desactivar usuario',
+            text: 'El usuario no podrá acceder al sistema hasta que sea reactivado.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, desactivar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (!result.isConfirmed) return;
+
+            $.ajax({
+                url: url,
+                method: 'POST',
+                data: { _method: 'PUT' },
+                success: function(response) {
+                    if (!response || response.success === false) {
+                        Swal.fire({ 
+                            icon: 'error', 
+                            title: 'Error', 
+                            text: response?.message || 'No se pudo desactivar el usuario' 
+                        });
+                        return;
+                    }
+                    
+                    Swal.fire({ 
+                        icon: 'success', 
+                        title: 'Usuario desactivado', 
+                        text: response.message || 'Usuario desactivado correctamente', 
+                        timer: 1500, 
+                        showConfirmButton: false 
+                    });
+                    
+                    // Actualizar estado visual
+                    fila.find('.estado-usuario')
+                        .removeClass('bg-success')
+                        .addClass('bg-danger')
+                        .text('Inactivo');
+                    
+                    // Actualizar el estado en el botón
+                    boton.data('status', 'inactivo');
+                    
+                    // Cambiar el botón de desactivar por botón de activar
+                    const activateUrl = "{{ route('users.activate', ':id') }}".replace(':id', id);
+                    boton.replaceWith(
+                        `<button type="button" class="btn btn-success btn-activar-usuario" 
+                                data-bs-toggle="tooltip" title="Activar usuario"
+                                data-id="${id}" data-status="inactivo" data-url="${activateUrl}">
+                            <i class="material-icons">check_circle</i>
+                        </button>`
+                    );
+                    
+                    // Actualizar DataTable
+                    tabla.row(fila).invalidate().draw(false);
+                },
+                error: function() {
+                    Swal.fire({ 
+                        icon: 'error', 
+                        title: 'Error', 
+                        text: 'No se pudo desactivar el usuario' 
+                    });
+                }
+            });
+        });
+    });
+
+    // Activar usuario
+    $(document).on('click', '.btn-activar-usuario', function(e) {
+        e.preventDefault();
+        const boton = $(this);
+        const url = boton.data('url');
+        const id = boton.data('id');
+        const status = boton.data('status');
+        const fila = boton.closest('tr');
+
+        Swal.fire({
+            title: 'Activar usuario',
+            text: 'El usuario podrá acceder al sistema nuevamente.',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, activar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (!result.isConfirmed) return;
+
+            $.ajax({
+                url: url,
+                method: 'POST',
+                data: { _method: 'PUT' },
+                success: function(response) {
+                    if (!response || response.success === false) {
+                        Swal.fire({ 
+                            icon: 'error', 
+                            title: 'Error', 
+                            text: response?.message || 'No se pudo activar el usuario' 
+                        });
+                        return;
+                    }
+                    
+                    Swal.fire({ 
+                        icon: 'success', 
+                        title: 'Usuario activado', 
+                        text: response.message || 'Usuario activado correctamente', 
+                        timer: 1500, 
+                        showConfirmButton: false 
+                    });
+                    
+                    // Actualizar estado visual
+                    fila.find('.estado-usuario')
+                        .removeClass('bg-danger')
+                        .addClass('bg-success')
+                        .text('Activo');
+                    
+                    // Actualizar el estado en el botón
+                    boton.data('status', 'activo');
+                    
+                    // Cambiar el botón de activar por botón de desactivar
+                    const deactivateUrl = "{{ route('users.deactivate', ':id') }}".replace(':id', id);
+                    boton.replaceWith(
+                        `<button type="button" class="btn btn-danger btn-desactivar-usuario" 
+                                data-bs-toggle="tooltip" title="Desactivar usuario"
+                                data-id="${id}" data-status="activo" data-url="${deactivateUrl}">
+                            <i class="material-icons">block</i>
+                        </button>`
+                    );
+                    
+                    // Actualizar DataTable
+                    tabla.row(fila).invalidate().draw(false);
+                },
+                error: function(xhr) {
+                    const msg = xhr?.responseJSON?.message || 'No se pudo activar el usuario';
+                    Swal.fire({ 
+                        icon: 'error', 
+                        title: 'Error', 
+                        text: msg 
+                    });
+                }
+            });
         });
     });
 });

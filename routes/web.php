@@ -123,6 +123,10 @@ Route::middleware([Authenticate::class, CheckStatus::class])->group(function () 
         Route::get('/{user}/editar', [UserController::class, 'edit'])->name('edit');
         Route::put('/{user}', [UserController::class, 'update'])->name('update');
         Route::delete('/{user}', [UserController::class, 'destroy'])->name('destroy');
+
+        // Agrega estas rutas para activar/desactivar - CORREGIDO
+    Route::put('/{user}/activate', [UserController::class, 'activate'])->name('activate'); // <-- Cambiado
+    Route::put('/{user}/deactivate', [UserController::class, 'deactivate'])->name('deactivate'); // <-- Cambiado
     });
 });
 
