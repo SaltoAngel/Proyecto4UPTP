@@ -39,10 +39,14 @@
                 <p class="text-muted mb-0">Administre los usuarios del sistema</p>
             </div>
             <div>
-                <a href="{{ route('users.create') }}" class="btn btn-primary">
-                    <i class="material-icons me-2">person_add</i>Nuevo Usuario
-                </a>
-            </div>
+    <!-- Botón para abrir modal -->
+    <button type="button" 
+            class="btn btn-primary" 
+            data-bs-toggle="modal" 
+            data-bs-target="#crearUsuarioModal">
+        <i class="material-icons me-2">person_add</i>Nuevo Usuario
+    </button>
+</div>
         </div>
     </div>
 </div>
@@ -164,6 +168,11 @@
         </div>
     </div>
 </div>
+
+<!-- Incluir el modal -->
+@include('users.modal-create')
+
+
 @endsection
 
 @push('scripts')
