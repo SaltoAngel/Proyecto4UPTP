@@ -288,21 +288,34 @@ class UserController extends Controller
         return view('users.edit', compact('user', 'roles'));
     }
 
-    public function update(Request $request, $id)
-    {
-        $user = User::findOrFail($id);
+    // En UserController.php, modifica el método update
+public function update(Request $request, $id)
+{
+    $user = User::findOrFail($id);
 
-        // Validar solo el rol (ya no el estado)
-        $request->validate([
-            'role' => 'required|exists:roles,name',
-        ]);
+    // Validar solo el rol
+    $request->validate([
+        'role' => 'required|exists:roles,name',
+    ]);
 
+    try {
         // Sincronizar rol por NOMBRE (Spatie)
         $user->syncRoles([$request->role]);
 
-        return redirect()->route('users.user')->with('success', 'Usuario actualizado exitosamente.');
-    }
+        // SIEMPRE devolver JSON para peticiones AJAX
+        return response()->json([
+            'success' => true,
+            'message' => 'Usuario actualizado exitosamente.'
+        ]);
 
+    } catch (\Exception $e) {
+        // Devolver error en formato JSON
+        return response()->json([
+            'success' => false,
+            'message' => 'Error al actualizar el usuario: ' . $e->getMessage()
+        ], 500);
+    }
+}
     public function destroy($id)
     {
         $user = User::findOrFail($id);

@@ -113,12 +113,22 @@
                                    title="Ver detalles">
                                     <i class="material-icons">visibility</i>
                                 </a>
-                                <a href="{{ route('users.edit', $user->id) }}" 
-                                   class="btn btn-warning" 
-                                   data-bs-toggle="tooltip" 
-                                   title="Editar">
-                                    <i class="material-icons">edit</i>
-                                </a>
+                <!-- En tu vista user.blade.php, modifica el botón de editar dentro del foreach: -->
+<button class="btn btn-sm btn-warning" 
+        data-bs-toggle="modal" 
+        data-bs-target="#editarUsuarioModal"
+        data-id="{{ $user->id }}"
+        data-persona-info="{{ optional($user->persona)->nombres ?? 'N/A' }} {{ optional($user->persona)->apellidos ?? '' }} - {{ optional($user->persona)->documento ?? 'N/A' }}"
+        data-email="{{ $user->email }}"
+        data-status="{{ $user->status }}"
+        data-created="{{ $user->created_at->format('d/m/Y H:i') }}"
+        data-updated="{{ $user->updated_at->format('d/m/Y H:i') }}"
+        data-last-login="{{ $user->last_login_at ? $user->last_login_at->format('d/m/Y H:i') : 'Nunca' }}"
+        data-rol-actual="{{ $user->roles->first()->name ?? '' }}"
+        data-roles="{{ json_encode($roles) }}">
+    <i class="material-icons">edit</i>
+</button>
+
                                 
                                 {{-- Botones de activar/desactivar para todos los estados --}}
                                 @if($user->status == 'activo')
@@ -171,6 +181,7 @@
 
 <!-- Incluir el modal -->
 @include('users.modal-create')
+@include('users.edit')
 
 
 @endsection
