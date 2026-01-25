@@ -17,7 +17,7 @@
 <div class="modal fade" id="editarUsuarioModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
+            <div class="modal-header bg-warning text-white">
                 <h5 class="modal-title text-white">
                     <i class="material-icons me-2">edit</i>Editar Usuario
                 </h5>
@@ -48,7 +48,7 @@
                         <!-- Información de la Persona (solo lectura) -->
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="form-label">Persona</label>
+                                <label class="form-label fw-bold">Persona</label>
                                 <div class="input-group input-group-outline">
                                     <input type="text" 
                                            class="form-control" 
@@ -62,7 +62,7 @@
                         <!-- Email (solo lectura) -->
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="form-label">Correo electrónico</label>
+                                <label class="form-label fw-bold">Correo electrónico</label>
                                 <div class="input-group input-group-outline">
                                     <input type="email" 
                                            class="form-control" 
@@ -77,7 +77,7 @@
                     <div class="row mt-3">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="role" class="form-label">Rol *</label>
+                                <label for="role" class="form-label fw-bold">Rol *</label>
                                 <div class="input-group input-group-outline">
                                     <select class="form-control" 
                                             id="role" 
@@ -94,7 +94,7 @@
                         <!-- Estado (solo visual, no editable) -->
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="form-label">Estado Actual</label>
+                                <label class="form-label fw-bold">Estado Actual</label>
                                 <div class="input-group input-group-outline">
                                     <div id="estadoBadge" class="badge py-2 px-3 w-100 text-center" style="font-size: 0.9rem;"></div>
                                 </div>
@@ -105,7 +105,7 @@
                         </div>
                     </div>
 
-                    <!-- Información adicional -->
+                    <!-- Información adicional 
                     <div class="row mt-3">
                         <div class="col-12">
                             <div class="card bg-gray-100">
@@ -137,7 +137,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">

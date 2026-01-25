@@ -41,7 +41,7 @@
             <div>
     <!-- Botón para abrir modal -->
     <button type="button" 
-            class="btn btn-primary" 
+            class="btn btn-success" 
             data-bs-toggle="modal" 
             data-bs-target="#crearUsuarioModal">
         <i class="material-icons me-2">person_add</i>Nuevo Usuario
@@ -72,10 +72,6 @@
                     <tr data-user-id="{{ $user->id }}">
                         <td>{{ $loop->iteration + ($users->currentPage() - 1) * $users->perPage() }}</td>
                         <td>
-                            <div class="d-flex align-items-center">
-                                <div class="avatar-inicial bg-primary me-3">
-                                    {{ strtoupper(substr($user->persona->nombres ?? 'U', 0, 1)) }}
-                                </div>
                                 <div>
                                     <strong>{{ $user->persona->nombres ?? 'N/A' }} {{ $user->persona->apellidos ?? '' }}</strong>
                                     @if($user->username)

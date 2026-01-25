@@ -2,7 +2,7 @@
 <div class="modal fade" id="crearUsuarioModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
+            <div class="modal-header bg-success text-white">
                 <h5 class="modal-title text-white">
                     <i class="material-icons me-2 text-white">person_add</i>Registrar Nuevo Usuario
                 </h5>
@@ -50,7 +50,7 @@
                         <!-- Selección de Persona -->
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="persona_id" class="form-label">Persona *</label>
+                                <label for="persona_id" class="form-label fw-bold">Persona *</label>
                                 <div class="input-group input-group-outline">
                                     <select class="form-control @error('persona_id') is-invalid @enderror" 
                                             id="persona_id" 
@@ -78,7 +78,7 @@
                         <!-- Correo Electrónico -->
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="email" class="form-label">Correo electrónico *</label>
+                                <label for="email" class="form-label fw-bold">Correo electrónico *</label>
                                 <div class="input-group input-group-outline">
                                     <input type="email" 
                                            class="form-control @error('email') is-invalid @enderror" 
@@ -109,7 +109,7 @@
                     <div class="row mt-3" id="verificationCodeGroup" style="display: none;">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="verification_code" class="form-label">Código de verificación *</label>
+                                <label for="verification_code" class="form-label fw-bold">Código de verificación *</label>
                                 <div class="input-group input-group-outline">
                                     <input type="text" 
                                            class="form-control @error('verification_code') is-invalid @enderror" 
@@ -144,7 +144,7 @@
                     <div class="row mt-3">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="password" class="form-label">Contraseña *</label>
+                                <label for="password" class="form-label fw-bold">Contraseña *</label>
                                 <div class="input-group input-group-outline">
                                     <input type="password" 
                                            class="form-control @error('password') is-invalid @enderror" 
@@ -163,7 +163,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="password_confirmation" class="form-label">Confirmar contraseña *</label>
+                                <label for="password_confirmation" class="form-label fw-bold">Confirmar contraseña *</label>
                                 <div class="input-group input-group-outline">
                                     <input type="password" 
                                            class="form-control @error('password_confirmation') is-invalid @enderror" 
@@ -210,7 +210,7 @@
                     <div class="row mt-3">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="role_name" class="form-label">Rol *</label>
+                                <label for="role_name" class="form-label fw-bold">Rol *</label>
                                 <div class="input-group input-group-outline">
                                     <select class="form-control @error('role_name') is-invalid @enderror" 
                                             id="role_name" 
