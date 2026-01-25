@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('especie_id')->constrained('especies')->onDelete('cascade');
             $table->string('nombre', 100);
-            $table->string('codigo_etapa', 20)->nullable(); // ej: 'LACTANCIA', 'CRECIMIENTO', 'ENGORDA'
+            $table->string('codigo_etapa', 200)->nullable(); // ej: 'LACTANCIA', 'CRECIMIENTO', 'ENGORDA'
             $table->integer('edad_minima_dias')->nullable();
             $table->integer('edad_maxima_dias')->nullable();
             $table->decimal('peso_minimo_kg', 10, 2)->nullable();

@@ -12,7 +12,6 @@ return new class extends Migration
             $table->id();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->foreignId('role_id')->constrained('roles')->onDelete('cascade');
             $table->enum('status', ['activo', 'inactivo', 'suspendido', 'pendiente'])->default('activo');
             $table->timestamp('last_login_at')->nullable();
             $table->rememberToken();

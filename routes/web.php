@@ -2,29 +2,48 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\loginController;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\Auth\FirstTimePasswordController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\h_homeController;
+use App\Http\Controllers\serviciosController;
+use App\Http\Controllers\ProductosController;
+use App\Http\Controllers\NosotrosController;
+use App\Http\Controllers\ContactoController;
+use App\Http\Controllers\dashboard\DashboardController;
 use App\Http\Controllers\dashboard\PersonasController;
 use App\Http\Controllers\dashboard\ReportesController;
 use App\Http\Controllers\dashboard\ReportesAdminController;
 use App\Http\Controllers\dashboard\ProveedoresController;
 use App\Http\Controllers\dashboard\SettingsController;
-use App\Http\Controllers\dashboard\DashboardController;
 use App\Http\Controllers\dashboard\RecepcionesController;
 use App\Http\Controllers\dashboard\OrdenesCompraController;
+use App\Http\Controllers\dashboard\RoleController;
+use App\Http\Controllers\DictionaryController;
 
-Route::get('/', function () {
-    return Auth::check() ? redirect('/dashboard') : view('welcome');
-});
+
+// Importa los middlewares directamente por sus clases
+use App\Http\Middleware\Authenticate;
+use App\Http\Middleware\CheckStatus;
+
+// ============ RUTAS PÚBLICAS ============
+Route::get('/', [h_homeController::class, 'index'])->name('Homepage.index');
+Route::get('/servicios', [serviciosController::class, 'index'])->name('servicios');
+Route::get('/productos', [ProductosController::class, 'index'])->name('productos');
+Route::get('/nosotros', [NosotrosController::class, 'index'])->name('nosotros');
+Route::get('/contacto', [ContactoController::class, 'index'])->name('contacto');
+Route::post('/contacto', [ContactoController::class, 'enviar'])->name('contacto.enviar');
 
 Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 // Dashboard principal (Material)
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware([\App\Http\Middleware\Authenticate::class])
     ->name('dashboard');
 
+    Route::get('/generate-dictionary', [DictionaryController::class, 'generateWord']);
 
 
 // GeoJSON público para el mapa de Venezuela
@@ -37,8 +56,83 @@ Route::get('/geo/ve.json', function () {
     ]);
 })->name('geo.ve');
 
-// Panel Administrativo
-Route::middleware([\App\Http\Middleware\Authenticate::class])
+// ============ AUTENTICACIÓN ============
+// NO uses Auth::routes() - comenta o elimina esta línea
+// Auth::routes();
+
+// Rutas para invitados (no autenticados)
+Route::middleware('guest')->group(function () {
+    Route::get('login', [loginController::class, 'showLoginForm'])->name('login');
+    Route::post('login', [loginController::class, 'login']);
+    Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+    Route::post('register', [RegisterController::class, 'register']);
+    Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+    Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+    Route::get('password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+    Route::post('password/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
+});
+
+// Logout (accesible para todos los usuarios autenticados)
+Route::post('logout', [loginController::class, 'logout'])->name('logout');
+
+// ============ RUTAS PARA PRIMER ACCESO ============
+// Usa la CLASE del middleware directamente (no el alias 'auth')
+Route::middleware([Authenticate::class])->group(function () {
+    Route::get('/primer-acceso/cambiar-contrasena', 
+        [FirstTimePasswordController::class, 'showPasswordForm'])
+        ->name('password.first_time_form');
+    
+    Route::post('/primer-acceso/cambiar-contrasena', 
+        [FirstTimePasswordController::class, 'updatePassword'])
+        ->name('password.first_time');
+});
+
+// ============ REDIRECCIÓN AUTOMÁTICA ============
+Route::get('/redirect-user', function () {
+    if (auth()->check()) {
+        if (auth()->user()->status === 'pendiente') {
+            return redirect()->route('password.first_time_form');
+        }
+        return redirect()->route('dashboard');
+    }
+    return redirect()->route('login');
+})->name('redirect.user');
+
+// ============ RUTAS PROTEGIDAS (usuarios ACTIVOS) ============
+// Usa las CLASES directamente (no alias)
+Route::middleware([Authenticate::class, CheckStatus::class])->group(function () {
+    // Dashboard principal - SOLO UNA DEFINICIÓN
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    
+    // Gestión de usuarios - CON RUTAS DE VERIFICACIÓN COMPLETAS
+    Route::prefix('usuarios')->name('users.')->group(function () {
+        Route::get('/', [UserController::class, 'user'])->name('user');
+        Route::get('/crear', [UserController::class, 'create'])->name('create');
+        Route::post('/', [UserController::class, 'store'])->name('store');
+        
+        // RUTAS DE VERIFICACIÓN DE CÓDIGO
+        Route::post('/enviar-codigo-verificacion', [UserController::class, 'sendVerificationCode'])->name('send-verification-code');
+        Route::post('/validar-codigo-verificacion', [UserController::class, 'validateVerificationCode'])->name('validate-verification-code');
+        
+        // RUTAS ADICIONALES PARA VERIFICACIÓN (NUEVAS)
+        Route::post('/check-verification-status', [UserController::class, 'checkVerificationStatus'])->name('check-verification-status');
+        Route::post('/resend-verification-code', [UserController::class, 'resendVerificationCode'])->name('resend-verification-code');
+        Route::post('/cancel-verification', [UserController::class, 'cancelVerification'])->name('cancel-verification');
+        
+        Route::get('/{user}', [UserController::class, 'show'])->name('show');
+        Route::get('/{user}/editar', [UserController::class, 'edit'])->name('edit');
+        Route::put('/{user}', [UserController::class, 'update'])->name('update');
+        Route::delete('/{user}', [UserController::class, 'destroy'])->name('destroy');
+
+        // Agrega estas rutas para activar/desactivar - CORREGIDO
+    Route::put('/{user}/activate', [UserController::class, 'activate'])->name('activate'); // <-- Cambiado
+    Route::put('/{user}/deactivate', [UserController::class, 'deactivate'])->name('deactivate'); // <-- Cambiado
+    });
+});
+
+// ============ PANEL ADMINISTRATIVO ============
+// Usa las CLASES directamente (no alias)
+Route::middleware([Authenticate::class, CheckStatus::class])
     ->prefix('dashboard')
     ->name('dashboard.')
     ->group(function () {
@@ -55,6 +149,22 @@ Route::middleware([\App\Http\Middleware\Authenticate::class])
         Route::resource('proveedores', ProveedoresController::class)->parameters([
             'proveedores' => 'proveedor'
         ]);
+
+        // Animales (tipos por especie + requerimientos)
+        Route::resource('animales', \App\Http\Controllers\dashboard\AnimalesController::class)
+            ->only(['index', 'store']);
+
+    // RUTAS DE ROLES Y PERMISOS
+    Route::get('/test-roles', function () {
+        return view('dashboard.roles.index');
+    });
+
+    //Ruta para volver a habilitar el rol
+    Route::post('roles/{id}/restore', [\App\Http\Controllers\Dashboard\RoleController::class, 'restore'])
+        ->name('roles.restore');
+    Route::resource('roles', \App\Http\Controllers\Dashboard\RoleController::class);
+
+
         Route::post('proveedores/buscar', [ProveedoresController::class, 'buscar'])->name('proveedores.buscar');
         Route::post('proveedores/{id}/restore', [ProveedoresController::class, 'restore'])->name('proveedores.restore');
 
@@ -95,6 +205,7 @@ Route::middleware([\App\Http\Middleware\Authenticate::class])
         Route::post('/configuracion', [SettingsController::class, 'update'])->name('configuracion.update');
     });
 
+// ============ TEST JASPER ============
 Route::get('/test-jasper-command', function() {
     // Validate Java 8 first
     $javaPath = env('JAVA_PATH', 'C:\\Program Files\\Eclipse Adoptium\\jdk-8.0.402.6\\bin\\java.exe');
@@ -174,5 +285,7 @@ Route::get('/test-jasper-command', function() {
             'trace' => $e->getTraceAsString()
         ], 500);
     }
+
+    
 });
 
