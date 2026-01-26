@@ -10,13 +10,8 @@
             </div>
             
             <div class="modal-body">
-                @if(session('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <span class="alert-icon"><i class="material-icons opacity-10">check_circle</i></span>
-                    <span class="alert-text">{{ session('success') }}</span>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                @endif
+                <!-- REMOVIMOS EL MENSAJE DE ÉXITO DEL MODAL -->
+                <!-- El mensaje de éxito se mostrará en la vista principal fuera del modal -->
 
                 @if(session('verification_sent'))
                 <div class="alert alert-info alert-dismissible fade show" role="alert">
@@ -276,7 +271,13 @@ function loadPersonaData(personaId) {
     $('#password_confirmation').val(documento || '');
     currentDocumento = documento || '';
     $('#sendCodeBtn').prop('disabled', !email);
-    resetForm();
+    
+    // SOLO resetear si ya se había enviado un código
+    if (isCodeSent) {
+        resetForm();
+    } else {
+        checkFormCompletion();
+    }
 }
 
 function sendVerificationCode() {
@@ -439,6 +440,7 @@ function checkFormCompletion() {
         codeValid = isCodeValidated;
     }
     
+    // Si no se ha enviado código pero todos los campos están completos
     if (!isCodeSent && allFieldsComplete) {
         $('#submitBtn').prop('disabled', true);
         return false;
@@ -450,25 +452,20 @@ function checkFormCompletion() {
 }
 
 $(document).ready(function() {
+    // Cerrar automáticamente alertas de éxito después de 3 segundos
+    setTimeout(function() {
+        $('.alert-success').alert('close');
+    }, 3000);
+    
     // Resetear formulario cuando se abre el modal
     $('#crearUsuarioModal').on('show.bs.modal', function() {
         resetForm();
+        // Cerrar cualquier alerta de éxito que quede
+        $('.alert-success').alert('close');
     });
 
-    // Escuchar cambios en los campos clave
-    $('#role_name, #persona_id, #email').on('change', function() {
-        checkFormCompletion();
-        if (isCodeSent && !$(this).is('#email')) {
-            resetForm();
-        }
-    });
-    
-    // Sincronizar contraseñas
-    $('#password, #password_confirmation').on('input', function() {
-        if (currentDocumento) {
-            $('#password').val(currentDocumento);
-            $('#password_confirmation').val(currentDocumento);
-        }
+    // Solo verificar completitud cuando se cambia el rol (CORRECCIÓN DEL PROBLEMA 1)
+    $('#role_name').on('change', function() {
         checkFormCompletion();
     });
     
@@ -563,6 +560,11 @@ $(document).ready(function() {
         isCodeValidated = false;
         checkFormCompletion();
     @endif
+    
+    // También verificar cuando se carga la página por si hay datos viejos
+    setTimeout(function() {
+        checkFormCompletion();
+    }, 500);
 });
 </script>
 @endpush
