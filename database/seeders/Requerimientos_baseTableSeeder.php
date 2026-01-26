@@ -22799,12 +22799,13 @@ $registros = [
 
     protected function mapRegistroANuevoModelo(array $registro): void
     {
-        $descripcion = $this->normalizeText($registro['descripcion'] ?? '');
-        $partes = array_values(array_filter(array_map('trim', explode('.', $descripcion)), fn($p) => $p !== ''));
-        $especieNombre = $this->normalizeText($partes[0] ?? 'Sin especie');
-        $tipoNombreBase = $this->normalizeText($partes[1] ?? ($especieNombre . ' base'));
-        $etapa = $this->normalizeText($partes[2] ?? null);
-        $tipoNombre = $etapa ? ($tipoNombreBase . ' - ' . $etapa) : $tipoNombreBase;
+        $descripcionRaw = $this->normalizeText($registro['descripcion'] ?? '');
+        $descripcion = $this->truncate($descripcionRaw, 150);
+        $partes = array_values(array_filter(array_map('trim', explode('.', $descripcionRaw)), fn($p) => $p !== ''));
+        $especieNombre = $this->truncate($this->normalizeText($partes[0] ?? 'Sin especie'), 100);
+        $tipoNombreBase = $this->truncate($this->normalizeText($partes[1] ?? ($especieNombre . ' base')), 100);
+        $etapa = $this->truncate($this->normalizeText($partes[2] ?? null), 50);
+        $tipoNombre = $this->truncate($etapa ? ($tipoNombreBase . ' - ' . $etapa) : $tipoNombreBase, 100);
 
         $especie = Especie::firstOrCreate(
             ['nombre' => $especieNombre],
@@ -22814,10 +22815,8 @@ $registros = [
         $tipo = TipoAnimal::firstOrCreate(
             ['especie_id' => $especie->id, 'nombre' => $tipoNombre],
             [
-                'codigo_etapa' => $etapa,
                 'descripcion' => $descripcion,
                 'edad_minima_dias' => null,
-                'edad_maxima_dias' => null,
                 'peso_minimo_kg' => null,
                 'peso_maximo_kg' => null,
                 'activo' => true,
@@ -22833,7 +22832,7 @@ $registros = [
                 'descripcion' => $descripcion ?: 'Requerimiento base',
             ],
             [
-                                'comentario' => is_string($registro['comentario'] ?? null) ? $this->normalizeText($registro['comentario']) : null,
+                'comentario' => is_string($registro['comentario'] ?? null) ? $this->truncate($this->normalizeText($registro['comentario']), 150) : null,
                 'consumo_esperado_kg_dia' => $consumoKg,
                 'preferido' => (bool)($registro['preferido'] ?? false),
                 'humedad' => $this->percentFrom($registro['humedad'] ?? null, $consumo),
@@ -22986,6 +22985,14 @@ $registros = [
             return null;
         }
         return round($val / 1000, 4);
+    }
+
+    protected function truncate(?string $value, int $limit): ?string
+    {
+        if ($value === null) {
+            return null;
+        }
+        return mb_strimwidth($value, 0, $limit, '');
     }
 
 
