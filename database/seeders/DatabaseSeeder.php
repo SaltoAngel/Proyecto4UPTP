@@ -8,7 +8,6 @@ use Database\Seeders\UsuariosSeeder;
 use Database\Seeders\Tipo_Proveedores;
 use Database\Seeders\Categorias_Materias;
 use Database\Seeders\SpatieRolesPermissionsSeeder;
-use Database\Seeders\Requerimientos_baseTableSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -22,7 +21,8 @@ class DatabaseSeeder extends Seeder
             Tipo_Proveedores::class,
             PersonasClientesProveedoresSeeder::class,
             ReportesSeeder::class,
-            Requerimientos_baseTableSeeder::class
+            MasterDataSeeder::class,
+            // Requerimientos_baseTableSeeder::class
         ]);
     }
 }

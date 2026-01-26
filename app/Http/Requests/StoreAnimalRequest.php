@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class StoreAnimalRequest extends FormRequest
 {
@@ -15,73 +14,53 @@ class StoreAnimalRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'especie_id' => ['required', 'integer', 'exists:especies,id'],
-            'nombre' => [
-                'required', 'string', 'max:100',
-                Rule::unique('tipos_animal', 'nombre')->where(fn($q) => $q->where('especie_id', $this->input('especie_id')))
-            ],
-            'codigo_etapa' => ['nullable', 'string', 'max:20'],
-            'edad_minima_dias' => ['nullable', 'integer', 'min:0'],
-            'edad_maxima_dias' => ['nullable', 'integer', 'min:0'],
-            'peso_minimo_kg' => ['nullable', 'numeric', 'min:0'],
-            'peso_maximo_kg' => ['nullable', 'numeric', 'min:0'],
-            'descripcion' => ['nullable', 'string'],
-            'activo' => ['sometimes', 'boolean'],
-
-            'requerimiento.descripcion' => ['nullable', 'string', 'max:150'],
-            'requerimiento.fuente' => ['nullable', 'string', 'max:50'],
-            'requerimiento.comentario' => ['nullable', 'string'],
-            'requerimiento.consumo_esperado_kg_dia' => ['nullable', 'numeric', 'min:0'],
-            'requerimiento.preferido' => ['sometimes', 'boolean'],
-
-            'requerimiento.humedad' => ['nullable', 'numeric', 'between:0,100'],
-            'requerimiento.materia_seca' => ['nullable', 'numeric', 'between:0,100'],
-            'requerimiento.proteina_cruda' => ['nullable', 'numeric', 'between:0,100'],
-            'requerimiento.fibra_bruta' => ['nullable', 'numeric', 'between:0,100'],
-            'requerimiento.extracto_etereo' => ['nullable', 'numeric', 'between:0,100'],
-            'requerimiento.eln' => ['nullable', 'numeric', 'between:0,100'],
-            'requerimiento.ceniza' => ['nullable', 'numeric', 'between:0,100'],
-
-            'requerimiento.energia_digestible' => ['nullable', 'numeric', 'min:0'],
-            'requerimiento.energia_metabolizable' => ['nullable', 'numeric', 'min:0'],
-            'requerimiento.energia_neta' => ['nullable', 'numeric', 'min:0'],
-            'requerimiento.energia_digestible_ap' => ['nullable', 'numeric', 'min:0'],
-            'requerimiento.energia_metabolizable_ap' => ['nullable', 'numeric', 'min:0'],
-            'requerimiento.activo' => ['sometimes', 'boolean'],
-
-            'aminoacidos' => ['nullable', 'array'],
-            'aminoacidos.*.valor_min' => ['nullable', 'numeric', 'between:0,100'],
-            'aminoacidos.*.valor_max' => ['nullable', 'numeric', 'between:0,100'],
-            'aminoacidos.*.valor_recomendado' => ['nullable', 'numeric', 'between:0,100'],
-            'aminoacidos.*.unidad' => ['nullable', 'string', 'max:20'],
-
-            'minerales' => ['nullable', 'array'],
-            'minerales.*.valor_min' => ['nullable', 'numeric', 'min:0'],
-            'minerales.*.valor_max' => ['nullable', 'numeric', 'min:0'],
-            'minerales.*.valor_recomendado' => ['nullable', 'numeric', 'min:0'],
-            'minerales.*.unidad' => ['nullable', 'string', 'max:20'],
-
-            'vitaminas' => ['nullable', 'array'],
-            'vitaminas.*.valor_min' => ['nullable', 'numeric', 'min:0'],
-            'vitaminas.*.valor_max' => ['nullable', 'numeric', 'min:0'],
-            'vitaminas.*.valor_recomendado' => ['nullable', 'numeric', 'min:0'],
-            'vitaminas.*.unidad' => ['nullable', 'string', 'max:20'],
+            // Campos básicos
+            'especie_id' => 'required|exists:especies,id',
+            'nombre' => 'required|string|max:100',
+            
+            // Campos nuevos según tu modal
+            'raza_linea' => 'nullable|string|max:100',
+            'producto_final' => 'nullable|string|in:leche,carne,huevos,doble_proposito,reproduccion,trabajo,lana,miel,otro',
+            'sistema_produccion' => 'nullable|string|in:intensivo,semi-intensivo,extensivo,organico,otro',
+            'etapa_especifica' => 'nullable|string|max:200',
+            'edad_semanas' => 'nullable|integer|min:0',
+            'peso_minimo_kg' => 'nullable|numeric|min:0',
+            'descripcion' => 'nullable|string',
+            'activo' => 'nullable|boolean',
+            
+            // Consumo esperado
+            'requerimiento.consumo_esperado_kg_dia' => 'nullable|numeric|min:0',
+            'requerimiento.fuente' => 'nullable|string|max:150',
+            'requerimiento.descripcion' => 'nullable|string|max:150',
+            
+            // Tolerancia a alimentos
+            'tolerancia_alimentos' => 'nullable|array',
+            'tolerancia_alimentos.*.porcentaje_maximo' => 'nullable|numeric|min:0|max:100',
+            
+            // Requerimientos nutricionales
+            'requerimientos_diarios' => 'nullable|array',
+            'requerimientos_diarios.weende.*' => 'nullable|numeric|min:0',
+            'requerimientos_diarios.macrominerales_porcentaje.*' => 'nullable|numeric|min:0|max:100',
+            'requerimientos_diarios.microminerales.*' => 'nullable|numeric|min:0',
+            'requerimientos_diarios.energia.*' => 'nullable|numeric|min:0',
+            
+            // Nutrientes específicos
+            'aminoacidos' => 'nullable|array',
+            'aminoacidos.*.valor' => 'nullable|numeric|min:0|max:100',
+            'minerales' => 'nullable|array',
+            'minerales.*.valor' => 'nullable|numeric|min:0',
+            'vitaminas' => 'nullable|array',
+            'vitaminas.*.valor' => 'nullable|numeric|min:0',
         ];
     }
-
-    public function withValidator($validator)
+    
+    public function messages(): array
     {
-        $validator->after(function ($v) {
-            $minEdad = $this->input('edad_minima_dias');
-            $maxEdad = $this->input('edad_maxima_dias');
-            if ($minEdad !== null && $maxEdad !== null && $minEdad > $maxEdad) {
-                $v->errors()->add('edad_maxima_dias', 'La edad máxima debe ser mayor o igual a la mínima.');
-            }
-            $minPeso = $this->input('peso_minimo_kg');
-            $maxPeso = $this->input('peso_maximo_kg');
-            if ($minPeso !== null && $maxPeso !== null && $minPeso > $maxPeso) {
-                $v->errors()->add('peso_maximo_kg', 'El peso máximo debe ser mayor o igual al mínimo.');
-            }
-        });
+        return [
+            'especie_id.required' => 'La especie es obligatoria',
+            'nombre.required' => 'El nombre del tipo de animal es obligatorio',
+            'producto_final.in' => 'El producto final seleccionado no es válido',
+            'sistema_produccion.in' => 'El sistema de producción seleccionado no es válido',
+        ];
     }
 }

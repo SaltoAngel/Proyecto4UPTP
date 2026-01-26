@@ -2,39 +2,40 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TipoAnimal extends Model
 {
-    use HasFactory, SoftDeletes;
-
+    use SoftDeletes;
+    
     protected $table = 'tipos_animal';
-
+    
     protected $fillable = [
         'especie_id',
         'nombre',
-        'codigo_etapa',
-        'edad_minima_dias',
-        'edad_maxima_dias',
+        'raza_linea',
+        'producto_final',
+        'sistema_produccion',
+        'etapa_especifica',
+        'edad_semanas',
         'peso_minimo_kg',
-        'peso_maximo_kg',
         'descripcion',
-        'activo',
+        'activo'
     ];
-
+    
     protected $casts = [
         'activo' => 'boolean',
+        'edad_semanas' => 'integer',
         'peso_minimo_kg' => 'decimal:2',
-        'peso_maximo_kg' => 'decimal:2',
     ];
-
+    
+    // Relaciones
     public function especie()
     {
-        return $this->belongsTo(Especie::class, 'especie_id');
+        return $this->belongsTo(Especie::class);
     }
-
+    
     public function requerimientos()
     {
         return $this->hasMany(RequerimientoNutricional::class, 'tipo_animal_id');
