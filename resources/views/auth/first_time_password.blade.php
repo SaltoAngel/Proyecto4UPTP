@@ -8,6 +8,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="webp" href="../img/logo.jpg">
+    <!-- SweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <style>
         :root {
@@ -75,11 +77,47 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(8px);
             animation: fadeIn 0.4s ease-out;
+            position: relative;
+            padding-top: 70px; /* Espacio para el botón superior */
         }
         
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Botón superior "Cambiar después" */
+        .top-action-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1.5px solid #e0e0e0;
+            color: #666;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+            z-index: 10;
+        }
+        
+        .top-action-btn:hover {
+            background: white;
+            border-color: #ff9800;
+            color: #ff9800;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .top-action-btn i {
+            font-size: 14px;
         }
         
         .first-time-header { 
@@ -286,6 +324,14 @@
             .first-time-container {
                 padding: 20px 18px;
                 max-width: 340px;
+                padding-top: 65px;
+            }
+            
+            .top-action-btn {
+                top: 15px;
+                right: 15px;
+                padding: 6px 12px;
+                font-size: 12px;
             }
             
             .first-time-title { 
@@ -327,6 +373,13 @@
             .first-time-container {
                 max-width: 320px;
                 padding: 18px 16px;
+                padding-top: 60px;
+            }
+            
+            .top-action-btn {
+                top: 12px;
+                right: 12px;
+                font-size: 11px;
             }
         }
         
@@ -346,6 +399,15 @@
 </head>
 <body>
     <div class="first-time-container">
+        <!-- Botón superior para "Cambiar después" -->
+        <form method="POST" action="{{ route('logout') }}" id="logoutFormTop" style="display: inline;">
+            @csrf
+            <button type="submit" class="top-action-btn" id="logoutTopBtn">
+                <i class="fas fa-clock"></i>
+                Cambiar después
+            </button>
+        </form>
+        
         <div class="first-time-header">
             <div class="first-time-icon">
                 <i class="fas fa-lock"></i>
@@ -540,27 +602,103 @@
             strengthText.className = 'strength-text ' + textClass;
         }
         
-        // Validación del formulario
+        // Validación del formulario para CAMBIAR CONTRASEÑA
         document.getElementById('passwordForm').addEventListener('submit', function(e) {
+            const currentPassword = document.getElementById('current_password').value;
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('password_confirmation').value;
+            
+            // Validar campos vacíos
+            if (!currentPassword || !password || !confirmPassword) {
+                e.preventDefault();
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Campos incompletos',
+                    text: 'Por favor, complete todos los campos obligatorios.',
+                    confirmButtonColor: '#ff9800',
+                });
+                return false;
+            }
             
             // Validar que coincidan
             if (password !== confirmPassword) {
                 e.preventDefault();
-                alert('Las contraseñas no coinciden. Por favor verifique que ambas contraseñas sean iguales.');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Contraseñas no coinciden',
+                    text: 'Por favor verifique que ambas contraseñas sean iguales.',
+                    confirmButtonColor: '#f44336',
+                });
                 return false;
             }
             
             // Validar requisitos mínimos
             if (password.length < 8 || !/[A-Z]/.test(password) || !/[0-9]/.test(password)) {
                 e.preventDefault();
-                alert('La contraseña debe tener al menos 8 caracteres, una mayúscula y un número.');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Contraseña débil',
+                    html: 'La contraseña debe cumplir con:<br>' +
+                          '• Mínimo 8 caracteres<br>' +
+                          '• Al menos una letra mayúscula<br>' +
+                          '• Al menos un número',
+                    confirmButtonColor: '#f44336',
+                });
                 return false;
             }
             
             return true;
         });
+        
+        // Confirmación para CERRAR SESIÓN (Cambiar después)
+        document.getElementById('logoutTopBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            Swal.fire({
+                title: '¿Salir sin cambiar contraseña?',
+                html: '¿Está seguro de salir sin cambiar la contraseña ahora?<br>' +
+                      '<small style="color: #666;">Se le pedirá cambiar la contraseña en su próximo acceso.</small>',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, salir',
+                cancelButtonText: 'Cancelar',
+                confirmButtonColor: '#2e7d32',
+                cancelButtonColor: '#6c757d',
+                reverseButtons: true,
+                backdrop: true,
+                allowOutsideClick: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Enviar el formulario de logout
+                    document.getElementById('logoutFormTop').submit();
+                }
+            });
+        });
+        
+        // Mostrar mensaje de éxito si se redirige desde cambio exitoso
+        @if(session('success'))
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                icon: 'success',
+                title: '¡Contraseña Actualizada!',
+                html: `
+                    <div style="text-align: left; line-height: 1.6;">
+                        <p>✅ <strong>Contraseña actualizada exitosamente</strong></p>
+                        <p>📝 {{ session('success') }}</p>
+                        <p style="font-size: 14px; color: #666; margin-top: 15px;">
+                            <i class="fas fa-info-circle"></i> Ahora puede iniciar sesión con su nueva contraseña
+                        </p>
+                    </div>
+                `,
+                confirmButtonText: 'Aceptar',
+                confirmButtonColor: '#2e7d32',
+                width: '500px',
+                backdrop: true,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+            });
+        });
+        @endif
         
         // Inicializar validación de fortaleza
         checkPasswordStrength();
