@@ -132,8 +132,8 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-white {{ request()->routeIs('dashboard.materia-prima.*') ? 'active' : '' }}" 
-               href="#">
+            <a class="nav-link text-white {{ request()->routeIs('materias-primas.index*') ? 'active' : '' }}" 
+               href="{{ route('materias-primas.index') }}">
                 <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                     <i class="material-icons opacity-10">inventory</i>
                 </div>
