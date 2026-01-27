@@ -22,6 +22,9 @@ use App\Http\Controllers\dashboard\RecepcionesController;
 use App\Http\Controllers\dashboard\OrdenesCompraController;
 use App\Http\Controllers\dashboard\RoleController;
 use App\Http\Controllers\DictionaryController;
+// ============ IMPORTAR CONTROLADORES DE MATERIAS PRIMAS ============
+use App\Http\Controllers\MateriaPrimaController;
+use App\Http\Controllers\MovimientoInventarioController;
 
 
 // Importa los middlewares directamente por sus clases
@@ -127,6 +130,39 @@ Route::middleware([Authenticate::class, CheckStatus::class])->group(function () 
         // Agrega estas rutas para activar/desactivar - CORREGIDO
     Route::put('/{user}/activate', [UserController::class, 'activate'])->name('activate'); // <-- Cambiado
     Route::put('/{user}/deactivate', [UserController::class, 'deactivate'])->name('deactivate'); // <-- Cambiado
+    });
+    
+    // ============ RUTAS DE MATERIAS PRIMAS ============
+    Route::prefix('materias-primas')->name('materias-primas.')->group(function () {
+        Route::get('/', [MateriaPrimaController::class, 'index'])->name('index');
+        Route::post('/', [MateriaPrimaController::class, 'store'])->name('store');
+        Route::get('/{id}', [MateriaPrimaController::class, 'show'])->name('show');
+        Route::get('/{id}/edit', [MateriaPrimaController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [MateriaPrimaController::class, 'update'])->name('update');
+        Route::delete('/{id}', [MateriaPrimaController::class, 'destroy'])->name('destroy');
+        
+        // Rutas AJAX para modales
+        Route::get('/{id}/show-content', [MateriaPrimaController::class, 'show'])->name('show-content');
+        Route::get('/{id}/edit-form', [MateriaPrimaController::class, 'edit'])->name('edit-form');
+        
+        // Rutas de reportes
+        Route::get('/inventario/critico', [MateriaPrimaController::class, 'criticos'])->name('criticos');
+        Route::get('/inventario/agotado', [MateriaPrimaController::class, 'agotados'])->name('agotados');
+        Route::get('/inventario/reporte', [MateriaPrimaController::class, 'reporte'])->name('reporte');
+    });
+    
+    // ============ RUTAS DE MOVIMIENTOS DE INVENTARIO ============
+    Route::prefix('movimientos')->name('movimientos.')->group(function () {
+        Route::get('/', [MovimientoInventarioController::class, 'index'])->name('index');
+        Route::get('/create', [MovimientoInventarioController::class, 'create'])->name('create');
+        Route::post('/', [MovimientoInventarioController::class, 'store'])->name('store');
+        Route::get('/{id}', [MovimientoInventarioController::class, 'show'])->name('show');
+        Route::get('/{id}/edit', [MovimientoInventarioController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [MovimientoInventarioController::class, 'update'])->name('update');
+        Route::delete('/{id}', [MovimientoInventarioController::class, 'destroy'])->name('destroy');
+        
+        // Ruta específica para entrada de inventario
+        Route::post('/entrada', [MovimientoInventarioController::class, 'storeEntrada'])->name('entrada.store');
     });
 });
 
@@ -288,4 +324,3 @@ Route::get('/test-jasper-command', function() {
 
     
 });
-
