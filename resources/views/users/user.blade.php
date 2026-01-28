@@ -59,7 +59,6 @@
                     <tr>
                         <th>N°</th>
                         <th>Usuario</th>
-                        <th>Documento</th>
                         <th>Email</th>
                         <th>Rol</th>
                         <th>Estado</th>
@@ -72,16 +71,12 @@
                     <tr data-user-id="{{ $user->id }}">
                         <td>{{ $loop->iteration + ($users->currentPage() - 1) * $users->perPage() }}</td>
                         <td>
-                                <div>
-                                    <strong>{{ $user->persona->nombres ?? 'N/A' }} {{ $user->persona->apellidos ?? '' }}</strong>
-                                    @if($user->username)
-                                        <br><small class="text-muted">@ {{ $user->username }}</small>
-                                    @endif
-                                </div>
+                            <div>
+                                <strong>{{ $user->persona->nombres ?? 'N/A' }} {{ $user->persona->apellidos ?? '' }}</strong>
+                                @if($user->username)
+                                    <br><small class="text-muted">@ {{ $user->username }}</small>
+                                @endif
                             </div>
-                        </td>
-                        <td>
-                            {{ $user->persona->tipo_documento ?? 'V' }}-{{ $user->persona->documento ?? 'N/A' }}
                         </td>
                         <td>{{ $user->email }}</td>
                         <td>
@@ -163,7 +158,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="8" class="text-center text-muted py-4">
+                        <td colspan="7" class="text-center text-muted py-4">
                             <i class="material-icons" style="font-size:2rem;">person_off</i>
                             <p>No se encontraron usuarios registrados</p>
                         </td>
@@ -193,10 +188,10 @@ $(document).ready(function() {
         "language": {
             "url": "{{ asset('datatables-i18n-es.json') }}"
         },
-        order: [[5, 'asc'], [1, 'asc']], // Ordenar por estado y luego nombre
+        order: [[4, 'asc'], [1, 'asc']], // Ordenar por estado (columna 4) y luego nombre
         columnDefs: [
             { orderable: false, targets: 0 }, // La numeración
-            { orderable: false, targets: 7 } // Columna de acciones
+            { orderable: false, targets: 6 } // Columna de acciones (ahora es la columna 6)
         ],
         dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>' +
              '<"row"<"col-sm-12"tr>>' +
