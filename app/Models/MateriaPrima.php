@@ -41,7 +41,7 @@ class MateriaPrima extends Model
     // Relaciones
     public function categoria(): BelongsTo
     {
-        return $this->belongsTo(CategoriaMateriaPrima::class, 'categoria_id');
+        return $this->belongsTo(CategoriasMateriasPrimas::class, 'categoria_id');
     }
     
     public function inventario(): HasOne

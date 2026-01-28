@@ -108,9 +108,9 @@
     </table>
     
     <!-- Paginación -->
-    @if($materiasPrimas->hasPages() && !isset($filtroEstado))
-        <div class="d-flex justify-content-center mt-3">
-            {{ $materiasPrimas->links() }}
-        </div>
-    @endif
+@if(isset($materiasPrimas) && method_exists($materiasPrimas, 'hasPages') && $materiasPrimas->hasPages() && !isset($filtroEstado))
+    <div class="d-flex justify-content-center mt-3">
+        {{ $materiasPrimas->links() }}
+    </div>
+@endif
 </div>

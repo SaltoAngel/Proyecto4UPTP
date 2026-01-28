@@ -93,55 +93,54 @@
         </ul>
         
         <div class="tab-content pt-3" id="estadoTabContent">
-            <!-- Tab Todos -->
-            <div class="tab-pane fade show active" id="todos" role="tabpanel">
-                @include('materias-primas.partials.tabla-materias', [
-                    'materiasPrimas' => $materiasPrimas,
-                    'filtroEstado' => null
-                ])
-            </div>
+        <!-- Tab Todos -->
+<div class="tab-pane fade show active" id="todos" role="tabpanel">
+    @include('materias-primas.partials.tabla-materias', [
+        'materiasPrimas' => $materiasPrimas, 
+        'filtroEstado' => null
+    ])
+</div>
             
-            <!-- Tab Críticos -->
-            <div class="tab-pane fade" id="criticos" role="tabpanel">
-                @php
-                    $materiasCriticas = $materiasPrimas->filter(function($materia) {
-                        return $materia->inventario && $materia->inventario->estado == 'critico';
-                    });
-                @endphp
-                
-                @if($materiasCriticas->count() > 0)
-                    @include('materias-primas.partials.tabla-materias', [
-                        'materiasPrimas' => $materiasCriticas,
-                        'filtroEstado' => 'critico'
-                    ])
-                @else
-                    <div class="text-center text-muted py-5">
-                        <i class="material-icons" style="font-size:3rem;">check_circle</i>
-                        <h5 class="mt-3">No hay materias primas en estado crítico</h5>
-                    </div>
-                @endif
-            </div>
-            
-            <!-- Tab Agotados -->
-            <div class="tab-pane fade" id="agotados" role="tabpanel">
-                @php
-                    $materiasAgotadas = $materiasPrimas->filter(function($materia) {
-                        return $materia->inventario && $materia->inventario->estado == 'agotado';
-                    });
-                @endphp
-                
-                @if($materiasAgotadas->count() > 0)
-                    @include('materias-primas.partials.tabla-materias', [
-                        'materiasPrimas' => $materiasAgotadas,
-                        'filtroEstado' => 'agotado'
-                    ])
-                @else
-                    <div class="text-center text-muted py-5">
-                        <i class="material-icons" style="font-size:3rem;">inventory_2</i>
-                        <h5 class="mt-3">No hay materias primas agotadas</h5>
-                    </div>
-                @endif
-            </div>
+           <!-- Tab Críticos -->
+<div class="tab-pane fade" id="criticos" role="tabpanel">
+    @php
+        $materiasCriticas = $materiasPrimasCollection->filter(function($materia) {
+            return $materia->inventario && $materia->inventario->estado == 'critico';
+        });
+    @endphp
+    
+    @if($materiasCriticas->count() > 0)
+        @include('materias-primas.partials.tabla-materias', [
+            'materiasPrimas' => $materiasCriticas,
+            'filtroEstado' => 'critico'
+        ])
+    @else
+        <div class="text-center text-muted py-5">
+            <i class="material-icons" style="font-size:3rem;">check_circle</i>
+            <h5 class="mt-3">No hay materias primas en estado crítico</h5>
+        </div>
+    @endif
+</div>
+           <!-- Tab Agotados -->
+<div class="tab-pane fade" id="agotados" role="tabpanel">
+    @php
+        $materiasAgotadas = $materiasPrimasCollection->filter(function($materia) {
+            return $materia->inventario && $materia->inventario->estado == 'agotado';
+        });
+    @endphp
+    
+    @if($materiasAgotadas->count() > 0)
+        @include('materias-primas.partials.tabla-materias', [
+            'materiasPrimas' => $materiasAgotadas, 
+            'filtroEstado' => 'agotado'
+        ])
+    @else
+        <div class="text-center text-muted py-5">
+            <i class="material-icons" style="font-size:3rem;">inventory_2</i>
+            <h5 class="mt-3">No hay materias primas agotadas</h5>
+        </div>
+    @endif
+</div>
         </div>
     </div>
 </div>
@@ -329,13 +328,13 @@ $(document).ready(function() {
         $('#entradaInventarioModal #costo_total').val(costoTotal.toFixed(2));
     });
 
-    // Calcular punto de reorden en modal de creación
-    $('#createMateriaModal #stock_minimo, #createMateriaModal #stock_maximo').on('keyup', function() {
-        const stockMin = parseFloat($('#createMateriaModal #stock_minimo').val()) || 0;
-        const stockMax = parseFloat($('#createMateriaModal #stock_maximo').val()) || 0;
-        const puntoReorden = stockMin + ((stockMax - stockMin) * 0.3); // 30% del rango
-        $('#createMateriaModal #punto_reorden').val(puntoReorden.toFixed(3));
-    });
+   // Calcular punto de reorden en modal de creación - MODIFICADO
+$('#createMateriaModal input[name="inventario[stock_minimo]"], #createMateriaModal input[name="inventario[stock_maximo]"]').on('keyup', function() {
+    const stockMin = parseFloat($('#createMateriaModal input[name="inventario[stock_minimo]"]').val()) || 0;
+    const stockMax = parseFloat($('#createMateriaModal input[name="inventario[stock_maximo]"]').val()) || 0;
+    const puntoReorden = stockMin + ((stockMax - stockMin) * 0.3);
+    $('#createMateriaModal input[name="inventario[punto_reorden]"]').val(puntoReorden.toFixed(3));
+});
 });
 </script>
 @endpush

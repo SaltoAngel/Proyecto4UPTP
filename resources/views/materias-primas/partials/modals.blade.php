@@ -73,21 +73,21 @@
                         <div class="col-md-3">
                             <div class="mb-3">
                                 <label for="stock_minimo" class="form-label">Stock Mínimo (kg) <span class="text-danger">*</span></label>
-                                <input type="number" step="0.001" class="form-control" id="stock_minimo" 
+                                <input type="number" name="inventario[stock_minimo]" id="stock_minimo" 
                                        name="inventario[stock_minimo]" required min="0">
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="mb-3">
                                 <label for="stock_maximo" class="form-label">Stock Máximo (kg) <span class="text-danger">*</span></label>
-                                <input type="number" step="0.001" class="form-control" id="stock_maximo" 
+                                <input type="number" name="inventario[stock_maximo]" id="stock_maximo" 
                                        name="inventario[stock_maximo]" required min="0">
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="mb-3">
                                 <label for="punto_reorden" class="form-label">Punto de Reorden (kg) <span class="text-danger">*</span></label>
-                                <input type="number" step="0.001" class="form-control" id="punto_reorden" 
+                                <input type="number" name="inventario[punto_reorden]" id="punto_reorden" 
                                        name="inventario[punto_reorden]" required min="0" readonly>
                                 <div class="form-text">Calculado automáticamente</div>
                             </div>
@@ -95,7 +95,7 @@
                         <div class="col-md-3">
                             <div class="mb-3">
                                 <label for="almacen" class="form-label">Almacén</label>
-                                <input type="text" class="form-control" id="almacen" 
+                                <input type="text" name="inventario[almacen]" id="almacen" 
                                        name="inventario[almacen]" placeholder="Ej: Almacén A">
                             </div>
                         </div>

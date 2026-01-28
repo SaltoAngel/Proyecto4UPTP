@@ -13,80 +13,86 @@ use Illuminate\Support\Facades\DB;
 class MateriaPrimaController extends Controller
 {
     public function index(Request $request)
-{
-    $query = MateriaPrima::with(['categoria', 'inventario'])
-        ->activas()
-        ->orderBy('descripcion');
-    
-    // Filtros
-    if ($request->filled('search')) {
-        $search = $request->search;
-        $query->where(function($q) use ($search) {
-            $q->where('codigo', 'like', "%$search%")
-              ->orWhere('descripcion', 'like', "%$search%")
-              ->orWhere('nombre_comercial', 'like', "%$search%");
-        });
+    {
+        $query = MateriaPrima::with(['categoria', 'inventario'])
+            ->activas()
+            ->orderBy('descripcion');
+        
+        // Filtros
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('codigo', 'like', "%$search%")
+                  ->orWhere('descripcion', 'like', "%$search%")
+                  ->orWhere('nombre_comercial', 'like', "%$search%");
+            });
+        }
+        
+        if ($request->filled('categoria_id')) {
+            $query->where('categoria_id', $request->categoria_id);
+        }
+        
+        if ($request->filled('estado_inventario')) {
+            $query->whereHas('inventario', function($q) use ($request) {
+                $q->where('estado', $request->estado_inventario);
+            });
+        }
+        
+        if ($request->filled('activo')) {
+            $query->where('activo', true);
+        }
+        
+        if ($request->filled('disponible')) {
+            $query->where('disponible', true);
+        }
+        
+        // Calcular estadísticas
+        $totalMaterias = MateriaPrima::activas()->count();
+        $criticos = MateriaPrima::whereHas('inventario', function($q) {
+            $q->where('estado', 'critico');
+        })->activas()->count();
+        
+        $agotados = MateriaPrima::whereHas('inventario', function($q) {
+            $q->where('estado', 'agotado');
+        })->activas()->count();
+        
+        // Obtener lista para select en entradas
+        $materiasPrimasList = MateriaPrima::activas()->disponibles()
+            ->select('id', 'codigo', 'descripcion')
+            ->orderBy('descripcion')
+            ->get()
+            ->map(function($materia) {
+                // Agregamos stock_actual como un atributo calculado
+                $materia->stock_actual = $materia->stock_actual;
+                return $materia;
+            });
+        
+        // Obtener proveedores para entradas
+        $proveedores = Proveedor::with(['persona' => function ($query) {
+                $query->orderBy('nombres');
+            }])
+            ->where('estado', 'activo')
+            ->get();
+        
+        // PAGINACIÓN: Siempre devolver paginado para la pestaña "Todos"
+        $materiasPrimas = $query->paginate(31);
+        $categorias = CategoriasMateriasPrimas::orderBy('nombre')->get();
+        
+        // Para las pestañas de estado, filtramos desde la colección paginada
+        // Esto evita hacer consultas adicionales a la base de datos
+        $materiasPrimasCollection = $query->get(); // Sin paginación para filtros
+        
+        return view('materias-primas.index', compact(
+            'materiasPrimas',           // Paginado para "Todos"
+            'materiasPrimasCollection', // Colección completa para filtros
+            'categorias',
+            'totalMaterias',
+            'criticos',
+            'agotados',
+            'materiasPrimasList',
+            'proveedores'
+        ));
     }
-    
-    if ($request->filled('categoria_id')) {
-        $query->where('categoria_id', $request->categoria_id);
-    }
-    
-    if ($request->filled('estado_inventario')) {
-        $query->whereHas('inventario', function($q) use ($request) {
-            $q->where('estado', $request->estado_inventario);
-        });
-    }
-    
-    if ($request->filled('activo')) {
-        $query->where('activo', true);
-    }
-    
-    if ($request->filled('disponible')) {
-        $query->where('disponible', true);
-    }
-    
-    // Calcular estadísticas
-    $totalMaterias = MateriaPrima::activas()->count();
-    $criticos = MateriaPrima::whereHas('inventario', function($q) {
-        $q->where('estado', 'critico');
-    })->activas()->count();
-    
-    $agotados = MateriaPrima::whereHas('inventario', function($q) {
-        $q->where('estado', 'agotado');
-    })->activas()->count();
-    
-    // Esto es correcto - eliminamos stock_actual del select
-    $materiasPrimasList = MateriaPrima::activas()->disponibles()
-        ->select('id', 'codigo', 'descripcion')
-        ->orderBy('descripcion')
-        ->get()
-        ->map(function($materia) {
-            // Agregamos stock_actual como un atributo calculado
-            $materia->stock_actual = $materia->stock_actual;
-            return $materia;
-        });
-    
-    // Obtener proveedores para entradas - CORREGIDO (agregar $proveedores =)
-    $proveedores = Proveedor::with(['persona' => function ($query) {
-        $query->orderBy('nombres');
-    }])
-    ->where('estado', 'activo')
-    ->get();
-    
-    $materiasPrimas = $query->paginate(31);
-    $categorias = CategoriasMateriasPrimas::orderBy('nombre')->get();
-    
-    return view('materias-primas.index', compact(
-        'materiasPrimas',
-        'categorias',
-        'totalMaterias',
-        'criticos',
-        'agotados',
-        'materiasPrimasList',
-        'proveedores'
-    ));
-}
 
     public function create()
     {
@@ -106,10 +112,10 @@ class MateriaPrimaController extends Controller
             'activo' => 'boolean',
             'disponible' => 'boolean',
             'preferido' => 'boolean',
-            'inventario.stock_minimo' => 'required|numeric|min:0',
-            'inventario.stock_maximo' => 'required|numeric|gt:inventario.stock_minimo',
-            'inventario.punto_reorden' => 'required|numeric|between:inventario.stock_minimo,inventario.stock_maximo',
-            'inventario.almacen' => 'nullable|max:100'
+            'stock_minimo' => 'required|numeric|min:0',  // CAMBIADO: de inventario.stock_minimo a stock_minimo
+            'stock_maximo' => 'required|numeric|gt:stock_minimo',  // CAMBIADO: de inventario.stock_maximo a stock_maximo
+            'punto_reorden' => 'required|numeric|between:stock_minimo,stock_maximo',  // CAMBIADO
+            'almacen' => 'nullable|max:100'  // CAMBIADO: de inventario.almacen a almacen
         ]);
         
         DB::beginTransaction();
@@ -133,10 +139,10 @@ class MateriaPrimaController extends Controller
             $inventario = InventarioMateria::create([
                 'materia_prima_id' => $materiaPrima->id,
                 'stock_actual' => 0,
-                'stock_minimo' => $validated['inventario']['stock_minimo'],
-                'stock_maximo' => $validated['inventario']['stock_maximo'],
-                'punto_reorden' => $validated['inventario']['punto_reorden'],
-                'almacen' => $validated['inventario']['almacen'] ?? null,
+                'stock_minimo' => $validated['stock_minimo'],  // CAMBIADO
+                'stock_maximo' => $validated['stock_maximo'],  // CAMBIADO
+                'punto_reorden' => $validated['punto_reorden'],  // CAMBIADO
+                'almacen' => $validated['almacen'] ?? null,  // CAMBIADO
                 'estado' => 'normal',
                 'fecha_ultima_verificacion' => now()
             ]);
@@ -176,7 +182,7 @@ class MateriaPrimaController extends Controller
     public function edit($id)
     {
         $materia = MateriaPrima::with('inventario')->findOrFail($id);
-        $categorias = CategoriaMateriaPrima::orderBy('nombre')->get();
+        $categorias = CategoriasMateriasPrimas::orderBy('nombre')->get();
         
         return view('materias-primas.edit', compact('materia', 'categorias'));
     }
@@ -195,10 +201,10 @@ class MateriaPrimaController extends Controller
             'activo' => 'boolean',
             'disponible' => 'boolean',
             'preferido' => 'boolean',
-            'inventario.stock_minimo' => 'required|numeric|min:0',
-            'inventario.stock_maximo' => 'required|numeric|gt:inventario.stock_minimo',
-            'inventario.punto_reorden' => 'required|numeric|between:inventario.stock_minimo,inventario.stock_maximo',
-            'inventario.almacen' => 'nullable|max:100'
+            'stock_minimo' => 'required|numeric|min:0',  // CAMBIADO: de inventario.stock_minimo a stock_minimo
+            'stock_maximo' => 'required|numeric|gt:stock_minimo',  // CAMBIADO: de inventario.stock_maximo a stock_maximo
+            'punto_reorden' => 'required|numeric|between:stock_minimo,stock_maximo',  // CAMBIADO
+            'almacen' => 'nullable|max:100'  // CAMBIADO: de inventario.almacen a almacen
         ]);
         
         DB::beginTransaction();
@@ -220,10 +226,10 @@ class MateriaPrimaController extends Controller
             // Actualizar o crear inventario
             if ($materia->inventario) {
                 $materia->inventario->update([
-                    'stock_minimo' => $validated['inventario']['stock_minimo'],
-                    'stock_maximo' => $validated['inventario']['stock_maximo'],
-                    'punto_reorden' => $validated['inventario']['punto_reorden'],
-                    'almacen' => $validated['inventario']['almacen'] ?? null,
+                    'stock_minimo' => $validated['stock_minimo'],  // CAMBIADO
+                    'stock_maximo' => $validated['stock_maximo'],  // CAMBIADO
+                    'punto_reorden' => $validated['punto_reorden'],  // CAMBIADO
+                    'almacen' => $validated['almacen'] ?? null,  // CAMBIADO
                     'fecha_ultima_verificacion' => now()
                 ]);
                 
@@ -233,10 +239,10 @@ class MateriaPrimaController extends Controller
                 InventarioMateria::create([
                     'materia_prima_id' => $materia->id,
                     'stock_actual' => 0,
-                    'stock_minimo' => $validated['inventario']['stock_minimo'],
-                    'stock_maximo' => $validated['inventario']['stock_maximo'],
-                    'punto_reorden' => $validated['inventario']['punto_reorden'],
-                    'almacen' => $validated['inventario']['almacen'] ?? null,
+                    'stock_minimo' => $validated['stock_minimo'],  // CAMBIADO
+                    'stock_maximo' => $validated['stock_maximo'],  // CAMBIADO
+                    'punto_reorden' => $validated['punto_reorden'],  // CAMBIADO
+                    'almacen' => $validated['almacen'] ?? null,  // CAMBIADO
                     'estado' => 'normal',
                     'fecha_ultima_verificacion' => now()
                 ]);
