@@ -129,6 +129,7 @@
 
 @endsection
 
+{{-- En la sección @push('scripts') del index.blade.php --}}
 @push('scripts')
 <script>
 // Inicializar todas las modales cuando se cargue la página
@@ -137,6 +138,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const btnNuevoRol = document.getElementById('btnNuevoRol');
     if (btnNuevoRol) {
         btnNuevoRol.addEventListener('click', function() {
+            // Resetear el formulario de creación cada vez que se abre
+            resetForm('formCreate', 'masterSelectCreate');
             const modal = new bootstrap.Modal(document.getElementById('crearRolModal'));
             modal.show();
         });
@@ -159,16 +162,6 @@ document.addEventListener('DOMContentLoaded', function() {
             modal.show();
         });
     });
-
-    // Manejar los checkboxes de permisos en crear rol
-    const checkAllCreate = document.getElementById('checkAll');
-    if (checkAllCreate) {
-        checkAllCreate.addEventListener('change', function() {
-            document.querySelectorAll('#crearRolModal .permission-checkbox').forEach(cb => {
-                cb.checked = this.checked;
-            });
-        });
-    }
 });
 
 /**
@@ -187,18 +180,17 @@ window.resetForm = function(formId, masterSwitchId) {
     form.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
     const master = document.getElementById(masterSwitchId);
     if (master) master.checked = false;
+    
+    // Limpiar también el campo de nombre en el formulario de creación
+    if (formId === 'formCreate') {
+        const nameInput = form.querySelector('input[name="name"]');
+        if (nameInput) nameInput.value = '';
+    }
 }
 
 window.toggleModule = function(btn) {
     const container = btn.closest('.card').querySelector('.module-container');
     const checkboxes = container.querySelectorAll('input[type="checkbox"]');
-    const allChecked = Array.from(checkboxes).every(cb => cb.checked);
-    checkboxes.forEach(cb => cb.checked = !allChecked);
-}
-
-// Función para seleccionar por módulo en crear rol
-window.checkModulo = function(modulo) {
-    const checkboxes = document.querySelectorAll('.module-' + modulo);
     const allChecked = Array.from(checkboxes).every(cb => cb.checked);
     checkboxes.forEach(cb => cb.checked = !allChecked);
 }
