@@ -28,27 +28,85 @@
                             </button>
                         </div>
                     </div>
+                    {{-- ⬇⬇⬇ AQUÍ VA EL BLOQUE PHP PARA TRADUCCIONES Y FILTRO ⬇⬇⬇ --}}
+                    @php
+                        // 1. Diccionario de traducciones
+                        $traducciones = [
+                            'view dashboard'    => 'Ver panel de control',
+                            //Personas
+                            'view personas'     => 'Ver personas',
+                            'create personas'   => 'Crear persona',
+                            'edit personas'     => 'Ediatr persona',
+                            'delete personas'   => 'Deshabilitar persona',
+                            //Proveedores
+                            'view proveedores'   => 'Ver proveedores',
+                            'create proveedores' => 'Crear proveedor',
+                            'edit proveedores'   => 'Editar proveedor',
+                            'delete proveedores' => 'Deshabilitar proveedor',
+                            //Materia prima
+                            'view materia_prima'   => 'Ver materia prima',
+                            'create materia_prima' => 'Crear materia prima',
+                            'edit materia_prima'   => 'Editar materia prima',
+                            'delete materia_prima' => 'Deshabilitar materia prima',
+                            //Repuesto
+                            'view repuestos'   => 'Ver repuesto',
+                            'create repuestos' => 'Crear repuesto',
+                            'edit repuestos'   => 'Editar repuesto',
+                            'delete repuestos' => ' Deshabilitar repuesto',
+                            //Usuario 
+                            'view users'    => 'Ver usuario',
+                            'create users'  => 'Crear usuario',
+                            'edit users'    => 'Editar usuario',
+                            'delete users'  => 'Deshabilitar usuario',
+                            'assign roles'  => 'Asignar rol',
+                            //Reporte
+                            'view reports'     => 'Ver reporte',
+                            'generate reports' => 'Generar PDF',
+                            //Configuracion 
+                            'manage settings'  => 'Configuración del Sistema',
+                            //Roles
+                            'view roles'       => 'Ver rol',
+                            'create roles'     => 'Crear rol',
+                            'edit roles'       => 'Editar rol',
+                            'delete roles'     => 'Deshabilitar rol'
+                        ];
 
+                        // 2. Permisos que NO se pueden asignar a otros roles
+                        $permisosRestringidos = ['view roles', 'create roles', 'edit roles', 'delete roles'];
+                    @endphp
+
+                    {{-- ⬇⬇⬇ AQUÍ VA EL BUCLE DE PERMISOS MODIFICADO ⬇⬇⬇ --}}
                     <div class="row">
                         @foreach($permissions as $modulo => $perms)
-                            <div class="col-md-4 mb-4">
-                                <div class="card border shadow-none" style="border-radius: 0.75rem;">
-                                    <div class="card-header p-2 bg-light d-flex justify-content-between align-items-center" style="border-radius: 0.75rem 0.75rem 0 0;">
-                                        <span class="text-xs text-uppercase font-weight-bolder ps-2 text-dark">{{ $modulo }}</span>
-                                        <button type="button" class="btn btn-link text-success text-xxs mb-0 p-0 font-weight-bolder" onclick="toggleModule(this)">TODO</button>
-                                    </div>
-                                    <div class="card-body p-3 module-container">
-                                        @foreach($perms as $perm)
-                                            <div class="form-check my-1">
-                                                <input class="form-check-input" type="checkbox" name="permissions[]" value="{{ $perm->id }}" 
-                                                       id="pe_{{ $role->id }}_{{ $perm->id }}"
-                                                       {{ $role->hasPermissionTo($perm->name) ? 'checked' : '' }}>
-                                                <label class="form-check-label text-xs mb-0" for="pe_{{ $role->id }}_{{ $perm->id }}">{{ $perm->name }}</label>
-                                            </div>
-                                        @endforeach
+                            @php
+                                // Filtrar permisos para excluir los restringidos
+                                $permisosFiltrados = $perms->filter(function($perm) use ($permisosRestringidos) {
+                                    return !in_array($perm->name, $permisosRestringidos);
+                                });
+                            @endphp
+                            
+                            @if($permisosFiltrados->count() > 0)
+                                <div class="col-md-4 mb-4">
+                                    <div class="card border shadow-none" style="border-radius: 0.75rem;">
+                                        <div class="card-header p-2 bg-light d-flex justify-content-between align-items-center" style="border-radius: 0.75rem 0.75rem 0 0;">
+                                            <span class="text-xs text-uppercase font-weight-bolder ps-2 text-dark">{{ $modulo }}</span>
+                                            <button type="button" class="btn btn-link text-success text-xxs mb-0 p-0 font-weight-bolder" onclick="toggleModule(this)">TODO</button>
+                                        </div>
+                                        <div class="card-body p-3 module-container">
+                                            @foreach($permisosFiltrados as $perm)
+                                                <div class="form-check my-1">
+                                                    <input class="form-check-input" type="checkbox" name="permissions[]" value="{{ $perm->id }}" 
+                                                           id="pe_{{ $role->id }}_{{ $perm->id }}"
+                                                           {{ $role->hasPermissionTo($perm->name) ? 'checked' : '' }}>
+                                                    <label class="form-check-label text-xs mb-0" for="pe_{{ $role->id }}_{{ $perm->id }}">
+                                                        {{ $traducciones[$perm->name] ?? ucwords(str_replace(['_', '-'], ' ', $perm->name)) }}
+                                                    </label>
+                                                </div>
+                                            @endforeach
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            @endif
                         @endforeach
                     </div>
                 </div>
