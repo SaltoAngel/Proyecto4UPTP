@@ -77,8 +77,8 @@
                             <table class="table align-items-center mb-0">
                                 <thead class="bg-gray-100">
                                     <tr>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-3">Nombre del Usuario</th>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Email</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-3">Nombre del usuario</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Correo electronico</th>
                                     </tr>
                                 </thead>
                                 <tbody>

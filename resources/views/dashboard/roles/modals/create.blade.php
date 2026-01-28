@@ -3,7 +3,7 @@
         <div class="modal-content">
             <div class="modal-header bg-success text-white">
                 <h5 class="modal-title text-white">
-                    <i class="material-icons me-2 text-white">admin_panel_settings</i>Nuevo Rol de Usuario
+                    <i class="material-icons me-2 text-white">admin_panel_settings</i>Nuevo rol
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
@@ -13,13 +13,13 @@
                 <div class="modal-body">
                     <div class="row mb-4">
                         <div class="col-12">
-                            <label class="form-label fw-bold"><i class="material-icons text-sm me-1">label</i>Nombre del Rol <span class="text-danger">*</span></label>
+                            <label class="form-label fw-bold"><i class="material-icons text-sm me-1">label</i>Nombre del rol <span class="text-danger">*</span></label>
                             <input type="text" name="name" class="form-control border px-2" placeholder="Ej: Auditor Interno" required>
                         </div>
                     </div>
 
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h6 class="mb-0 text-uppercase text-secondary text-xs font-weight-bolder">Asignación de Permisos</h6>
+                        <h6 class="mb-0 text-uppercase text-secondary text-xs font-weight-bolder">Asignación de permisos</h6>
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="checkAll">
                             <label class="form-check-label text-xs fw-bold" for="checkAll">SELECCIONAR TODO</label>
@@ -64,15 +64,5 @@
 </div>
 
 <script>
-// Lógica para Seleccionar Todo
-document.getElementById('checkAll').addEventListener('change', function() {
-    document.querySelectorAll('.permission-checkbox').forEach(cb => cb.checked = this.checked);
-});
-
-// Lógica para seleccionar por módulo
-function checkModulo(modulo) {
-    const checkboxes = document.querySelectorAll('.module-' + modulo);
-    const allChecked = Array.from(checkboxes).every(cb => cb.checked);
-    checkboxes.forEach(cb => cb.checked = !allChecked);
-}
+// Este script ahora está en el archivo principal
 </script>
