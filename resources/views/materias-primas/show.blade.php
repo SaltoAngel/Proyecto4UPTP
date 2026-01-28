@@ -175,27 +175,6 @@
                 
                 <hr class="my-3">
                 
-                <div class="text-center">
-                    <h6 class="text-sm text-muted mb-2">Acciones Rápidas</h6>
-                    <div class="btn-group" role="group">
-                        <button class="btn btn-sm btn-outline-primary" 
-                                data-bs-toggle="modal" 
-                                data-bs-target="#entradaInventarioModal">
-                            <i class="material-icons opacity-10" style="font-size: 16px;">input</i>
-                        </button>
-                        <button class="btn btn-sm btn-outline-warning"
-                                data-bs-toggle="modal"
-                                data-bs-target="#editMateriaModal"
-                                data-id="{{ $materia->id }}">
-                            <i class="material-icons opacity-10" style="font-size: 16px;">edit</i>
-                        </button>
-                        <button class="btn btn-sm btn-outline-danger delete-btn"
-                                data-id="{{ $materia->id }}"
-                                data-nombre="{{ $materia->descripcion }}">
-                            <i class="material-icons opacity-10" style="font-size: 16px;">delete</i>
-                        </button>
-                    </div>
-                </div>
             </div>
         </div>
     </div>

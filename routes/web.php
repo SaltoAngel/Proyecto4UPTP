@@ -131,6 +131,16 @@ Route::middleware([Authenticate::class, CheckStatus::class])->group(function () 
     Route::put('/{user}/activate', [UserController::class, 'activate'])->name('activate'); // <-- Cambiado
     Route::put('/{user}/deactivate', [UserController::class, 'deactivate'])->name('deactivate'); // <-- Cambiado
     });
+
+    // Rutas para movimientos de inventario
+Route::post('/movimientos/entrada', [MovimientoInventarioController::class, 'storeEntrada'])
+    ->name('movimientos.entrada.store');
+
+Route::post('/movimientos/salida', [MovimientoInventarioController::class, 'storeSalida'])
+    ->name('movimientos.salida.store');
+
+Route::get('/materias-primas/{id}/historial', [MovimientoInventarioController::class, 'getHistorial'])
+    ->name('materias-primas.historial');
     
     // ============ RUTAS DE MATERIAS PRIMAS ============
     Route::prefix('materias-primas')->name('materias-primas.')->group(function () {
