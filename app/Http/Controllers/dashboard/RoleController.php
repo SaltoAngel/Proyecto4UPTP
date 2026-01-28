@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\RoleRequest;
 use App\Http\Requests\RolePermissionRequest;
 use App\Models\Role;
-use App\Models\Bitacora; //
+use App\Models\Bitacora;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
@@ -28,7 +28,6 @@ class RoleController extends Controller
         $search = $request->input('search');
 
         $roles = Role::withTrashed()
-            // AÑADIMOS 'users' dentro del array de with para que la modal de detalles pueda mostrarlos
             ->with(['permissions', 'users'])
             ->withCount(['permissions', 'users'])
             ->where('name', '!=', 'superadmin')
@@ -37,10 +36,10 @@ class RoleController extends Controller
             })
             ->orderByRaw("CASE WHEN name = 'administrador' THEN 1 ELSE 2 END ASC")
             ->paginate(10)
-            ->appends(['search' => $search]); // Mantiene la búsqueda al navegar entre páginas
+            ->appends(['search' => $search]);
 
         // 1. Obtenemos todos los permisos
-        $all_permissions = \Spatie\Permission\Models\Permission::orderBy('name')->get();
+        $all_permissions = Permission::orderBy('name')->get();
 
         // 2. Los agrupamos usando tu función privada groupPermissions
         $permissions = $this->groupPermissions($all_permissions);
@@ -55,14 +54,22 @@ class RoleController extends Controller
         try {
             DB::beginTransaction();
 
+            // FILTRAR PERMISOS - EXCLUIR PERMISOS DE GESTIÓN DE ROLES
+            $filteredPermissions = $this->filterRolePermissions($request->permissions);
+
+            // Validar que haya al menos un permiso después del filtrado
+            if (empty($filteredPermissions)) {
+                return back()->with('error', 'Debe seleccionar al menos un permiso válido.')->withInput();
+            }
+
             // 1. Crear el rol (El RoleRequest debe validar 'name' y 'permissions')
             $role = Role::create([
                 'name' => $request->name,
                 'guard_name' => 'web'
             ]);
 
-            // 2. Sincronizar permisos inmediatamente
-            $role->permissions()->sync($request->permissions);
+            // 2. Sincronizar permisos filtrados
+            $role->permissions()->sync($filteredPermissions);
 
             // 3. Registro en Bitácora (Manteniendo tu formato)
             Bitacora::registrar(
@@ -70,7 +77,7 @@ class RoleController extends Controller
                 'Creación',
                 "Se creó el rol [{$role->name}] con los permisos seleccionados.",
                 null,
-                ['permisos_ids' => $request->permissions]
+                ['permisos_ids' => $filteredPermissions]
             );
 
             DB::commit();
@@ -94,9 +101,18 @@ class RoleController extends Controller
 
         try {
             DB::beginTransaction();
-            // Actualiza nombre y permisos en el mismo proceso
+            
+            // FILTRAR PERMISOS - EXCLUIR PERMISOS DE GESTIÓN DE ROLES
+            $filteredPermissions = $this->filterRolePermissions($request->permissions);
+
+            // Validar que haya al menos un permiso después del filtrado
+            if (empty($filteredPermissions)) {
+                return back()->with('error', 'Debe seleccionar al menos un permiso válido.')->withInput();
+            }
+
+            // Actualiza nombre y permisos filtrados
             $role->update(['name' => $request->name]);
-            $role->permissions()->sync($request->permissions);
+            $role->permissions()->sync($filteredPermissions);
 
             Bitacora::registrar('Roles', 'Edición', "Se actualizó el rol [{$role->name}] y sus permisos.");
             DB::commit();
@@ -115,14 +131,14 @@ class RoleController extends Controller
         // Cargamos las relaciones necesarias para el detalle
         $role->load(['permissions', 'users']);
 
-        // Obtenemos todos los permisos agrupados (por si decides usar una vista aparte luego)
-        $all_permissions = \Spatie\Permission\Models\Permission::orderBy('name')->get();
+        // Obtenemos todos los permisos agrupados
+        $all_permissions = Permission::orderBy('name')->get();
         $permissions = $this->groupPermissions($all_permissions);
 
         return view('dashboard.roles.modals.show', compact('role', 'permissions'));
     }
 
-    // Para deshabilitar (Ya lo tienes, pero asegúrate de que use Bitacora)
+    // Para deshabilitar
     public function destroy(Role $role): RedirectResponse
     {
         if ($role->isProtectedRole()) {
@@ -130,22 +146,22 @@ class RoleController extends Controller
         }
 
         $nombre = $role->name;
-        $role->delete(); // Esto llena 'deleted_at', no borra la fila.
+        $role->delete();
 
-        \App\Models\Bitacora::registrar('Roles', 'Deshabilitación', "Se desactivó el rol [$nombre].");
+        Bitacora::registrar('Roles', 'Deshabilitación', "Se desactivó el rol [$nombre].");
 
         return redirect()->route('dashboard.roles.index')->with('success', 'Rol desactivado correctamente.');
     }
 
-    // NUEVO: Para volver a habilitar
+    // Para volver a habilitar
     public function restore($id): RedirectResponse
     {
         // Buscamos el rol incluso entre los que tienen 'deleted_at'
         $role = Role::withTrashed()->findOrFail($id);
 
-        $role->restore(); // Esto pone 'deleted_at' en NULL (lo activa)
+        $role->restore();
 
-        \App\Models\Bitacora::registrar('Roles', 'Restauración', "Se habilitó nuevamente el rol [{$role->name}].");
+        Bitacora::registrar('Roles', 'Restauración', "Se habilitó nuevamente el rol [{$role->name}].");
 
         return redirect()->route('dashboard.roles.index')->with('success', 'Rol activado nuevamente.');
     }
@@ -162,6 +178,23 @@ class RoleController extends Controller
                 'repuestos' => 'Repuestos',
             ];
             return $moduleNames[$module] ?? ucfirst(str_replace('_', ' ', $module));
+        });
+    }
+
+    /**
+     * FILTRA PERMISOS PARA EXCLUIR PERMISOS DE GESTIÓN DE ROLES
+     * Solo el rol 'administrador' puede tener estos permisos
+     */
+    private function filterRolePermissions(array $permissionIds): array
+    {
+        // Obtener los IDs de los permisos de gestión de roles
+        $roleManagementPermissions = Permission::where('name', 'like', '%roles%')
+            ->pluck('id')
+            ->toArray();
+
+        // Filtrar para excluir permisos de gestión de roles
+        return array_filter($permissionIds, function($permissionId) use ($roleManagementPermissions) {
+            return !in_array($permissionId, $roleManagementPermissions);
         });
     }
 }
